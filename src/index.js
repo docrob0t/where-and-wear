@@ -45,7 +45,7 @@ const cardStyles = makeStyles({
 });
 
 //CreateWeatherCard() function returns a weather card overlay
-export default function CreateWeatherCard() {
+export default function CreateWeatherCard(props) {
   const classes = cardStyles();
 
   return (
@@ -54,7 +54,7 @@ export default function CreateWeatherCard() {
         <Button size="small" className={classes.moreDetails}>More Details</Button>
       </CardActions>
       <CardContent>
-        <Typography className={classes.title} gutterBottom>Brighton</Typography>
+        <Typography className={classes.title} gutterBottom>{props.name}</Typography>
         <Typography className={classes.pos} color="textSecondary">25C / Sunny</Typography>
         <Typography className={classes.secondTitle} gutterBottom>Clothing Suggestions</Typography>
       </CardContent>
@@ -71,7 +71,7 @@ class Map extends React.Component {
         frameborder="0">
       </iframe></div>
 
-      <div style={{ zIndex: 0 }}><CreateWeatherCard /></div>
+      <div><CreateWeatherCard name="Brighton"/></div>
     </React.Fragment>
   }
 }
