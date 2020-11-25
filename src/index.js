@@ -6,10 +6,16 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+
+// Importing images/icons
+import svgfile1 from './menu-button.svg';
+import svgfile2 from './whereandwear-logo.svg';
 
 // Card styling constants
 const cardStyles = makeStyles({
@@ -42,6 +48,13 @@ const cardStyles = makeStyles({
     marginTop: 12,
     position: 'relative',
   },
+  buttonStyle: {
+    position: 'relative',
+    top: 5,
+    left: '90%',
+    width: '10%',
+    height: '10%',
+  },
 });
 
 // CreateWeatherCard() function returns a weather card overlay
@@ -60,6 +73,26 @@ export default function CreateWeatherCard(props) {
       </CardContent>
     </Card>
   );
+}
+
+// CreateMenu() function returns the menu
+function CreateMenu() {
+  const classes = cardStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {setAnchorEl(event.currentTarget)}
+  const handleClose = () => {setAnchorEl(null);};
+
+  return (
+      <div>
+        <Button className={classes.buttonStyle} onClick={handleClick}>
+          <img src={svgfile1} height='60%' width='60%' alt='Menu Button'/>
+        </Button>
+        <Menu className={classes.menuStyle} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem onClick={null}>About Us</MenuItem>
+          <MenuItem onClick={handleClose}> <img src={svgfile2} height='50%' width='50%' alt='Where & Wear Logo'/> </MenuItem>
+        </Menu>
+      </div>
+    );
 }
 
 // Map component
@@ -123,6 +156,7 @@ class Map extends React.Component {
       </iframe></div>
 
       <div><CreateWeatherCard name="Brighton" /></div>
+      <div><CreateMenu/></div>
     </React.Fragment>
   }
 }
