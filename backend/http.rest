@@ -1,0 +1,19 @@
+// Download the 'REST Client' visual studio code extension.
+// You can then use the requests in this file to test the express 
+// app without the need for an external client 
+
+POST http://localhost:3001
+Content-Type: application/json
+
+{
+    "title": "test"
+}
+
+###
+
+POST http://localhost:3001/someendpoint
+Content-Type: application/json
+
+{
+    "title": "test"
+}
