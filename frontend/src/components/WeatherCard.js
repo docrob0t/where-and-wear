@@ -10,10 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 // Card styling constants
 const cardStyles = makeStyles({
   root: {
-    width: '10%',
-    minWidth: 350,
+    minWidth: 375,
+    minHeight: 300,
+    width: '15%',
     height: '25%',
-    minHeight: 350,
     margin: 35,
     position: 'absolute',
     bottom: 50,
