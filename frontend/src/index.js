@@ -5,11 +5,14 @@ import * as serviceWorker from './serviceWorker';
 import Map from './components/Map.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
-  <div>
-    <Map />
-  </div>,
+  <BrowserRouter>
+    <div>
+      <Map />
+    </div>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
