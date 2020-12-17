@@ -2,6 +2,9 @@ import CreateMenu from './MenuButton.js';
 import CreateWeatherCard from './WeatherCard.js';
 import React from 'react';
 import axios from 'axios';
+import {Switch, Route} from "react-router-dom";
+import WeatherCard from './WeatherCard';
+import UrlError from './UrlError';
 
 const axiosConfig = {
   headers: {
@@ -71,6 +74,11 @@ class Map extends React.Component {
 
   render() {
     return <React.Fragment>
+      <Switch>
+        <Route path="/" exact component={Map, WeatherCard} />
+        <Route component={UrlError}/>
+      </Switch>
+
       <div style={{ zIndex: 0 }}><iframe className="map-iframe" title="Weather Map" 
         src="https://embed.windy.com/embed2.html?lat=51.509865&lon=-0.118092&detailLat=51.914&detailLon=-1.346&width=1600&height=900&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
         frameBorder="0">

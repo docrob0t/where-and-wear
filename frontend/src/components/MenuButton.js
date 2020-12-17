@@ -5,14 +5,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import svgfile1 from '.././menu-button.svg';
 import svgfile2 from '.././whereandwear-logo.svg';
+import {Link} from 'react-router-dom';
 
 const buttonStyle = makeStyles({
   buttonStyle: {
-    position: 'relative',
+    position: 'fixed',
     top: 5,
-    left: '90%',
-    width: '10%',
-    height: '10%',
+    left: '95%',
+    width: '200',
+    height: '200',
   },
 });
 
@@ -29,6 +30,7 @@ function CreateMenu() {
             <img src={svgfile1} height='60%' width='60%' alt='Menu Button'/>
           </Button>
           <Menu className={classes.menuStyle} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+            <MenuItem><Link to='/'>Home</Link></MenuItem>
             <MenuItem onClick={null}>About Us</MenuItem>
             <MenuItem onClick={handleClose}> <img src={svgfile2} height='50%' width='50%' alt='Where & Wear Logo'/> </MenuItem>
           </Menu>
