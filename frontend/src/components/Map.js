@@ -4,6 +4,7 @@ import React from 'react';
 import axios from 'axios';
 import {Switch, Route} from "react-router-dom";
 import WeatherCard from './WeatherCard';
+import UrlError from './UrlError';
 
 const axiosConfig = {
   headers: {
@@ -75,6 +76,7 @@ class Map extends React.Component {
     return <React.Fragment>
       <Switch>
         <Route path="/" exact component={Map, WeatherCard} />
+        <Route component={UrlError}/>
       </Switch>
 
       <div style={{ zIndex: 0 }}><iframe className="map-iframe" title="Weather Map" 
