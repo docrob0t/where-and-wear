@@ -10,11 +10,14 @@ import svgfile2 from '.././whereandwear-logo.svg';
 const buttonStyle = makeStyles({
   buttonStyle: {
     position: 'fixed',
+    width: '7%',
+    height: '7%',
+    right: 20,
     top: 5,
-    right: 15,
-    left: '95%',
-    width: '200',
-    height: '200',
+    minWidth: 75,
+    minHeight: 75,
+    maxWidth: 100,
+    maxHeight: 100,
   },
 });
 
@@ -28,7 +31,7 @@ function CreateMenu() {
     return (
         <div>
           <Button className={classes.buttonStyle} onClick={handleClick}>
-            <img src={svgfile1} height='60%' width='60%' alt='Menu Button'/>
+            <img src={svgfile1} height='100%' width='100%' alt='Menu Button'/>
           </Button>
           <Menu className={classes.menuStyle} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
             <MenuItem><Link to='/'>Home</Link></MenuItem>

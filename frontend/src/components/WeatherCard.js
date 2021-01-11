@@ -45,7 +45,7 @@ const cardStyles = makeStyles({
     marginLeft: 400,
     top: 20,
   },
-  SevenDayForecastShow: {
+  rootExpanded: {
     minWidth: 1000,
     minHeight: 350,
     width: '60%',
@@ -62,7 +62,6 @@ const cardStyles = makeStyles({
 function CreateWeatherCard(props) {
   const styling = cardStyles();
   const [currentTemp, setCurrentTemp] = React.useState([]);
-  const [tomorrowTemp, setTomorrowTemp] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -74,15 +73,7 @@ function CreateWeatherCard(props) {
         })
         setCurrentTemp(response.data.currentTemp);
 
-        // Get date now
-        var date = new Date();
-        date.setDate(date.getDate() + 7);
-        console.log('Date: ' + date);
-        
-        
-
-        setTomorrowTemp(response.data.sevenDayForecast[0].temp.day);
-        console.log('Here is the seven day forecast: ' + response.data.sevenDayForecast[0].temp.day);
+        console.log('Here is tomorrows forecast: ' + response.data.sevenDayForecast[0].temp.day);
         return response;
       }
       catch (e) {
@@ -95,7 +86,7 @@ function CreateWeatherCard(props) {
   }, [props.lat, props.long]);
 
   return (
-    <Card className={isOpen ? styling.SevenDayForecastShow : styling.root}>
+    <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <CardActions>
         <Button size="small" onClick={() => setIsOpen(!isOpen)} className={styling.moreDetails}>{isOpen ? 'Less Details' : 'More Details'}</Button>
       </CardActions>
@@ -103,12 +94,10 @@ function CreateWeatherCard(props) {
         <Typography className={styling.title} gutterBottom>{props.city}</Typography>
         <Typography className={styling.pos} color="textSecondary"><br></br>Current Temperature<br></br> {Math.round(currentTemp)}°c </Typography>
 
-        <Typography className={styling.SevenDayForecast}>
-          Some Weather Info
-        </Typography>
+        <Typography className={styling.SevenDayForecast}>Some Weather Info</Typography>
 
         <Typography className={styling.secondTitle} gutterBottom><br></br><br></br>Clothing Suggestions</Typography>
-        <Typography className={styling.pos} color="textSecondary"><br></br><br></br><br></br><br></br><br></br>Coming Soon!<br></br></Typography>
+        <Typography className={styling.pos} color="textSecondary"><br></br><br></br><br></br><br></br>Coming Soon!<br></br></Typography>
       </CardContent>
     </Card>
   );
