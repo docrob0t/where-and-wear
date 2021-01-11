@@ -27,11 +27,10 @@ app.post("/weatheratcoords", (req, res) => {
     const requestURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + req.body.lat + '&lon=' + req.body.long + '&units=metric&exclude=hourly,minutely&appid=' + OPENWEATHERMAP_API_KEY;
     Axios.get(requestURL)
         .then(function (response) {
-            // handle success
-            // TODO: Return 7 day forecast as well as current temp
+            // handle success - return current temp and 7 day forecast data
             console.log('Request lat/long: ' + req.body.lat, req.body.long);
             console.log('Response temp is: ' + response.data.current.temp);
-            res.json({ currentTemp: response.data.current.temp });
+            res.json({ currentTemp: response.data.current.temp, sevenDayForecast: response.data.daily });
         })
         .catch(function (error) {
             // TODO: Handle error

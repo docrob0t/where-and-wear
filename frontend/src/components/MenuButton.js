@@ -1,16 +1,17 @@
 import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import svgfile1 from '.././menu-button.svg';
 import svgfile2 from '.././whereandwear-logo.svg';
-import {Link} from 'react-router-dom';
 
 const buttonStyle = makeStyles({
   buttonStyle: {
     position: 'fixed',
     top: 5,
+    right: 15,
     left: '95%',
     width: '200',
     height: '200',

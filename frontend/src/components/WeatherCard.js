@@ -11,20 +11,21 @@ import { makeStyles } from '@material-ui/core/styles';
 const cardStyles = makeStyles({
   root: {
     minWidth: 375,
-    minHeight: 300,
+    minHeight: 350,
     width: '15%',
     height: '25%',
     margin: 35,
     position: 'absolute',
     bottom: 50,
     borderRadius: 25,
+    transition: '0.5s ease-in-out',
   },
   moreDetails: {
     position: 'absolute',
-    padding: '5%',
-    right: 0,
-    top: 0,
+    right: 15,
+    top: 15,
     fontFamily: 'Calibri',
+    fontWeight: 600,
   },
   title: {
     fontSize: 20,
@@ -40,12 +41,29 @@ const cardStyles = makeStyles({
     marginTop: 12,
     position: 'relative',
   },
+  SevenDayForecast: {
+    marginLeft: 400,
+    top: 20,
+  },
+  SevenDayForecastShow: {
+    minWidth: 1000,
+    minHeight: 350,
+    width: '60%',
+    height: '25%',
+    margin: 35,
+    position: 'absolute',
+    bottom: 50,
+    borderRadius: 25,
+    transition: '0.5s ease-in-out',
+  },
 });
 
 // CreateWeatherCard() function returns a weather card overlay
 function CreateWeatherCard(props) {
-  const classes = cardStyles();
+  const styling = cardStyles();
   const [currentTemp, setCurrentTemp] = React.useState([]);
+  const [tomorrowTemp, setTomorrowTemp] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
     async function fetchWeather() {
@@ -55,6 +73,16 @@ function CreateWeatherCard(props) {
           long: props.long
         })
         setCurrentTemp(response.data.currentTemp);
+
+        // Get date now
+        var date = new Date();
+        date.setDate(date.getDate() + 7);
+        console.log('Date: ' + date);
+        
+        
+
+        setTomorrowTemp(response.data.sevenDayForecast[0].temp.day);
+        console.log('Here is the seven day forecast: ' + response.data.sevenDayForecast[0].temp.day);
         return response;
       }
       catch (e) {
@@ -67,15 +95,20 @@ function CreateWeatherCard(props) {
   }, [props.lat, props.long]);
 
   return (
-    <Card className={classes.root}>
+    <Card className={isOpen ? styling.SevenDayForecastShow : styling.root}>
       <CardActions>
-        <Button size="small" className={classes.moreDetails}>More Details</Button>
+        <Button size="small" onClick={() => setIsOpen(!isOpen)} className={styling.moreDetails}>{isOpen ? 'Less Details' : 'More Details'}</Button>
       </CardActions>
       <CardContent>
-        <Typography className={classes.title} gutterBottom>{props.city}</Typography>
-        <Typography className={classes.pos} color="textSecondary"><br></br>Current Temperature<br></br> {parseInt(currentTemp, 10)}°c </Typography>
-        <Typography className={classes.secondTitle} gutterBottom><br></br>Clothing Suggestions</Typography>
-        <Typography className={classes.pos} color="textSecondary"><br></br><br></br><br></br><br></br>Coming Soon!<br></br></Typography>
+        <Typography className={styling.title} gutterBottom>{props.city}</Typography>
+        <Typography className={styling.pos} color="textSecondary"><br></br>Current Temperature<br></br> {Math.round(currentTemp)}°c </Typography>
+
+        <Typography className={styling.SevenDayForecast}>
+          Some Weather Info
+        </Typography>
+
+        <Typography className={styling.secondTitle} gutterBottom><br></br><br></br>Clothing Suggestions</Typography>
+        <Typography className={styling.pos} color="textSecondary"><br></br><br></br><br></br><br></br><br></br>Coming Soon!<br></br></Typography>
       </CardContent>
     </Card>
   );
