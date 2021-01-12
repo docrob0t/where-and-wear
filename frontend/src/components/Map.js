@@ -1,10 +1,11 @@
+import {Route, Switch} from "react-router-dom";
+
 import CreateMenu from './MenuButton.js';
 import CreateWeatherCard from './WeatherCard.js';
 import React from 'react';
-import axios from 'axios';
-import {Switch, Route} from "react-router-dom";
-import WeatherCard from './WeatherCard';
 import UrlError from './UrlError';
+import WeatherCard from './WeatherCard';
+import axios from 'axios';
 
 const axiosConfig = {
   headers: {
