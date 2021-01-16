@@ -4,9 +4,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import svgfile1 from '.././menu-button.svg';
-import svgfile2 from '.././whereandwear-logo.svg';
-import svgfile3 from '.././whereandwear-title.svg';
+import svgfile1 from '.././images/menu-button.svg';
+import svgfile2 from '.././images/whereandwear-logo.svg';
+import svgfile3 from '.././images/whereandwear-title.svg';
 import Popover from '@material-ui/core/Popover';
 
 const menuStyle = makeStyles({
