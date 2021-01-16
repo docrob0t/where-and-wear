@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run dev\" \"cd ../frontend && npm start\"",
-    "dev": "npx nodemon app.js"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npx nodemon app.js",
+    "client": "cd ../frontend && npm start"
   },
   "author": "",
   "license": "ISC",
