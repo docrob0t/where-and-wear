@@ -9,7 +9,7 @@ import svgfile2 from '.././whereandwear-logo.svg';
 import svgfile3 from '.././whereandwear-title.svg';
 import Popover from '@material-ui/core/Popover';
 
-const buttonStyle = makeStyles({
+const menuStyle = makeStyles({
   buttonStyle: {
     position: 'fixed',
     width: '7%',
@@ -21,11 +21,36 @@ const buttonStyle = makeStyles({
     maxWidth: 100,
     maxHeight: 100,
   },
+  popOverStyle: {
+    opacity: 0.7,
+  },
+  popOverTextStyle: {
+    padding: 20,
+    lineHeight: 1.3,
+  },
+  aboutUsTitle: {
+    textDecorationLine: 'underline',
+  },
+  attribTitle: {
+    textDecorationLine: 'underline',
+  },
+  attrib1: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  attrib2: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  imgStyle: {
+    position: 'absolute',
+    left: '25%',
+  },
 });
 
 // CreateMenu() function returns the menu
 function CreateMenu() {
-    const classes = buttonStyle();
+    const classes = menuStyle();
     
     // Using hooks to handle states of components
     const [menu, setMenu] = React.useState(null);
@@ -45,11 +70,11 @@ function CreateMenu() {
 
           {/* Menu and menu items */}
           <Menu className={classes.menuStyle} anchorEl={menu} open={Boolean(menu)} onClose={handleMenuClose}>
-            <MenuItem><Link to='/'>Home</Link></MenuItem>
-            <MenuItem onClick={handlePopUpClick}>About Us</MenuItem>
+            <MenuItem><Link to='/' style={{textDecoration:'none',color:'black'}}>Home</Link></MenuItem>
+            <MenuItem onClick={handlePopUpClick} style={{color:'black'}}>About Us</MenuItem>
             <MenuItem onClick={handleMenuClose}> <img src={svgfile2} height='50%' width='50%' alt='Where & Wear Logo'/> </MenuItem>
           
-            {/* 'About Us' popover to open on menu item click */}
+          {/* Popover to open on menu item click 'About Us' */}
           <Popover
             className={classes.popOverStyle}
             open={Boolean(popUp)}
@@ -57,7 +82,7 @@ function CreateMenu() {
             onClose={handlePopUpClose}
             anchorReference='anchorPosition'
             anchorPosition={{ 
-              top: '350', 
+              top: '375', 
               left: '800',
             }}
             anchorOrigin={{
@@ -82,10 +107,10 @@ function CreateMenu() {
             </p>
             <p>
               <h3 className={classes.attribTitle}>Attributions:</h3>
-              <p className={classes.attrib1}>Climacell</p>
-              <p className={classes.attrib2}>FlatIcon</p>
+              <p className={classes.attrib1}>FlatIcon</p>
                 <li>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></li>
                 <li>Icons made by <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></li>
+              <p className={classes.attrib2}>Climacell</p>
             </p>
           </div>
           </Popover> 
