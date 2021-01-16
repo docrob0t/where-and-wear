@@ -1,4 +1,22 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Running locally for the first time
+```bash
+# Clone this repo
+git clone https://cfl9@bitbucket.org/whereandwear/whereandwear.git
+cd whereandwear
+
+# Go inside front-end directory
+cd frontend
+# Install front-end dependencies
+npm install
+
+# Go inside back-end directory
+cd ../backend
+# Install back-end dependencies
+npm install
+
+# Run the fullstack application for development
+npm run dev
+```
 
 ## Available Scripts
 
