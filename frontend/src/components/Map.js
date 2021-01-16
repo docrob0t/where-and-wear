@@ -75,6 +75,7 @@ class Map extends React.Component {
 
   render() {
     return <React.Fragment>
+      {/* Implementing React routing switch and route paths */}
       <Switch>
         <Route path="/" exact component={Map, WeatherCard} />
         <Route component={UrlError}/>
