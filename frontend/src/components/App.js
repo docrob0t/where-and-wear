@@ -1,5 +1,4 @@
 import React from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { Route, Switch } from "react-router-dom";
 import Map from "./Map";
 import { CssBaseline } from "@material-ui/core";
