@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import Express from 'express';
+import express from 'express';
 import dotenv from "dotenv";
 
 // Read from .env file and set API key constants
@@ -8,10 +8,11 @@ const OPENWEATHERMAP_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
 const MAPBOX_API_KEY = process.env.MAPBOX_API_KEY;
 
 // Setup
-const app = Express();
+const app = express();
 const port = 9000;
-app.use(Express.json());
-app.use(Express.urlencoded({ extended: true }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -45,7 +46,7 @@ app.post("/locationfromcoords", (req, res) => {
     const requestURL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + req.body.long + ',' + req.body.lat + '.json?access_token=' + MAPBOX_API_KEY;
     Axios.get(requestURL)
         .then(function (response) {
-            // handle success 
+            // handle success
             // TODO: Remove logging when no longer required
             console.log('Request lat/long: ' + req.body.lat, req.body.long);
             console.log('Response city is: ' + response.data.features[0].context[1].text);

@@ -58,8 +58,8 @@ const cardStyles = makeStyles({
   },
 });
 
-// CreateWeatherCard() function returns a weather card overlay
-function CreateWeatherCard(props) {
+// WeatherCard() function returns a weather card overlay
+function WeatherCard(props) {
   const styling = cardStyles();
   const [currentTemp, setCurrentTemp] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -103,4 +103,4 @@ function CreateWeatherCard(props) {
   );
 }
 
-export default CreateWeatherCard;
+export default WeatherCard;

@@ -48,8 +48,8 @@ const menuStyle = makeStyles({
   },
 });
 
-// CreateMenu() function returns the menu
-function CreateMenu() {
+// MenuButton() function returns the menu
+function MenuButton() {
     const classes = menuStyle();
     
     // Using hooks to handle states of components
@@ -119,4 +119,4 @@ function CreateMenu() {
       );
   }
 
-  export default CreateMenu;
+export default MenuButton;
