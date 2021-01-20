@@ -25,7 +25,7 @@ function Map() {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted") {
+        if (result.state === "granted" || result.state === "prompt") {
           navigator.geolocation.getCurrentPosition(
             getCoordinates,
             handleLocationError
@@ -36,26 +36,27 @@ function Map() {
       });
     } else {
       alert("Geolocation is not supported by this browser.");
+      // Use IP approximation
     }
+  }, []);
 
-    function getCoordinates(position) {
-      const { latitude, longitude } = position.coords;
-      setStartingPoint({ latitude, longitude });
+  function getCoordinates(position) {
+    const { latitude, longitude } = position.coords;
+    setStartingPoint({ latitude, longitude });
 
-      axios
-        .post("/locationfromcoords/", {
-          lat: latitude,
-          long: longitude,
-        })
-        .then((response) =>
-          setStartingPoint({ ...startingPoint, city: response.data.location })
-        );
+    axios
+      .post("/locationfromcoords/", {
+        lat: latitude,
+        long: longitude,
+      })
+      .then((response) =>
+        setStartingPoint({ ...startingPoint, city: response.data.location })
+      );
 
-      // TODO: remove when no longer required
-      console.log("User Lat = " + position.coords.latitude);
-      console.log("User Long = " + position.coords.longitude);
-    }
-  }, [startingPoint]);
+    // TODO: remove when no longer required
+    console.log("User Lat = " + position.coords.latitude);
+    console.log("User Long = " + position.coords.longitude);
+  }
 
   // TODO: decide how we want to handle these error cases
   function handleLocationError(error) {
