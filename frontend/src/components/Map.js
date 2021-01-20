@@ -24,7 +24,7 @@ function Map() {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted") {
+        if (result.state === "granted" || result.state === "prompt") {
           navigator.geolocation.getCurrentPosition(
             getCoordinates,
             handleLocationError
@@ -35,6 +35,7 @@ function Map() {
       });
     } else {
       alert("Geolocation is not supported by this browser.");
+      // Use IP approximation
     }
 
     function getCoordinates(position) {
