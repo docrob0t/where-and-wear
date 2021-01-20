@@ -2,12 +2,12 @@ import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Popover from '@material-ui/core/Popover';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import svgfile1 from '.././images/menu-button.svg';
 import svgfile2 from '.././images/whereandwear-logo.svg';
 import svgfile3 from '.././images/whereandwear-title.svg';
-import Popover from '@material-ui/core/Popover';
 
 const menuStyle = makeStyles({
   buttonStyle: {
@@ -22,7 +22,7 @@ const menuStyle = makeStyles({
     maxHeight: 100,
   },
   popOverStyle: {
-    opacity: 0.7,
+    opacity: 0.85,
   },
   popOverTextStyle: {
     padding: 20,

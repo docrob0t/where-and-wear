@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactMapGL from "react-map-gl";
+
 import MenuButton from "./MenuButton";
+import ReactMapGL from "react-map-gl";
 import WeatherCard from "./WeatherCard";
 import axios from "axios";
 
