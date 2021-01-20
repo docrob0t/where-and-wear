@@ -54,7 +54,7 @@ function Map() {
       console.log("User Lat = " + position.coords.latitude);
       console.log("User Long = " + position.coords.longitude);
     }
-  }, [startingPoint]);
+  });
 
   // TODO: decide how we want to handle these error cases
   function handleLocationError(error) {
