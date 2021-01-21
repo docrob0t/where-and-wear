@@ -75,16 +75,17 @@ const cardStyles = makeStyles({
     position: 'absolute',
   },
   SevenDayForecastDate: {
-    marginLeft: 375,
-    wordSpacing: 35,
+    marginLeft: 380,
+    wordSpacing: 37,
+    fontWeight: 'bold',
   },
   SevenDayForecastTemp: {
-    marginLeft: 360,
-    wordSpacing: 30,
+    marginLeft: 390,
+    wordSpacing: 40,
   },
   SevenDayForecastIcon: {
     marginLeft: 360,
-    wordSpacing: 10,
+    wordSpacing: 12,
   },
   rootExpanded: {
     minWidth: 1000,
@@ -247,13 +248,13 @@ function WeatherCard(props) {
         </Typography>
 
         <Typography className={styling.SevenDayForecastTemp}>
-          {forecast[0].Temperature}°c &nbsp;
-          {forecast[1].Temperature}°c &nbsp;
-          {forecast[2].Temperature}°c &nbsp;
-          {forecast[3].Temperature}°c &nbsp;
-          {forecast[4].Temperature}°c &nbsp;
-          {forecast[5].Temperature}°c &nbsp;
-          {forecast[6].Temperature}°c &nbsp;
+          {Math.round(forecast[0].Temperature)}°c &nbsp;
+          {Math.round(forecast[1].Temperature)}°c &nbsp;
+          {Math.round(forecast[2].Temperature)}°c &nbsp;
+          {Math.round(forecast[3].Temperature)}°c &nbsp;
+          {Math.round(forecast[4].Temperature)}°c &nbsp;
+          {Math.round(forecast[5].Temperature)}°c &nbsp;
+          {Math.round(forecast[6].Temperature)}°c &nbsp;
         </Typography>
 
         <Typography className={styling.ThirdTitle} gutterBottom>
