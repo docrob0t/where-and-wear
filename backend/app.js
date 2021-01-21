@@ -1,11 +1,13 @@
 import Axios from 'axios';
-import express from 'express';
 import dotenv from "dotenv";
+import express from 'express';
 
 // Read from .env file and set API key constants
 dotenv.config();
 const OPENWEATHERMAP_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
 const MAPBOX_API_KEY = process.env.MAPBOX_API_KEY;
+const CLIMACELL_API_KEY = process.env.CLIMACELL_API_KEY;
+
 
 // Setup
 const app = express();
@@ -25,19 +27,24 @@ app.listen(port, () => console.log("Listening on port: " + port));
 
 // Return the current temperature and a 7 day forecast for a given set of lat/long co-ordinates
 app.post("/weatheratcoords", (req, res) => {
-    const requestURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + req.body.lat + '&lon=' + req.body.long + '&units=metric&exclude=hourly,minutely&appid=' + OPENWEATHERMAP_API_KEY;
+    // const requestURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + req.body.lat + '&lon=' + req.body.long + '&units=metric&exclude=hourly,minutely&appid=' + OPENWEATHERMAP_API_KEY;
+    // const requestURL = 'https://data.climacell.co/v4/timelines?location=' + req.body.lat + '%2C' + req.body.long + '&fields=temperature&fields=weatherCode&timesteps=1d&units=metric&apikey=' + CLIMACELL_API_KEY;
+    const requestURL = "https://data.climacell.co/v4/timelines?location=50.8586945%2C0.5598255&fields=temperature&fields=weatherCode&timesteps=1d&units=metric&apikey=sxYnAcSnTo09lDBvHEDbuVeDGnUPDoNr"
+
+    console.log('Weather request url: ' + requestURL);
+
     Axios.get(requestURL)
         .then(function (response) {
             // handle success - return current temp and 7 day forecast data
-            console.log('Request lat/long: ' + req.body.lat, req.body.long);
-            console.log('Response temp is: ' + response.data.current.temp);
-            res.json({ currentTemp: response.data.current.temp, sevenDayForecast: response.data.daily });
+            // console.log('Response temp is: ' + response.data.current.temp);
+            console.log('Response is: ' + response.data.data.timelines[0].intervals[0].values.temperature);
+            res.json({ timelines: response.data.data.timelines });
         })
         .catch(function (error) {
             // TODO: Handle error
-            console.log('temp error');
+            console.log('############# ERROR !  ###############');
             console.log(error);
-
+            console.log('############# END !  ###############');
         });
 });
 
