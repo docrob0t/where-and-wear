@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL from "react-map-gl";
 import MenuButton from "./MenuButton";
 import WeatherCard from "./WeatherCard";
+import Input from "./Input";
 import axios from "axios";
 
 // Set your mapbox token here
@@ -95,6 +96,7 @@ function Map() {
         lat={startingPoint.latitude}
         long={startingPoint.longitude}
       />
+      <Input/>
     </ReactMapGL>
   );
 }
