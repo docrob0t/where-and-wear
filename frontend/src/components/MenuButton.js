@@ -2,12 +2,13 @@ import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Popover from '@material-ui/core/Popover';
 import React from 'react';
+import climacellAttribution from '../images/climacell_attribution.svg'
 import { makeStyles } from '@material-ui/core/styles';
 import svgfile1 from '.././images/menu-button.svg';
 import svgfile2 from '.././images/whereandwear-logo.svg';
 import svgfile3 from '.././images/whereandwear-title.svg';
-import Popover from '@material-ui/core/Popover';
 
 const menuStyle = makeStyles({
   buttonStyle: {
@@ -22,7 +23,7 @@ const menuStyle = makeStyles({
     maxHeight: 100,
   },
   popOverStyle: {
-    opacity: 0.7,
+    opacity: 0.9,
   },
   popOverTextStyle: {
     padding: 20,
@@ -82,8 +83,8 @@ function MenuButton() {
             onClose={handlePopUpClose}
             anchorReference='anchorPosition'
             anchorPosition={{ 
-              top: '375', 
-              left: '800',
+              top: 195, 
+              left: 1050,
             }}
             anchorOrigin={{
               vertical: 'center',
@@ -101,17 +102,13 @@ function MenuButton() {
           </div>
           <div className={classes.popOverTextStyle}>
             <br></br>
-            <p>
               <h2 className={classes.aboutUsTitle}>About Us</h2>
               Use our application to find the weather at a destination and see clothing recommendations.
-            </p>
-            <p>
               <h3 className={classes.attribTitle}>Attributions:</h3>
               <p className={classes.attrib1}>FlatIcon</p>
                 <li>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></li>
                 <li>Icons made by <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">Good Ware</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></li>
-              <p className={classes.attrib2}>Climacell</p>
-            </p>
+              <p className={classes.attrib2}><img src={climacellAttribution} alt="Climacell Attribution"></img></p>
           </div>
           </Popover> 
           </Menu>
