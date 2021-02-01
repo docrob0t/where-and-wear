@@ -131,17 +131,13 @@ function populateForecastArray(params) {
     // Translates to an array ["Saturday", "June 9", "2007"]
     var splitConvertedDate = convertedDate.split(",");
 
-    // Translates to 
+    // Translates to an array [" ", "June", "9"]
     var splitConvertedDateFurther = splitConvertedDate[1].split(" ");
-
-console.log(splitConvertedDateFurther)
 
     var dateSuffix = findDateSuffix(splitConvertedDateFurther[2]);
 
-    console.log(dateSuffix);
-
+    // Format date in the style of "Saturday 9th"
     var finalDate = splitConvertedDate[0] + ',' + splitConvertedDateFurther[2] + dateSuffix;
-
     var thisTemperature = forecasts.values.temperature;
     var thisWeatherCode = forecasts.values.weatherCode;
 
@@ -291,7 +287,6 @@ function WeatherCard(props) {
           Coming Soon!
         </Typography>
       </CardContent>
-
     </Card>
   );
 }

@@ -53,7 +53,6 @@ app.post("/weatheratcoords", (req, res) => {
 // Gets the city name from a given set of lat/long co-ordinates
 app.post("/locationfromcoords", (req, res) => {
     const requestURL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + req.body.long + ',' + req.body.lat + '.json?access_token=' + MAPBOX_API_KEY;
-    console.log(requestURL)
     Axios.get(requestURL)
         .then(function (response) {
             // handle success
