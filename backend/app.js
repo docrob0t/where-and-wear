@@ -43,8 +43,6 @@ app.post("/weatheratcoords", (req, res) => {
 
   Axios.get(url, { params: options })
     .then(function (response) {
-      console.log("~~~~~~~response~~~~~~~~~~");
-      console.log(response);
       res.json({ timelines: response.data.data.timelines });
     })
     .catch(function (error) {
@@ -55,6 +53,7 @@ app.post("/weatheratcoords", (req, res) => {
 // Gets the city name from a given set of lat/long co-ordinates
 app.post("/locationfromcoords", (req, res) => {
     const requestURL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + req.body.long + ',' + req.body.lat + '.json?access_token=' + MAPBOX_API_KEY;
+    console.log(requestURL)
     Axios.get(requestURL)
         .then(function (response) {
             // handle success
@@ -64,7 +63,7 @@ app.post("/locationfromcoords", (req, res) => {
 
             // The mapbox API response for a reverse geocoding lookup is a bit convoluted
             // This seems to reference the city, but requires further testing to confirm 100%
-            res.json({ location: response.data.features[0].context[1].text });
+            res.json({ location: response.data.features[0].context[2].text });
         })
         .catch(function (error) {
             // TODO: Handle error

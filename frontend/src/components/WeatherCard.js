@@ -66,7 +66,7 @@ const cardStyles = makeStyles({
     position: 'absolute',
   },
   CurrentTemperature: {
-    top: '25%',
+    top: '28%',
     position: 'absolute',
   },
   ClothingSuggestions: {
@@ -75,11 +75,13 @@ const cardStyles = makeStyles({
     position: 'absolute',
   },
   SevenDayForecastDate: {
-    marginLeft: 380,
-    wordSpacing: 37,
-    fontWeight: 'bold',
+    fontFamily: 'Calibri',
+    marginTop: 40,
+    marginLeft: 360,
+    wordSpacing: 12,
   },
   SevenDayForecastTemp: {
+    fontFamily: 'Calibri',
     marginLeft: 390,
     wordSpacing: 40,
   },
@@ -88,7 +90,7 @@ const cardStyles = makeStyles({
     wordSpacing: 12,
   },
   rootExpanded: {
-    minWidth: 1000,
+    minWidth: 1175,
     minHeight: 350,
     width: '60%',
     height: '25%',
@@ -110,16 +112,40 @@ let forecast = [
   { Date: '', Temperature: 0, WeatherCode: 0 },
 ]
 
+function findDateSuffix(d) {
+  switch (d % 10) {
+    case 1:  return "st";
+    case 2:  return "nd";
+    case 3:  return "rd";
+    default: return "th";
+  }
+}
+
 function populateForecastArray(params) {
   var i = 0;
   params.slice(1, 8).forEach(function (forecasts) {
-    var date = new Date(forecasts.startTime);
+    var dateFormat = require("dateformat");
+    // Date represented as 'Saturday, June 9, 2007'
+    var convertedDate = dateFormat(forecasts.startTime, "fullDate");
 
-    var thisDate = date.getDate() + '/' + (date.getMonth() + 1);
+    // Translates to an array ["Saturday", "June 9", "2007"]
+    var splitConvertedDate = convertedDate.split(",");
+
+    // Translates to 
+    var splitConvertedDateFurther = splitConvertedDate[1].split(" ");
+
+console.log(splitConvertedDateFurther)
+
+    var dateSuffix = findDateSuffix(splitConvertedDateFurther[2]);
+
+    console.log(dateSuffix);
+
+    var finalDate = splitConvertedDate[0] + ',' + splitConvertedDateFurther[2] + dateSuffix;
+
     var thisTemperature = forecasts.values.temperature;
     var thisWeatherCode = forecasts.values.weatherCode;
 
-    forecast[i].Date = thisDate;
+    forecast[i].Date = finalDate;
     forecast[i].Temperature = thisTemperature;
     forecast[i].WeatherCode = thisWeatherCode;
     i++;
@@ -219,7 +245,7 @@ function WeatherCard(props) {
         </Typography>
 
         <Typography className={styling.SecondTitle} color="textSecondary">
-          Current Temperature
+          Today's Forecast
         </Typography>
 
         <Typography className={styling.CurrentTemperature}>
