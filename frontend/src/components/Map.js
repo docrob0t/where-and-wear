@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import Input from "./Input";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
 import WeatherCard from "./WeatherCard";
-import Input from "./Input";
 import axios from "axios";
 
 // Set your mapbox token here

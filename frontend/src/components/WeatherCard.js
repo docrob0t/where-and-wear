@@ -162,11 +162,14 @@ function populateForecastArray(params) {
 }
 
 function getClothingSuggestionsFromWeatherCode(code, temperature) {
+  console.log('In suggesitons')
   try {
     const response = axios.post('/getclothingsuggestions/', {
       weatherCode: code,
       CurrentTemperature: temperature,
     })
+    console.log('Response is' + response.body)
+
     var firstSuggestion = response.suggestionOne;
     var secondSuggestion = response.suggestionTwo;
     var thirdSuggestion = response.suggestionThree;
@@ -175,6 +178,7 @@ function getClothingSuggestionsFromWeatherCode(code, temperature) {
     // TODO: Handle error properly
     console.log('Caught error: ', e);
   }
+
 
   var imageOne;
   var imageTwo;
@@ -234,7 +238,7 @@ function getClothingSuggestionsFromWeatherCode(code, temperature) {
       imageThree = <img src={boots_rain} width='80' height='80' alt='Rain Boots Icon'></img>
   }
 
-  return imageOne, imageTwo, imageThree;
+  return [imageOne, imageTwo, imageThree];
 }
 
 function getIconFromWeatherCode(code) {
@@ -300,30 +304,56 @@ function WeatherCard(props) {
   const [clothingSuggestionTwo, setClothingSuggestionTwo] = React.useState([]);
   const [clothingSuggestionThree, setClothingSuggestionThree] = React.useState([]);
 
-
   React.useEffect(() => {
-    async function fetchWeather() {
+    async function getLocation() {
       try {
         const response = await axios.post('/weatheratcoords/', {
           lat: props.lat,
           long: props.long
         })
-        setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
-        setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode);
-        populateForecastArray(response.data.timelines[0].intervals);      
         return response;
       }
       catch (e) {
         // TODO: Handle error properly
         console.log('Caught error: ', e);
       }
-    };
+    }
 
-    await fetchWeather();
-    var a, b, c = getClothingSuggestionsFromWeatherCode(currentWeatherCode, currentTemp);
-        setClothingSuggestionOne(a);
-        setClothingSuggestionTwo(b);
-        setClothingSuggestionThree(c);
+    getLocation().then(response => {
+      setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
+      setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode)
+      populateForecastArray(response.data.timelines[0].intervals);
+    })
+
+
+    // async function fetchWeather() {
+    //   try {
+    //     const response = await axios.post('/weatheratcoords/', {
+    //       lat: props.lat,
+    //       long: props.long
+    //     })
+    //     console.log('Got lat/long')
+    //     setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
+    //     setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode)
+    //     populateForecastArray(response.data.timelines[0].intervals);
+    //     return response;
+    //   }
+    //   catch (e) {
+    //     // TODO: Handle error properly
+    //     console.log('Caught error: ', e);
+    //   }
+    // };
+    
+    // fetchWeather().then(clothingSuggestions => {
+    //   console.log('We are here' + currentWeatherCode + '!');
+      var clothingSuggestions = getClothingSuggestionsFromWeatherCode(currentWeatherCode, currentTemp)
+      setClothingSuggestionOne(clothingSuggestions[0]);
+      setClothingSuggestionTwo(clothingSuggestions[1]);
+      setClothingSuggestionThree(clothingSuggestions[2]);
+    // }).catch(err => {
+    //   console.log(err);
+    // });
+
   }, [props.lat, props.long]);
 
   return (
@@ -382,6 +412,9 @@ function WeatherCard(props) {
 
         <Typography className={styling.ClothingSuggestions} color="textSecondary">
           {clothingSuggestionOne}
+          {clothingSuggestionTwo}
+          {clothingSuggestionThree}
+
         </Typography>
       </CardContent>
     </Card>
