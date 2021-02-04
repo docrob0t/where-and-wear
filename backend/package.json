@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "npx nodemon app.js",
+    "server": "npx nodemon index.js",
     "client": "cd ../frontend && npm start"
   },
   "author": "",
@@ -20,7 +20,9 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "eslint": "^7.18.0",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "nodemon": "^2.0.7"
   }
 }
