@@ -60,13 +60,41 @@ app.post("/locationfromcoords", (req, res) => {
             // console.log('Request lat/long: ' + req.body.lat, req.body.long);
             // console.log('Response city is: ' + response.data.features[0].context[1].text);
 
-            // The mapbox API response for a reverse geocoding lookup is a bit convoluted
-            // This seems to reference the city, but requires further testing to confirm 100%
-            res.json({ location: response.data.features[0].context[2].text });
-        })
-        .catch(function (error) {
-            // TODO: Handle error
-            console.log('location error');
-            console.log(requestURL);
-        });
+      // The mapbox API response for a reverse geocoding lookup is a bit convoluted
+      // This seems to reference the city, but requires further testing to confirm 100%
+      res.json({ location: response.data.features[0].context[2].text });
+    })
+    .catch(function (error) {
+      // TODO: Handle error
+      console.log('location error');
+      console.log(requestURL);
+    });
+});
+
+app.post("/retrieveDuration", (req, res) => {
+  let requestURL =
+    "https://api.mapbox.com/directions/v5/mapbox/" +
+    req.body.profile +
+    "/" +
+    req.body.start.long +
+    "," +
+    req.body.start.lat +
+    ";" +
+    req.body.destination.long +
+    "," +
+    req.body.destination.lat +
+    "?access_token=" +
+    config.MAPBOX_API_KEY;
+
+  axios
+    .get(requestURL)
+    .then((response) => {
+      console.log(response);
+      res.json({ duration: response.data.routes[0].duration });
+    })
+    .catch((error) => {
+      // TODO: Handle error
+      console.log("Cannot retrieve duration");
+      console.log(requestURL);
+    });
 });
