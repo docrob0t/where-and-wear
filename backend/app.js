@@ -45,19 +45,19 @@ app.post("/locationfromcoords", (req, res) => {
     req.body.long +
     "," +
     req.body.lat +
-    ".json?access_token=" +
-    config.MAPBOX_API_KEY;
+    ".json";
+  const params = {
+    types: "place",
+    access_token: config.MAPBOX_API_KEY,
+  };
+
   axios
-    .get(requestURL)
+    .get(requestURL, { params })
     .then(function (response) {
       // handle success
       // TODO: Remove logging when no longer required
-      // console.log('Request lat/long: ' + req.body.lat, req.body.long);
-      // console.log('Response city is: ' + response.data.features[0].context[1].text);
-
-      // The mapbox API response for a reverse geocoding lookup is a bit convoluted
-      // This seems to reference the city, but requires further testing to confirm 100%
-      res.json({ location: response.data.features[0].context[2].text });
+      console.log(response.data);
+      res.json({ location: response.data.features[0].text });
     })
     .catch(function (error) {
       // TODO: Handle error
