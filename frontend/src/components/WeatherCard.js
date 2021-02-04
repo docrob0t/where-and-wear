@@ -34,12 +34,12 @@ import tstorm from '../images/weather_icons/tstorm.svg'
 const cardStyles = makeStyles({
   root: {
     minWidth: 375,
-    minHeight: 350,
+    minHeight: 300,
     width: '15%',
     height: '25%',
     margin: 35,
     position: 'absolute',
-    bottom: 50,
+    bottom: 5,
     borderRadius: 25,
     transition: '0.5s ease-in-out',
   },
@@ -96,7 +96,7 @@ const cardStyles = makeStyles({
     height: '25%',
     margin: 35,
     position: 'absolute',
-    bottom: 50,
+    bottom: 5,
     borderRadius: 25,
     transition: '0.5s ease-in-out',
   },
