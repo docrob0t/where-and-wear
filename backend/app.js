@@ -13,9 +13,8 @@ app.use(requestLogger);
 
 // Return the current temperature and a 7 day forecast for a given set of lat/long co-ordinates
 app.post("/weatheratcoords", (req, res) => {
-  let url = "https://data.climacell.co/v4/timelines";
-
-  let options = {
+  const url = "https://data.climacell.co/v4/timelines";
+  const params = {
     location: req.body.lat + "," + req.body.long,
     fields: [
       "temperature",
@@ -29,7 +28,7 @@ app.post("/weatheratcoords", (req, res) => {
   };
 
   axios
-    .get(url, { params: options })
+    .get(url, { params })
     .then(function (response) {
       res.json({ timelines: response.data.data.timelines });
     })
@@ -67,7 +66,7 @@ app.post("/locationfromcoords", (req, res) => {
 });
 
 app.post("/retrieveDuration", (req, res) => {
-  let requestURL =
+  const url =
     "https://api.mapbox.com/directions/v5/mapbox/" +
     req.body.profile +
     "/" +
@@ -77,20 +76,21 @@ app.post("/retrieveDuration", (req, res) => {
     ";" +
     req.body.destination.long +
     "," +
-    req.body.destination.lat +
-    "?access_token=" +
-    config.MAPBOX_API_KEY;
+    req.body.destination.lat;
+  const params = {
+    access_token: config.MAPBOX_API_KEY,
+  };
 
   axios
-    .get(requestURL)
+    .get(url, { params })
     .then((response) => {
-      console.log(response);
+      console.log(response.data);
       res.json({ duration: response.data.routes[0].duration });
     })
     .catch((error) => {
       // TODO: Handle error
       console.log("Cannot retrieve duration");
-      console.log(requestURL);
+      console.log(url);
     });
 });
 
