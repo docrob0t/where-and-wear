@@ -2,46 +2,34 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import GetClothingSuggestions from './ClothingSuggestions.js';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import axios from '../axios';
-import beanie from '../images/clothing_suggestions/beanie.svg'
-import boots_rain from '../images/clothing_suggestions/boots_rain.svg'
-import boots_snow from '../images/clothing_suggestions/boots_snow.svg'
-import cap from '../images/clothing_suggestions/cap.svg'
-import clear_day from '../images/weather_icons/clear_day.svg'
-import cloudy from '../images/weather_icons/cloudy.svg'
-import coat from '../images/clothing_suggestions/coat.svg'
-import drizzle from '../images/weather_icons/drizzle.svg'
-import flurries from '../images/weather_icons/flurries.svg'
-import fog from '../images/weather_icons/fog.svg'
-import fog_light from '../images/weather_icons/fog_light.svg'
-import freezing_drizzle from '../images/weather_icons/freezing_drizzle.svg'
-import freezing_rain from '../images/weather_icons/freezing_rain.svg'
-import freezing_rain_heavy from '../images/weather_icons/freezing_rain_heavy.svg'
-import freezing_rain_light from '../images/weather_icons/freezing_rain_light.svg'
-import gloves from '../images/clothing_suggestions/gloves.svg'
-import hoodie from '../images/clothing_suggestions/hoodie.svg'
-import ice_pellets from '../images/weather_icons/ice_pellets.svg'
-import ice_pellets_heavy from '../images/weather_icons/ice_pellets_heavy.svg'
-import ice_pellets_light from '../images/weather_icons/ice_pellets_light.svg'
-import jeans from '../images/clothing_suggestions/jeans.svg'
-import long_sleeve_shirt from '../images/clothing_suggestions/long_sleeve_shirt.svg'
+import clear_day from '../images/weather_icons/clear_day.svg';
+import cloudy from '../images/weather_icons/cloudy.svg';
+import drizzle from '../images/weather_icons/drizzle.svg';
+import flurries from '../images/weather_icons/flurries.svg';
+import fog from '../images/weather_icons/fog.svg';
+import fog_light from '../images/weather_icons/fog_light.svg';
+import freezing_drizzle from '../images/weather_icons/freezing_drizzle.svg';
+import freezing_rain from '../images/weather_icons/freezing_rain.svg';
+import freezing_rain_heavy from '../images/weather_icons/freezing_rain_heavy.svg';
+import freezing_rain_light from '../images/weather_icons/freezing_rain_light.svg';
+import ice_pellets from '../images/weather_icons/ice_pellets.svg';
+import ice_pellets_heavy from '../images/weather_icons/ice_pellets_heavy.svg';
+import ice_pellets_light from '../images/weather_icons/ice_pellets_light.svg';
 import { makeStyles } from '@material-ui/core/styles';
-import mostly_clear_day from '../images/weather_icons/mostly_clear_day.svg'
-import mostly_cloudy from '../images/weather_icons/mostly_cloudy.svg'
-import partly_cloudy_day from '../images/weather_icons/partly_cloudy_day.svg'
-import rain from '../images/weather_icons/rain.svg'
-import rain_heavy from '../images/weather_icons/rain_heavy.svg'
-import rain_light from '../images/weather_icons/rain_light.svg'
-import short_sleeve_shirt from '../images/clothing_suggestions/short_sleeve_shirt.svg'
-import shorts from '../images/clothing_suggestions/shorts.svg'
-import snow from '../images/weather_icons/snow.svg'
-import snow_heavy from '../images/weather_icons/snow_heavy.svg'
-import snow_light from '../images/weather_icons/snow_light.svg'
-import sunglasses from '../images/clothing_suggestions/sunglasses.svg'
-import tstorm from '../images/weather_icons/tstorm.svg'
-import umbrella from '../images/clothing_suggestions/umbrella.svg'
+import mostly_clear_day from '../images/weather_icons/mostly_clear_day.svg';
+import mostly_cloudy from '../images/weather_icons/mostly_cloudy.svg';
+import partly_cloudy_day from '../images/weather_icons/partly_cloudy_day.svg';
+import rain from '../images/weather_icons/rain.svg';
+import rain_heavy from '../images/weather_icons/rain_heavy.svg';
+import rain_light from '../images/weather_icons/rain_light.svg';
+import snow from '../images/weather_icons/snow.svg';
+import snow_heavy from '../images/weather_icons/snow_heavy.svg';
+import snow_light from '../images/weather_icons/snow_light.svg';
+import tstorm from '../images/weather_icons/tstorm.svg';
 
 // Card styling constants
 const cardStyles = makeStyles({
@@ -64,6 +52,7 @@ const cardStyles = makeStyles({
     fontWeight: 600,
   },
   Title: {
+    paddingRight: 100,
     fontSize: 20,
     top: '5%',
     position: 'absolute',
@@ -84,14 +73,15 @@ const cardStyles = makeStyles({
   },
   ClothingSuggestions: {
     fontSize: 16,
-    top: '75%',
+    paddingRight: 10,
+    top: '70%',
     position: 'absolute',
   },
   SevenDayForecastDate: {
+    position: 'relative',
     fontFamily: 'Calibri',
-    marginTop: 40,
-    marginLeft: 360,
-    wordSpacing: 12,
+    marginTop: 0,
+    marginLeft: 25,
   },
   SevenDayForecastTemp: {
     fontFamily: 'Calibri',
@@ -150,7 +140,7 @@ function populateForecastArray(params) {
     var dateSuffix = findDateSuffix(splitConvertedDateFurther[2]);
 
     // Format date in the style of "Saturday 9th"
-    var finalDate = splitConvertedDate[0] + ',' + splitConvertedDateFurther[2] + dateSuffix;
+    var finalDate = splitConvertedDate[0] + ' ' + splitConvertedDateFurther[2] + dateSuffix;
     var thisTemperature = forecasts.values.temperature;
     var thisWeatherCode = forecasts.values.weatherCode;
 
@@ -159,86 +149,6 @@ function populateForecastArray(params) {
     forecast[i].WeatherCode = thisWeatherCode;
     i++;
   });
-}
-
-function getClothingSuggestionsFromWeatherCode(code, temperature) {
-  console.log('In suggesitons')
-  try {
-    const response = axios.post('/getclothingsuggestions/', {
-      weatherCode: code,
-      CurrentTemperature: temperature,
-    })
-    console.log('Response is' + response.body)
-
-    var firstSuggestion = response.suggestionOne;
-    var secondSuggestion = response.suggestionTwo;
-    var thirdSuggestion = response.suggestionThree;
-  }
-  catch (e) {
-    // TODO: Handle error properly
-    console.log('Caught error: ', e);
-  }
-
-
-  var imageOne;
-  var imageTwo;
-  var imageThree;
-
-  switch (firstSuggestion) {
-    case "umbrella":
-      imageOne = <img src={umbrella} width='80' height='80' alt='Umbrella Icon'></img>
-      break;
-    case "beanie":
-      imageOne = <img src={beanie} width='80' height='80' alt='Beanie Icon'></img>
-      break;
-    case "hoodie":
-      imageOne = <img src={hoodie} width='80' height='80' alt='Hoodie Icon'></img>
-      break;
-    case "cap":
-      imageOne = <img src={cap} width='80' height='80' alt='Cap Icon'></img>
-      break;
-    case "sunglasses":
-      imageOne = <img src={sunglasses} width='80' height='80' alt='Sunglasses Icon'></img>
-      break;
-    default:
-      imageOne = <img src={umbrella} width='80' height='80' alt='Umbrella Icon'></img>
-  }
-
-  switch (secondSuggestion) {
-    case "coat":
-      imageTwo = <img src={coat} width='80' height='80' alt='Coat Icon'></img>
-      break;
-    case "gloves":
-      imageTwo = <img src={gloves} width='80' height='80' alt='Gloves Icon'></img>
-      break;
-    case "jeans":
-      imageTwo = <img src={jeans} width='80' height='80' alt='Jeans Icon'></img>
-      break;
-    case "shorts":
-      imageTwo = <img src={shorts} width='80' height='80' alt='Shorts Icon'></img>
-      break;
-    default:
-      imageTwo = <img src={coat} width='80' height='80' alt='Coat Icon'></img>
-  }
-
-  switch (thirdSuggestion) {
-    case "boots_rain":
-      imageThree = <img src={boots_rain} width='80' height='80' alt='Rain Boots Icon'></img>
-      break;
-    case "boots_snow":
-      imageThree = <img src={boots_snow} width='80' height='80' alt='Snow Boots Icon'></img>
-      break;
-    case "short_sleeve_shirt":
-      imageThree = <img src={short_sleeve_shirt} width='80' height='80' alt='Short Sleeve Shirt Icon'></img>
-      break;
-    case "long_sleeve_shirt":
-      imageThree = <img src={long_sleeve_shirt} width='80' height='80' alt='Long Sleeve Shirt Icon'></img>
-      break;
-    default:
-      imageThree = <img src={boots_rain} width='80' height='80' alt='Rain Boots Icon'></img>
-  }
-
-  return [imageOne, imageTwo, imageThree];
 }
 
 function getIconFromWeatherCode(code) {
@@ -297,62 +207,43 @@ function getIconFromWeatherCode(code) {
 // WeatherCard() function returns a weather card overlay
 function WeatherCard(props) {
   const styling = cardStyles();
-  const [currentTemp, setCurrentTemp] = React.useState([]);
-  const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [clothingSuggestionOne, setClothingSuggestionOne] = React.useState([]);
   const [clothingSuggestionTwo, setClothingSuggestionTwo] = React.useState([]);
   const [clothingSuggestionThree, setClothingSuggestionThree] = React.useState([]);
+  const [currentTemp, setCurrentTemp] = React.useState([]);
+  const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
 
   React.useEffect(() => {
-    async function getLocation() {
+    async function fetchWeather() {
       try {
         const response = await axios.post('/weatheratcoords/', {
           lat: props.lat,
           long: props.long
         })
+
+        console.log('Got lat/long');
+        console.log('Test current temp is  ' + response.data.timelines[0].intervals[0].values.temperature);
+
+        setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode);
+        setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
+        populateForecastArray(response.data.timelines[0].intervals);
+
+        //TODO: Reference state instead of passing in response data directly. Issue is that state is not updated by the time this function is reached
+        var clothingSuggestions = await GetClothingSuggestions(response.data.timelines[0].intervals[0].values.weatherCode, response.data.timelines[0].intervals[0].values.temperature);
+
+        setClothingSuggestionOne(clothingSuggestions[0]);
+        setClothingSuggestionTwo(clothingSuggestions[1]);
+        setClothingSuggestionThree(clothingSuggestions[2]);
         return response;
       }
       catch (e) {
         // TODO: Handle error properly
         console.log('Caught error: ', e);
       }
-    }
+    };
 
-    getLocation().then(response => {
-      setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
-      setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode)
-      populateForecastArray(response.data.timelines[0].intervals);
-    })
-
-
-    // async function fetchWeather() {
-    //   try {
-    //     const response = await axios.post('/weatheratcoords/', {
-    //       lat: props.lat,
-    //       long: props.long
-    //     })
-    //     console.log('Got lat/long')
-    //     setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
-    //     setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode)
-    //     populateForecastArray(response.data.timelines[0].intervals);
-    //     return response;
-    //   }
-    //   catch (e) {
-    //     // TODO: Handle error properly
-    //     console.log('Caught error: ', e);
-    //   }
-    // };
-    
-    // fetchWeather().then(clothingSuggestions => {
-    //   console.log('We are here' + currentWeatherCode + '!');
-      var clothingSuggestions = getClothingSuggestionsFromWeatherCode(currentWeatherCode, currentTemp)
-      setClothingSuggestionOne(clothingSuggestions[0]);
-      setClothingSuggestionTwo(clothingSuggestions[1]);
-      setClothingSuggestionThree(clothingSuggestions[2]);
-    // }).catch(err => {
-    //   console.log(err);
-    // });
+    fetchWeather();
 
   }, [props.lat, props.long]);
 
@@ -376,15 +267,15 @@ function WeatherCard(props) {
           {Math.round(currentTemp)}°c
         </Typography>
 
-        <Typography className={styling.SevenDayForecastDate}>
-          {forecast[0].Date} &nbsp;
-          {forecast[1].Date} &nbsp;
-          {forecast[2].Date} &nbsp;
-          {forecast[3].Date} &nbsp;
-          {forecast[4].Date} &nbsp;
-          {forecast[5].Date} &nbsp;
-          {forecast[6].Date} &nbsp;
-        </Typography>
+        <div style={{ display: "flex" }}>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[0].Date} &nbsp;</Typography>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[1].Date} &nbsp;</Typography>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[2].Date} &nbsp;</Typography>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[3].Date} &nbsp;</Typography>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[4].Date} &nbsp;</Typography>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[5].Date} &nbsp;</Typography>
+          <Typography className={styling.SevenDayForecastDate}>{forecast[6].Date} &nbsp;</Typography>
+        </div>
 
         <Typography className={styling.SevenDayForecastIcon}>
           {getIconFromWeatherCode(forecast[0].WeatherCode)} &nbsp;
@@ -414,7 +305,6 @@ function WeatherCard(props) {
           {clothingSuggestionOne}
           {clothingSuggestionTwo}
           {clothingSuggestionThree}
-
         </Typography>
       </CardContent>
     </Card>

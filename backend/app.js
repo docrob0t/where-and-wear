@@ -73,36 +73,62 @@ app.post("/locationfromcoords", (req, res) => {
 
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getclothingsuggestions", (req, res) => {
-  console.log('Getting suggestions');
   var weatherCode = req.body.weatherCode;
   var currentTemperature = req.body.currentTemperature;
   console.log(req.body);
-  console.log('Weathr code is: ' + weatherCode);
+  console.log('Weather code is: ' + weatherCode);
   console.log('Current temp is: ' + currentTemperature);
 
   switch (weatherCode) {
     // Rain weather codes
-    case 4201, 4001, 4200, 6201, 6001, 6200, 6000, 4000, 7101, 7000, 7102, 8000:
+    case 4201:
+    case 4001:
+    case 4200:
+    case 6201:
+    case 6001:
+    case 6200:
+    case 6000:
+    case 4000:
+    case 7101:
+    case 7000:
+    case 7102:
+    case 8000:
       res.json({ suggestionOne: "umbrella", suggestionTwo: "coat", suggestionThree: "boots_rain" });
+      break;
     // Snow weather codes
-    case 5101, 5000, 5100, 5001:
+    case 5101:
+    case 5000:
+    case 5100:
+    case 5001:
       res.json({ suggestionOne: "beanie", suggestionTwo: "gloves", suggestionThree: "boots_snow" });
+      break;
     // Fog weather codes
-    case 2100, 2000:
+    case 2100:
+    case 2000:
       res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
+      break;
     // Cloudy weather codes
-    case 1001, 1102, 1101, 1100, 1000:
+    case 1001:
+    case 1102:
+    case 1101:
+    case 1100:
+    case 1000:
       if (currentTemperature > 15) {
         res.json({ suggestionOne: "cap", suggestionTwo: "shorts", suggestionThree: "short_sleeve_shirt" });
+        break;
       } else {
         res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
+        break;
       }
     // Sunny/Clear weather codes
-    case 1100, 1000:
+    case 1100:
+    case 1000:
       if (currentTemperature > 10) {
         res.json({ suggestionOne: "sunglasses", suggestionTwo: "shorts", suggestionThree: "short_sleeve_shirt" });
+        break;
       } else {
         res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
+        break;
       }
   }
 });
