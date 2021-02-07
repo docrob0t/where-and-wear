@@ -97,7 +97,7 @@ function Map() {
         lat={startingPoint.latitude}
         long={startingPoint.longitude}
       />
-      <Input/>
+      <Input />
     </ReactMapGL>
   );
 }
