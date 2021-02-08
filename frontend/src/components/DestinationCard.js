@@ -165,10 +165,8 @@ function OutputCard(props) {
   const styling = cardStyles();
   const [currentTemp, setCurrentTemp] = React.useState([]);
   const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
-  const [startingLocation, setStartingLocation] = React.useState({
-    
-  });
-  const [destinationSaved, setDestinationSaved] = React.useState({});
+  const [startingLocation, setStartingLocation] = React.useState({ });
+  const [destinationLocation, setDestinationLocation] = React.useState({ });
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -191,37 +189,47 @@ function OutputCard(props) {
     fetchWeather();
   }, [props.lat, props.long]);
 
-  // For James to look at 
-  // Testing getting responses for locations, does not work
-  function getTest() {
+//
+  function getStart() {
     console.log('Start loc is: ' + startingLocation);
 
     axios
     .get("/retrieveCoordsFromLocation/", {
       params: {
-        startLocation: startingLocation,
+        search: startingLocation,
       }
     })
     .then((response) =>
-      setStartingLocation({ ...startingLocation, stlcoords: response.data.coordinates})
+      setStartingLocation({ ...startingLocation, startcoords: response.data.coordinates})
     );
-    // console.log("Coordinates = " + stlocation.location);
   };
-  
+
+  function getDestination() {
+    console.log('Destination loc is: ' + destinationLocation);
+
+    axios
+    .get("/retrieveCoordsFromLocation/", {
+      params: {
+        search: destinationLocation,
+      }
+    })
+    .then((response) =>
+      setDestinationLocation({ ...destinationLocation, destcoords: response.data.coordinates})
+    );
+  };
 
   function handleSubmit() {
     var destination = document.getElementById('destination-search').value;
     var startinglocation = document.getElementById('starting-search').value;
     setStartingLocation(startingLocation);
-    //alert('The Destination is ' + destination + ' and the Starting Location is ' + startinglocation);
+    setDestinationLocation(destinationLocation);
     console.log( 'Starting Location :', startinglocation, 'Destination :' , destination);
-    // TODO: Use these variables to find the most relevant coordinates
   }
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <CardActions>
-      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit(); getTest()}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
+      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit(); getStart(); getDestination()}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
 
       <ButtonGroup className={styling.TransportButtons} variant="contained" color="secondary" aria-label="contained primary button group">
         <Button size="small" className={styling.TButton}>Car</Button>
@@ -238,16 +246,18 @@ function OutputCard(props) {
         label="Starting Location" 
         type="search" 
         variant="outlined" 
-        value={startingLocation} onInput={ e=>setStartingLocation(e.target.value)}
+        value={startingLocation}
+        onInput={ e=>setStartingLocation(e.target.value)}
         />
 
         <TextField 
         className={styling.SecondBox} 
-        id="destination-search" 
-        label="Destination" 
+        id="destination-search"  
         type="search" 
-        variant="outlined" 
-        //value={destinationSaved} onInput={ e=>setDestinationSaved(e.target.value)}
+        variant="outlined"
+        label="Destination"
+        value={destinationLocation} 
+        onInput={ e=>setDestinationLocation(e.target.value)}
         />
 
         <Typography className={styling.CurrentTemperature}>

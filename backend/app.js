@@ -97,28 +97,27 @@ app.post("/retrieveDuration", (req, res) => {
 app.get("/retrieveCoordsFromLocation", (req, res) => {
   let requestURL = 
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-    req.query.startLocation +
+    req.query.search +
     ".json?country=GB&autocomplete=true&" + 
     "access_token=" +
     config.MAPBOX_API_KEY;
 
     console.log('In /retrieveCoordsFromLocation');
-    console.log('Request is: '+ req.query.startLocation);
+    console.log('Request is: '+ req.query.search);
     console.log('Request URL is: ' + requestURL);
   
   axios
     .get(requestURL)
     .then((response) => {
       console.log('Response from /retrieveCoordsFromLocation:');
-      // console.log(response.features.geometry.coordinates);
-      console.log(response.data.features[0].geometry.coordinates);
+      console.log(response.data.features[0].geometry.coordinates[1], response.data.features[0].geometry.coordinates[0]);
       console.log('End');
-      res.json({ lat: response.data.features[0].geometry.coordinates[0], long: response.data.features[0].geometry.coordinates[1] });
+      res.json({ lat: response.data.features[0].geometry.coordinates[1], long: response.data.features[0].geometry.coordinates[0] });
       //res.json({ placename: response.data.features[0].place_name.text });
     })
     .catch((error) => {
       // Handle error
-      console.log("Cannot retrieve location");
+      console.log("Cannot retrieve coordinates");
       console.log(error);
     });
 });
