@@ -1,7 +1,7 @@
 import axios from "axios";
-import express from "express";
-import cors from "cors";
 import config from "./utils/config.js";
+import cors from "cors";
+import express from "express";
 import requestLogger from "./utils/middleware.js";
 
 const app = express();
@@ -94,17 +94,22 @@ app.post("/retrieveDuration", (req, res) => {
     });
 });
 
-app.post("/retrieveLocationData", (req, res) => {
+app.get("/retrieveCoordsFromLocation", (req, res) => {
   let requestURL = 
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-    req.body.search +
+    req.query.startLocation +
     ".json?country=GB&autocomplete=true&" + 
     "access_token=" +
-    MAPBOX_API_KEY;
+    config.MAPBOX_API_KEY;
+
+    console.log('In /retrieveCoordsFromLocation');
+    console.log('Request is: '+ req.query.startLocation);
+    console.log('Request URL is: ' + requestURL);
   
-  Axios
+  axios
     .get(requestURL)
     .then((response) => {
+      console.log('Response from /retrieveCoordsFromLocation:');
       console.log(response.data);
       res.json({ coordinates: response.data.geometry[0].coordinates });
       //res.json({ placename: response.data.features[0].place_name.text });

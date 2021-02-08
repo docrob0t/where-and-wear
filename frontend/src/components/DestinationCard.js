@@ -1,11 +1,11 @@
+import { Button, ButtonGroup, TextField } from '@material-ui/core';
+import React, { useState } from 'react';
+
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
-import { TextField, Button, ButtonGroup } from '@material-ui/core';
 import axios from '../axios';
-
 import clear_day from '../images/weather_icons/clear_day.svg'
 import cloudy from '../images/weather_icons/cloudy.svg'
 import drizzle from '../images/weather_icons/drizzle.svg'
@@ -196,10 +196,13 @@ function OutputCard(props) {
   function getTest() {
     const { stlocation } = "London";
     setStartingLocation({ stlocation });
+    console.log('Start loc is: ' + stlocation);
 
     axios
-    .post("/retrieveLocationData/", {
-      search: "stlocation",
+    .get("/retrieveCoordsFromLocation/", {
+      params: {
+        startLocation: stlocation,
+      }
     })
     .then((response) =>
       setStartingLocation({ ...startingLocation, stlcoords: response.data.coordinates})
