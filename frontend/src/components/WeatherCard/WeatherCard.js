@@ -1,7 +1,3 @@
-import React, { useEffect, useState } from "react";
-import axios from "../../axios";
-import WeatherInfo from "../common/WeatherInfo";
-import SevenDayForecast from "./SevenDayForecast";
 import {
   Button,
   Card,
@@ -10,12 +6,19 @@ import {
   Grid,
   makeStyles
 } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+
+import SevenDayForecast from "./SevenDayForecast";
+import WeatherInfo from "../common/WeatherInfo";
+import axios from "../../axios";
 
 // Card styling constants
 const cardStyles = makeStyles({
   root: {
     minWidth: 375,
     minHeight: 300,
+    maxHeight: 400,
+    maxWidth: 1100,
     width: "15%",
     height: "40%",
     margin: 35,
@@ -34,6 +37,8 @@ const cardStyles = makeStyles({
   rootExpanded: {
     minWidth: 1175,
     minHeight: 350,
+    maxHeight: 400,
+    maxWidth: 1100,
     width: "60%",
     height: "40%",
     margin: 35,
