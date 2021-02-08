@@ -5,30 +5,35 @@ import getWeatherIconFrom from "./WeatherIcon";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
-    maxHeight: "3.5rem",
+    maxHeight: "2.375rem",
     [theme.breakpoints.up("sm")]: {
-      maxHeight: "4.7rem",
+      maxHeight: "2.9rem"
     },
     [theme.breakpoints.up("md")]: {
-      maxHeight: "5.35rem",
+      maxHeight: "3.33rem"
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "6rem",
-    },
-  },
+      maxHeight: "3.75rem"
+    }
+  }
 }));
 
-export default function WeatherInfo() {
+export default function WeatherInfo({
+  city,
+  temperature,
+  temperatureApparent,
+  weatherCode
+}) {
   const classes = useStyles();
 
   return (
     <div>
-      <Box className="location" paddingBottom={2}>
-        <Typography variant="h4">
-          <Box fontWeight="fontWeightBold">London</Box>
+      <Box className="location" paddingBottom={1}>
+        <Typography variant="h5">
+          <Box fontWeight="fontWeightBold">{city}</Box>
         </Typography>
         <Typography ariant="subtitle1" component="div" color="textSecondary">
-          Saturday 16:00
+          Current weather
         </Typography>
       </Box>
       <Grid container justify="center" alignItems="flex-end">
@@ -39,8 +44,8 @@ export default function WeatherInfo() {
             alignItems="flex-start"
             wrap="nowrap"
           >
-            <Typography variant="h1" component="div" color="textPrimary">
-              38
+            <Typography variant="h2" component="div" color="textPrimary">
+              {Math.round(temperature)}
             </Typography>
             <Typography variant="h6" component="div" color="textSecondary">
               °C
@@ -52,14 +57,14 @@ export default function WeatherInfo() {
             color="textSecondary"
             align="center"
           >
-            Feels like 25°C
+            Feels like {Math.round(temperatureApparent)} °C
           </Typography>
         </Grid>
         <Grid item xs={6} className="weather">
           <img
             className={classes.cardWeatherIcon}
-            src={getWeatherIconFrom(6201).icon}
-            alt={getWeatherIconFrom(6201).text}
+            src={getWeatherIconFrom(weatherCode).icon}
+            alt={getWeatherIconFrom(weatherCode).text}
           />
           <Typography
             variant="subtitle1"
@@ -67,7 +72,7 @@ export default function WeatherInfo() {
             color="textSecondary"
             align="center"
           >
-            {getWeatherIconFrom(6201).text}
+            {getWeatherIconFrom(weatherCode).text}
           </Typography>
         </Grid>
       </Grid>

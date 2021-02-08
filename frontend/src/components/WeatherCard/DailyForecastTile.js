@@ -5,22 +5,22 @@ import { Box, Typography } from "@material-ui/core";
 import precipitationIcon from "../../images/umbrella.svg";
 
 const useStyles = makeStyles((theme) => ({
-  weatherIcon: {
-    height: "3.5rem",
+  cardWeatherIcon: {
+    maxHeight: "2.375rem",
     [theme.breakpoints.up("sm")]: {
-      height: "4.7rem",
+      maxHeight: "2.9rem"
     },
     [theme.breakpoints.up("md")]: {
-      height: "5.35rem",
+      maxHeight: "3.33rem"
     },
     [theme.breakpoints.up("lg")]: {
-      height: "6rem",
-    },
+      maxHeight: "3.75rem"
+    }
   },
   precipitationIcon: {
     height: "1.5rem",
-    marginRight: "0.5rem",
-  },
+    marginRight: "0.5rem"
+  }
 }));
 
 export default function DailyForecastTile({
@@ -28,7 +28,7 @@ export default function DailyForecastTile({
   tempMax,
   tempMin,
   weatherCode,
-  precipitationProbability,
+  precipitationProbability
 }) {
   const classes = useStyles();
   const dateFormat = require("dateformat");
@@ -56,7 +56,7 @@ export default function DailyForecastTile({
 
       <Box className="weatherIcon" display="flex" justifyContent="center">
         <img
-          className={classes.weatherIcon}
+          className={classes.cardWeatherIcon}
           src={getWeatherIconFrom(weatherCode).icon}
           alt={getWeatherIconFrom(weatherCode).text}
         />
