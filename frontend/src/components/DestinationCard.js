@@ -194,26 +194,25 @@ function OutputCard(props) {
   // For James to look at 
   // Testing getting responses for locations, does not work
   function getTest() {
-    const { stlocation } = "London";
-    setStartingLocation({ stlocation });
-    console.log('Start loc is: ' + stlocation);
+    console.log('Start loc is: ' + startingLocation);
 
     axios
     .get("/retrieveCoordsFromLocation/", {
       params: {
-        startLocation: stlocation,
+        startLocation: startingLocation,
       }
     })
     .then((response) =>
       setStartingLocation({ ...startingLocation, stlcoords: response.data.coordinates})
     );
-    console.log("Coordinates = " + stlocation.location);
+    // console.log("Coordinates = " + stlocation.location);
   };
   
 
   function handleSubmit() {
     var destination = document.getElementById('destination-search').value;
     var startinglocation = document.getElementById('starting-search').value;
+    setStartingLocation(startingLocation);
     //alert('The Destination is ' + destination + ' and the Starting Location is ' + startinglocation);
     console.log( 'Starting Location :', startinglocation, 'Destination :' , destination);
     // TODO: Use these variables to find the most relevant coordinates
@@ -239,7 +238,7 @@ function OutputCard(props) {
         label="Starting Location" 
         type="search" 
         variant="outlined" 
-        //value={startingLocation} onInput={ e=>setStartingLocation(e.target.value)}
+        value={startingLocation} onInput={ e=>setStartingLocation(e.target.value)}
         />
 
         <TextField 

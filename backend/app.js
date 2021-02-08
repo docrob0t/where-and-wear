@@ -110,14 +110,16 @@ app.get("/retrieveCoordsFromLocation", (req, res) => {
     .get(requestURL)
     .then((response) => {
       console.log('Response from /retrieveCoordsFromLocation:');
-      console.log(response.data);
-      res.json({ coordinates: response.data.geometry[0].coordinates });
+      // console.log(response.features.geometry.coordinates);
+      console.log(response.data.features[0].geometry.coordinates);
+      console.log('End');
+      res.json({ lat: response.data.features[0].geometry.coordinates[0], long: response.data.features[0].geometry.coordinates[1] });
       //res.json({ placename: response.data.features[0].place_name.text });
     })
     .catch((error) => {
       // Handle error
       console.log("Cannot retrieve location");
-      console.log(requestURL);
+      console.log(error);
     });
 });
 
