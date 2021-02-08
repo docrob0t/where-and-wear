@@ -94,4 +94,27 @@ app.post("/retrieveDuration", (req, res) => {
     });
 });
 
+app.post("/retrieveLocationData", (req, res) => {
+  let requestURL = 
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+    req.body.search +
+    ".json?country=GB&autocomplete=true&" + 
+    "access_token=" +
+    MAPBOX_API_KEY;
+  
+  Axios
+    .get(requestURL)
+    .then((response) => {
+      console.log(response.data);
+      res.json({ coordinates: response.data.geometry[0].coordinates });
+      //res.json({ placename: response.data.features[0].place_name.text });
+    })
+    .catch((error) => {
+      // Handle error
+      console.log("Cannot retrieve location");
+      console.log(requestURL);
+    });
+});
+
+
 export default app;

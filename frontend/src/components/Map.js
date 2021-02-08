@@ -88,7 +88,7 @@ function Map() {
       height="100vh"
       mapStyle="mapbox://styles/mapbox/streets-v11"
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
-      mapboxApiAccessToken={MAPBOX_TOKEN}
+      mapboxApiAccessToken="pk.eyJ1Ijoiam4zMjMiLCJhIjoiY2trd2xmdzRnMDdodzJybzZzYmNyMmVkZyJ9.BHze212H3hUKnkr7k6ZdEg"
     >
       <MenuButton />
       <WeatherCard

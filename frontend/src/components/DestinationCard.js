@@ -157,7 +157,7 @@ function getIconFromWeatherCode(code) {
 
 function calculateTime() {
   //var date = new Date(null);
-  //date.setSeconds(SECONDS);  ...specify value for SECONDS here
+  //date.setSeconds(SECONDS);  ...specify value for SECONDS here to retrieve from the backend
   //var result = date.toISOString().substr(11, 8);
 }
 
@@ -165,8 +165,10 @@ function OutputCard(props) {
   const styling = cardStyles();
   const [currentTemp, setCurrentTemp] = React.useState([]);
   const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
-  //const [startingLocation, setStartingLocation] = React.useState("");
-  //const [destinationSaved, setDestinationSaved] = React.useState("");
+  const [startingLocation, setStartingLocation] = React.useState({
+    
+  });
+  const [destinationSaved, setDestinationSaved] = React.useState({});
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -189,6 +191,23 @@ function OutputCard(props) {
     fetchWeather();
   }, [props.lat, props.long]);
 
+  // For James to look at 
+  // Testing getting responses for locations, does not work
+  function getTest() {
+    const { stlocation } = "London";
+    setStartingLocation({ stlocation });
+
+    axios
+    .post("/retrieveLocationData/", {
+      search: "stlocation",
+    })
+    .then((response) =>
+      setStartingLocation({ ...startingLocation, stlcoords: response.data.coordinates})
+    );
+    console.log("Coordinates = " + stlocation.location);
+  };
+  
+
   function handleSubmit() {
     var destination = document.getElementById('destination-search').value;
     var startinglocation = document.getElementById('starting-search').value;
@@ -200,7 +219,7 @@ function OutputCard(props) {
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <CardActions>
-      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
+      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit(); getTest()}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
 
       <ButtonGroup className={styling.TransportButtons} variant="contained" color="secondary" aria-label="contained primary button group">
         <Button size="small" className={styling.TButton}>Car</Button>
