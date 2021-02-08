@@ -11,17 +11,43 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
-// Return the current temperature and a 7 day forecast for a given set of lat/long co-ordinates
-app.post("/weatheratcoords", (req, res) => {
+// Return the current weather for a given set of lat/long co-ordinates
+app.post("/weatherAtCoords/current", (req, res) => {
+  const url = "https://data.climacell.co/v4/timelines";
+  const params = {
+    location: req.body.lat + "," + req.body.long,
+    fields: ["temperature", "temperatureApparent", "weatherCode"],
+    timesteps: "current",
+    units: "metric",
+    apikey: config.CLIMACELL_API_KEY,
+  };
+
+  axios
+    .get(url, { params })
+    .then((response) => {
+      console.log(response.data);
+      res.json({ timelines: response.data.data.timelines });
+    })
+    .catch((error) => {});
+});
+
+// Return the 7 day forecast for a given set of lat/long co-ordinates
+app.post("/weatherAtCoords/forecast/", (req, res) => {
+  const nextWeek = new Date();
+  // add 7 days to the current date
+  nextWeek.setHours(0);
+  nextWeek.setDate(new Date().getDate() + 7);
+
   const url = "https://data.climacell.co/v4/timelines";
   const params = {
     location: req.body.lat + "," + req.body.long,
     fields: [
-      "temperature",
-      "temperatureApparent",
+      "temperatureMax",
+      "temperatureMin",
       "precipitationProbability",
       "weatherCode",
     ],
+    endTime: nextWeek.toISOString(),
     timesteps: "1d",
     units: "metric",
     apikey: config.CLIMACELL_API_KEY,
@@ -31,6 +57,7 @@ app.post("/weatheratcoords", (req, res) => {
     .get(url, { params })
     .then(function (response) {
       res.json({ timelines: response.data.data.timelines });
+      console.log(response.data);
     })
     .catch(function (error) {
       // TODO: Handle error
