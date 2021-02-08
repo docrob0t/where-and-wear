@@ -12,19 +12,20 @@ app.use(express.json());
 app.use(requestLogger);
 
 // Return the current temperature and a 7 day forecast for a given set of lat/long co-ordinates
-app.post("/weatheratcoords", (req, res) => {
+app.post("/weatheratcoords/forecast", (req, res) => {
   const url = "https://data.climacell.co/v4/timelines";
   const params = {
     location: req.body.lat + "," + req.body.long,
     fields: [
-      "temperature",
-      "temperatureApparent",
+      "temperatureMax",
+      "temperatureMin",
       "precipitationProbability",
-      "weatherCode",
+      "weatherCode"
     ],
+    endTime: new Date(new Date().getDate() + 7).toISOString(),
     timesteps: "1d",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
