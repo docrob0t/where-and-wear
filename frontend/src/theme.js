@@ -5,6 +5,11 @@ const theme = responsiveFontSizes(
     typography: {
       fontFamily: ["Poppins", '"Open Sans"', "Roboto"].join(","),
     },
+    palette: {
+      text: {
+        primary: "rgba(61,61,74,1)",
+      },
+    },
   })
 );
 

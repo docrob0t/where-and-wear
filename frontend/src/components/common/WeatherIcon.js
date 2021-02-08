@@ -22,7 +22,7 @@ import partly_cloudy_day from "../../images/weather_icons/partly_cloudy_day.svg"
 import mostly_clear_day from "../../images/weather_icons/mostly_clear_day.svg";
 import clear_day from "../../images/weather_icons/clear_day.svg";
 
-const getIconFromWeatherCode = (code) => {
+const getWeatherIconFrom = (code) => {
   switch (code) {
     case 4201:
       return { text: "Heavy rain", icon: rain_heavy };
@@ -75,4 +75,4 @@ const getIconFromWeatherCode = (code) => {
   }
 };
 
-export default getIconFromWeatherCode;
+export default getWeatherIconFrom;
