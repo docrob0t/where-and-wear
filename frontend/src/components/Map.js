@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
-<<<<<<< HEAD
-import WeatherCard from "./WeatherCard";
-import DestinationCard from "./DestinationCard";
-=======
+import DestinationCard from "./DestinationCard/DestinationCard";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import Input from "./Input";
->>>>>>> origin/master
 import axios from "axios";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -92,7 +89,7 @@ function Map() {
       height="100vh"
       mapStyle="mapbox://styles/mapbox/streets-v11"
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
-      mapboxApiAccessToken="pk.eyJ1Ijoiam4zMjMiLCJhIjoiY2trd2xmdzRnMDdodzJybzZzYmNyMmVkZyJ9.BHze212H3hUKnkr7k6ZdEg"
+      mapboxApiAccessToken={MAPBOX_TOKEN}
     >
       <MenuButton />
       <WeatherCard
