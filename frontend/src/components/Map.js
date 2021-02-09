@@ -3,19 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import Input from "./Input";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
-<<<<<<< HEAD
-import WeatherCard from "./WeatherCard";
-=======
 import WeatherCard from "./WeatherCard/WeatherCard";
-import Input from "./Input";
->>>>>>> master
 import axios from "axios";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 function Map() {
   const [startingPoint, setStartingPoint] = useState({});
-  const [destination, setDestination] = useState({});
+  // const [destination, setDestination] = useState({});
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
     latitude: 54.7603,
@@ -57,10 +52,6 @@ function Map() {
       .then((response) =>
         setStartingPoint({ ...startingPoint, city: response.data.location })
       );
-
-    // TODO: remove when no longer required
-    console.log("User Lat = " + position.coords.latitude);
-    console.log("User Long = " + position.coords.longitude);
   }
 
   // TODO: decide how we want to handle these error cases

@@ -25,10 +25,9 @@ app.post("/weatherAtCoords/current", (req, res) => {
   axios
     .get(url, { params })
     .then((response) => {
-      console.log(response.data);
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => {});
+    .catch((error) => { });
 });
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
@@ -57,7 +56,6 @@ app.post("/weatherAtCoords/forecast/", (req, res) => {
     .get(url, { params })
     .then(function (response) {
       res.json({ timelines: response.data.data.timelines });
-      console.log(response.data);
     })
     .catch(function (error) {
       // TODO: Handle error
@@ -82,7 +80,6 @@ app.post("/locationfromcoords", (req, res) => {
     .then(function (response) {
       // handle success
       // TODO: Remove logging when no longer required
-      console.log(response.data);
       res.json({ location: response.data.features[0].text });
     })
     .catch(function (error) {
@@ -111,7 +108,6 @@ app.post("/retrieveDuration", (req, res) => {
   axios
     .get(url, { params })
     .then((response) => {
-      console.log(response.data);
       res.json({ duration: response.data.routes[0].duration });
     })
     .catch((error) => {
@@ -122,12 +118,12 @@ app.post("/retrieveDuration", (req, res) => {
 });
 
 // Returns a set of clothing suggestions from a given weather code & temperature
-app.post("/getclothingsuggestions", (req, res) => {
+app.post("/getClothingSuggestions", (req, res) => {
   var weatherCode = req.body.weatherCode;
   var currentTemperature = req.body.currentTemperature;
-  console.log(req.body);
-  console.log('Weather code is: ' + weatherCode);
-  console.log('Current temp is: ' + currentTemperature);
+  // console.log(req.body);
+  // console.log('Weather code is: ' + weatherCode);
+  // console.log('Current temp is: ' + currentTemperature);
 
   switch (weatherCode) {
     // Rain weather codes
@@ -180,6 +176,8 @@ app.post("/getclothingsuggestions", (req, res) => {
         res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
         break;
       }
+    default:
+      res.json({ suggestionOne: "umbrella", suggestionTwo: "coat", suggestionThree: "boots_rain" });
   }
 });
 

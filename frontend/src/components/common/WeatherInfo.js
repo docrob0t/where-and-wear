@@ -1,7 +1,8 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Box, Grid, Typography } from "@material-ui/core";
+
+import React from "react";
 import getWeatherIconFrom from "./WeatherIcon";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
@@ -32,7 +33,7 @@ export default function WeatherInfo({
         <Typography variant="h5">
           <Box fontWeight="fontWeightBold">{city}</Box>
         </Typography>
-        <Typography ariant="subtitle1" component="div" color="textSecondary">
+        <Typography variant="subtitle1" component="div" color="textSecondary">
           Current weather
         </Typography>
       </Box>
