@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
+<<<<<<< HEAD
 import WeatherCard from "./WeatherCard";
 import DestinationCard from "./DestinationCard";
+=======
+import WeatherCard from "./WeatherCard/WeatherCard";
+import Input from "./Input";
+>>>>>>> origin/master
 import axios from "axios";
 
-// Set your mapbox token here
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 function Map() {
@@ -17,7 +21,7 @@ function Map() {
     longitude: -4.2028,
     zoom: 5.36,
     bearing: 0,
-    pitch: 0,
+    pitch: 0
   });
   const mapRef = useRef();
 
@@ -47,7 +51,7 @@ function Map() {
     axios
       .post("/locationfromcoords/", {
         lat: latitude,
-        long: longitude,
+        long: longitude
       })
       .then((response) =>
         setStartingPoint({ ...startingPoint, city: response.data.location })
