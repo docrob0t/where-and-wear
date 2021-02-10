@@ -19,7 +19,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     fields: ["temperature", "temperatureApparent", "weatherCode"],
     timesteps: "current",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY
+    apikey: config.CLIMACELL_API_KEY,
   };
 
   axios
@@ -44,12 +44,12 @@ app.post("/weatherAtCoords/forecast/", (req, res) => {
       "temperatureMax",
       "temperatureMin",
       "precipitationProbability",
-      "weatherCode"
+      "weatherCode",
     ],
     endTime: nextWeek.toISOString(),
     timesteps: "1d",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY
+    apikey: config.CLIMACELL_API_KEY,
   };
 
   axios
@@ -72,7 +72,7 @@ app.post("/locationfromcoords", (req, res) => {
     ".json";
   const params = {
     types: "place",
-    access_token: config.MAPBOX_API_KEY
+    access_token: config.MAPBOX_API_KEY,
   };
 
   axios
@@ -80,6 +80,7 @@ app.post("/locationfromcoords", (req, res) => {
     .then(function (response) {
       // handle success
       // TODO: Remove logging when no longer required
+      console.log(response.data);
       res.json({ location: response.data.features[0].text });
     })
     .catch(function (error) {
@@ -100,7 +101,6 @@ app.get("/retrieveDuration", (req, res) => {
     ";" +
     req.query.destinationlong +
     "," +
-<<<<<<< HEAD
     req.query.destinationlat +
     "?access_token=" +
     config.MAPBOX_API_KEY;
@@ -115,21 +115,12 @@ app.get("/retrieveDuration", (req, res) => {
     req.query.destinationlong +
     "," +
     req.query.destinationlat)
-=======
-    req.body.destination.lat;
-  const params = {
-    access_token: config.MAPBOX_API_KEY
-  };
->>>>>>> origin/master
 
   axios
     .get(requestURL)
     .then((response) => {
-<<<<<<< HEAD
       console.log(response.data);
       console.log("Response from /retrieveDuration is " + response.data.routes[0].duration);
-=======
->>>>>>> origin/master
       res.json({ duration: response.data.routes[0].duration });
       console.log("End")
     })
@@ -140,7 +131,6 @@ app.get("/retrieveDuration", (req, res) => {
     });
 });
 
-<<<<<<< HEAD
 // Gets the coordinates from a string 
 app.get("/retrieveCoordsFromLocation", (req, res) => {
   let requestURL = 
@@ -170,8 +160,6 @@ app.get("/retrieveCoordsFromLocation", (req, res) => {
     });
 });
 
-
-=======
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getClothingSuggestions", (req, res) => {
   let weatherCode = req.body.weatherCode;
@@ -229,5 +217,4 @@ app.post("/getClothingSuggestions", (req, res) => {
   }
 });
 
->>>>>>> origin/master
 export default app;

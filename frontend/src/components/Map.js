@@ -1,14 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import Input from "./Input";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
 import DestinationCard from "./DestinationCard/DestinationCard";
 import WeatherCard from "./WeatherCard/WeatherCard";
-<<<<<<< HEAD
-//import Input from "./Input";
-=======
->>>>>>> origin/master
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 
