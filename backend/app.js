@@ -1,7 +1,7 @@
 import axios from "axios";
-import express from "express";
-import cors from "cors";
 import config from "./utils/config.js";
+import cors from "cors";
+import express from "express";
 import requestLogger from "./utils/middleware.js";
 
 const app = express();
@@ -19,13 +19,12 @@ app.post("/weatherAtCoords/current", (req, res) => {
     fields: ["temperature", "temperatureApparent", "weatherCode"],
     timesteps: "current",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
     .get(url, { params })
     .then((response) => {
-      console.log(response.data);
       res.json({ timelines: response.data.data.timelines });
     })
     .catch((error) => {});
@@ -45,19 +44,18 @@ app.post("/weatherAtCoords/forecast/", (req, res) => {
       "temperatureMax",
       "temperatureMin",
       "precipitationProbability",
-      "weatherCode",
+      "weatherCode"
     ],
     endTime: nextWeek.toISOString(),
     timesteps: "1d",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
     .get(url, { params })
     .then(function (response) {
       res.json({ timelines: response.data.data.timelines });
-      console.log(response.data);
     })
     .catch(function (error) {
       // TODO: Handle error
@@ -74,7 +72,7 @@ app.post("/locationfromcoords", (req, res) => {
     ".json";
   const params = {
     types: "place",
-    access_token: config.MAPBOX_API_KEY,
+    access_token: config.MAPBOX_API_KEY
   };
 
   axios
@@ -82,7 +80,6 @@ app.post("/locationfromcoords", (req, res) => {
     .then(function (response) {
       // handle success
       // TODO: Remove logging when no longer required
-      console.log(response.data);
       res.json({ location: response.data.features[0].text });
     })
     .catch(function (error) {
@@ -105,13 +102,12 @@ app.post("/retrieveDuration", (req, res) => {
     "," +
     req.body.destination.lat;
   const params = {
-    access_token: config.MAPBOX_API_KEY,
+    access_token: config.MAPBOX_API_KEY
   };
 
   axios
     .get(url, { params })
     .then((response) => {
-      console.log(response.data);
       res.json({ duration: response.data.routes[0].duration });
     })
     .catch((error) => {
@@ -119,6 +115,63 @@ app.post("/retrieveDuration", (req, res) => {
       console.log("Cannot retrieve duration");
       console.log(url);
     });
+});
+
+// Returns a set of clothing suggestions from a given weather code & temperature
+app.post("/getClothingSuggestions", (req, res) => {
+  let weatherCode = req.body.weatherCode;
+  let currentTemperature = req.body.currentTemperature;
+
+  switch (weatherCode) {
+    // Rain weather codes
+    case 4201:
+    case 4001:
+    case 4200:
+    case 6201:
+    case 6001:
+    case 6200:
+    case 6000:
+    case 4000:
+    case 7101:
+    case 7000:
+    case 7102:
+    case 8000:
+      res.json({ clothingSuggestions: ["umbrella", "coat", "boots_rain"] });
+      break;
+    // Snow weather codes
+    case 5101:
+    case 5000:
+    case 5100:
+    case 5001:
+      res.json({ clothingSuggestions: ["beanie", "gloves", "boots_snow"] });
+      break;
+    // Fog weather codes
+    case 2100:
+    case 2000:
+      res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
+      break;
+    // Cloudy weather codes
+    case 1001:
+    case 1102:
+    case 1101:
+      if (currentTemperature > 15) {
+        res.json({ clothingSuggestions: ["cap", "shorts", "short_sleeve_shirt"] });
+      } else {
+        res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
+      }
+      break;
+    // Sunny/Clear weather codes
+    case 1100:
+    case 1000:
+      if (currentTemperature > 10) {
+        res.json({ clothingSuggestions: ["sunglasses", "shorts", "short_sleeve_shirt"] });
+      } else {
+        res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
+      }
+      break;
+    default:
+      res.json("some error");
+  }
 });
 
 export default app;

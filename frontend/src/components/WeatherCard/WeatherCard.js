@@ -7,10 +7,10 @@ import {
   makeStyles
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-
-import SevenDayForecast from "./SevenDayForecast";
-import WeatherInfo from "../common/WeatherInfo";
+import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
+import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import axios from "../../axios";
+import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 
 // Card styling constants
 const cardStyles = makeStyles({
@@ -52,8 +52,13 @@ const cardStyles = makeStyles({
 // WeatherCard() function returns a weather card overlay
 function WeatherCard(props) {
   const styling = cardStyles();
-  const [currentWeather, setCurrentWeather] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentWeather, setCurrentWeather] = useState({
+    city: "",
+    temperature: 0,
+    temperatureApparent: 0,
+    weatherCode: 1000
+  });
   const [weatherForecastData, setWeatherForecastData] = useState([]);
 
   // API call to fetch current weather at user's location
@@ -71,9 +76,9 @@ function WeatherCard(props) {
         console.log("Caught error: ", e);
       }
     }
-
     fetchWeather();
-  }, [props.lat, props.long]);
+    // console.log('State is: ' + clothingSuggestions[0].text);
+  }, [props.lat, props.long, currentWeather]);
 
   // API call to fetch 7 day forecast at user's location
   useEffect(() => {
@@ -82,10 +87,8 @@ function WeatherCard(props) {
         lat: props.lat,
         long: props.long
       });
-      console.log(response.data);
       setWeatherForecastData(response.data.timelines[0].intervals);
     };
-
     fetchWeatherForecast();
   }, [props.lat, props.long]);
 
@@ -104,9 +107,19 @@ function WeatherCard(props) {
         <Grid container>
           <Grid item xs={isOpen ? 3 : 12} container direction="column">
             <Grid item>
-              <WeatherInfo {...currentWeather} city={props.city} />
+              <WeatherInfo
+                city={props.city}
+                temperature={currentWeather.temperature}
+                temperatureApparent={currentWeather.temperatureApparent}
+                weatherCode={currentWeather.weatherCode}
+              />
             </Grid>
-            <Grid item>Clothing suggestions component here</Grid>
+            <Grid item>
+              <ClothingSuggestions
+                weatherCode={currentWeather.weatherCode}
+                currentTemperature={currentWeather.temperature}
+              />
+            </Grid>
           </Grid>
           {isOpen && (
             <Grid item xs={9}>
