@@ -121,9 +121,6 @@ app.post("/retrieveDuration", (req, res) => {
 app.post("/getClothingSuggestions", (req, res) => {
   let weatherCode = req.body.weatherCode;
   let currentTemperature = req.body.currentTemperature;
-  console.log(req.body);
-  console.log("Weather code is: " + weatherCode);
-  console.log("Current temp is: " + currentTemperature);
 
   switch (weatherCode) {
     // Rain weather codes

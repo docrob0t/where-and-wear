@@ -29,10 +29,10 @@ export default function WeatherInfo({
     <Box>
       <Box className="location" paddingBottom={1}>
         <Typography variant="h5">
-          <Box fontWeight="fontWeightBold">{city}</Box>
+          <Box fontWeight="fontWeightBold" paddingBottom={1}>{city}</Box>
         </Typography>
-        <Typography variant="subtitle1" component="div" color="textSecondary">
-          Current weather
+        <Typography variant="subtitle1" component="div" color="textPrimary">
+          Current Weather
         </Typography>
       </Box>
       <Grid container justify="center" alignItems="flex-end">
@@ -44,6 +44,7 @@ export default function WeatherInfo({
             wrap="nowrap"
           >
             <Typography variant="h2" component="div" color="textPrimary">
+              {/* This line throws a console error */}
               {Math.round(temperature)}
             </Typography>
             <Typography variant="h6" component="div" color="textSecondary">

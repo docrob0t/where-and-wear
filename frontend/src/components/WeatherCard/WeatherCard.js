@@ -69,7 +69,6 @@ function WeatherCard(props) {
           lat: props.lat,
           long: props.long
         });
-
         setCurrentWeather(response.data.timelines[0].intervals[0].values);
         return response;
       } catch (e) {
