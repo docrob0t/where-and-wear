@@ -30,7 +30,7 @@ function ClothingSuggestions({ weatherCode, currentTemperature }) {
       </Box>
       <Grid container display="flex" justify="space-evenly">
         {suggestions.map((clothing) => (
-          <Grid item key={clothing} xs={3}>
+          <Grid item key={clothing} xs={4}>
             <ClothingTile clothing={clothing} />
           </Grid>
         ))}
