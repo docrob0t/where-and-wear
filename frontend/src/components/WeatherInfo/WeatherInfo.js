@@ -1,7 +1,6 @@
+import { Box, Grid, Typography, makeStyles } from "@material-ui/core";
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Box, Grid, Typography } from "@material-ui/core";
-import getWeatherIconFrom from "./WeatherIcon";
+import getWeatherIconFrom from "../utils/WeatherIcon";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
@@ -27,7 +26,7 @@ export default function WeatherInfo({
   const classes = useStyles();
 
   return (
-    <div>
+    <Box>
       <Box className="location" paddingBottom={1}>
         <Typography variant="h5">
           <Box fontWeight="fontWeightBold">{city}</Box>
@@ -52,7 +51,7 @@ export default function WeatherInfo({
             </Typography>
           </Grid>
           <Typography
-            variant="subtitle1"
+            variant="subtitle2"
             component="div"
             color="textSecondary"
             align="center"
@@ -67,7 +66,7 @@ export default function WeatherInfo({
             alt={getWeatherIconFrom(weatherCode).text}
           />
           <Typography
-            variant="subtitle1"
+            variant="subtitle2"
             component="div"
             color="textSecondary"
             align="center"
@@ -76,6 +75,6 @@ export default function WeatherInfo({
           </Typography>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }
