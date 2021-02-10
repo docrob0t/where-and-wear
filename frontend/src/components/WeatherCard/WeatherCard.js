@@ -57,6 +57,12 @@ function WeatherCard(props) {
   const styling = cardStyles();
   const [currentWeather, setCurrentWeather] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentWeather, setCurrentWeather] = useState({
+    city: "",
+    temperature: 0,
+    temperatureApparent: 0,
+    weatherCode: 1000
+  });
   const [weatherForecastData, setWeatherForecastData] = useState([]);
   const [clothingSuggestions, setClothingSuggestions] = useState([]);
 
