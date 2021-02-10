@@ -6,7 +6,7 @@ import {
   Grid,
   makeStyles
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import ClothingSuggestionsTile from "./ClothingSuggestionsTile";
 import GetClothingSuggestions from "../ClothingSuggestions.js";
@@ -58,6 +58,7 @@ function WeatherCard(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [weatherForecastData, setWeatherForecastData] = useState([]);
   const [clothingSuggestions, setClothingSuggestions] = useState([]);
+  const isInitialMount = useRef(true);
 
   // API call to fetch current weather at user's location
   useEffect(() => {
@@ -75,18 +76,26 @@ function WeatherCard(props) {
         console.log("Caught error: ", e);
       }
     }
-
-    async function fetchSuggestions() {
-      const response = await GetClothingSuggestions(currentWeather, currentWeather);
-      setClothingSuggestions(response);
-
-      return response;
-    }
-
+    
     fetchWeather();
-    fetchSuggestions();
-    // console.log('State is: ' + clothingSuggestions[0].text);
-  }, [props.lat, props.long, currentWeather]);
+  }, [props.lat, props.long]);
+
+  // API call to fetch clothing suggestions based on current weather
+  useEffect(() => {
+    if (currentWeather) {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+      } else {
+        async function fetchSuggestions() {
+          const response = await GetClothingSuggestions(currentWeather.weatherCode, currentWeather.temperature);
+          setClothingSuggestions(response);
+          return response;
+        }
+
+        fetchSuggestions(currentWeather);
+      }
+    }
+  }, [currentWeather]);
 
   // API call to fetch 7 day forecast at user's location
   useEffect(() => {
@@ -100,21 +109,6 @@ function WeatherCard(props) {
 
     fetchWeatherForecast();
   }, [props.lat, props.long]);
-
-  // // API call to fetch clothing suggestions
-  // useEffect(() => {
-  //   const fetchClothingSuggestions = async () => {
-  //     try {
-  //       const response = await GetClothingSuggestions(currentWeather, currentWeather);
-  //       console.log('Test: ' + response);
-  //     } catch (e) {
-  //       // TODO: Handle error properly
-  //       console.log("Caught error: ", e);
-  //     }
-  //   }
-
-  //   fetchClothingSuggestions();
-  // }, [currentWeather]);
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
