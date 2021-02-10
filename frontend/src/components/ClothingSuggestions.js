@@ -47,70 +47,64 @@ async function makeClothingSuggestionsAPICall(code, temperature) {
 }
 
 function mapClothingSuggestionsToImages(suggestions) {
-  var firstSuggestion = suggestions[0];
-  var secondSuggestion = suggestions[1];
-  var thirdSuggestion = suggestions[2];
+  var images = [];
 
-  var imageOne;
-  var imageTwo;
-  var imageThree;
-
-  switch (firstSuggestion) {
+  switch (suggestions[0]) {
     case "umbrella":
-      imageOne = { text: "Umbrella Icon", icon: umbrella };
+      images[0] = { text: "Umbrella Icon", icon: umbrella };
       break;
     case "beanie":
-      imageOne = { text: "Beanie Icon", icon: beanie };
+      images[0] = { text: "Beanie Icon", icon: beanie };
       break;
     case "hoodie":
-      imageOne = { text: "Hoodie Icon", icon: hoodie };
+      images[0] = { text: "Hoodie Icon", icon: hoodie };
       break;
     case "cap":
-      imageOne = { text: "Cap Icon", icon: cap };
+      images[0] = { text: "Cap Icon", icon: cap };
       break;
     case "sunglasses":
-      imageOne = { text: "Sunglasses Icon", icon: sunglasses };
+      images[0] = { text: "Sunglasses Icon", icon: sunglasses };
       break;
     default:
-      imageOne = { text: "Umbrella Icon", icon: umbrella };
+      images[0] = { text: "Umbrella Icon", icon: umbrella };
   }
 
-  switch (secondSuggestion) {
+  switch (suggestions[1]) {
     case "coat":
-      imageTwo = { text: "Coat Icon", icon: coat };
+      images[1] = { text: "Coat Icon", icon: coat };
       break;
     case "gloves":
-      imageTwo = { text: "Gloves Icon", icon: gloves };
+      images[1] = { text: "Gloves Icon", icon: gloves };
       break;
     case "jeans":
-      imageTwo = { text: "Jeans Icon", icon: jeans };
+      images[1] = { text: "Jeans Icon", icon: jeans };
       break;
     case "shorts":
-      imageTwo = { text: "Shorts Icon", icon: shorts };
+      images[1] = { text: "Shorts Icon", icon: shorts };
       break;
     default:
-      imageTwo = { text: "Coat Icon", icon: coat };
+      images[1] = { text: "Coat Icon", icon: coat };
 
   }
 
-  switch (thirdSuggestion) {
+  switch (suggestions[2]) {
     case "boots_rain":
-      imageThree = { text: "Rain Boots Icon", icon: boots_rain };
+      images[2] = { text: "Rain Boots Icon", icon: boots_rain };
       break;
     case "boots_snow":
-      imageThree = { text: "Snow Boots Icon", icon: boots_snow };
+      images[2] = { text: "Snow Boots Icon", icon: boots_snow };
       break;
     case "short_sleeve_shirt":
-      imageThree = { text: "Short Sleeve Shirt Icon", icon: short_sleeve_shirt };
+      images[2] = { text: "Short Sleeve Shirt Icon", icon: short_sleeve_shirt };
       break;
     case "long_sleeve_shirt":
-      imageThree = { text: "Long Sleeve Shirt Icon", icon: long_sleeve_shirt };
+      images[2] = { text: "Long Sleeve Shirt Icon", icon: long_sleeve_shirt };
       break;
     default:
-      imageThree = { text: "Rain Boots Icon", icon: boots_rain };
+      images[2] = { text: "Rain Boots Icon", icon: boots_rain };
   }
 
-  return [imageOne, imageTwo, imageThree];
+  return images;
 }
 
 export default GetClothingSuggestions;

@@ -16,7 +16,7 @@ export default function ClothingSuggestionsTile({ clothingSuggestions }) {
   const classes = useStyles();
 
   // Only render if clothingSuggestions state has been set and passed down
-  if (clothingSuggestions.length != 0) {
+  if (clothingSuggestions.length !== 0) {
     return (
       <div>
         <Box className="clothingSuggestionsTitle" paddingBottom={"1.25rem"} paddingTop={"1rem"}>

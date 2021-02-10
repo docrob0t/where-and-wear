@@ -68,7 +68,6 @@ function WeatherCard(props) {
           lat: props.lat,
           long: props.long
         });
-
         setCurrentWeather(response.data.timelines[0].intervals[0].values);
         return response;
       } catch (e) {
@@ -76,7 +75,7 @@ function WeatherCard(props) {
         console.log("Caught error: ", e);
       }
     }
-    
+
     fetchWeather();
   }, [props.lat, props.long]);
 
@@ -87,9 +86,14 @@ function WeatherCard(props) {
         isInitialMount.current = false;
       } else {
         async function fetchSuggestions() {
-          const response = await GetClothingSuggestions(currentWeather.weatherCode, currentWeather.temperature);
-          setClothingSuggestions(response);
-          return response;
+          try {          
+            const response = await GetClothingSuggestions(currentWeather.weatherCode, currentWeather.temperature);
+            setClothingSuggestions(response);
+            return response;
+          } catch (e) {
+            // TODO: Handle error properly
+            console.log("Caught error: ", e);
+          }
         }
 
         fetchSuggestions(currentWeather);
