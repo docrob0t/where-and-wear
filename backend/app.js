@@ -19,7 +19,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     fields: ["temperature", "temperatureApparent", "weatherCode"],
     timesteps: "current",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
@@ -27,7 +27,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => { });
+    .catch((error) => {});
 });
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
@@ -44,12 +44,12 @@ app.post("/weatherAtCoords/forecast/", (req, res) => {
       "temperatureMax",
       "temperatureMin",
       "precipitationProbability",
-      "weatherCode",
+      "weatherCode"
     ],
     endTime: nextWeek.toISOString(),
     timesteps: "1d",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
@@ -72,7 +72,7 @@ app.post("/locationfromcoords", (req, res) => {
     ".json";
   const params = {
     types: "place",
-    access_token: config.MAPBOX_API_KEY,
+    access_token: config.MAPBOX_API_KEY
   };
 
   axios
@@ -102,7 +102,7 @@ app.post("/retrieveDuration", (req, res) => {
     "," +
     req.body.destination.lat;
   const params = {
-    access_token: config.MAPBOX_API_KEY,
+    access_token: config.MAPBOX_API_KEY
   };
 
   axios

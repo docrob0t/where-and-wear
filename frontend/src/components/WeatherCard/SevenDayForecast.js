@@ -10,7 +10,7 @@ export default function SevenDayForecast({ intervals }) {
           <Box fontWeight="fontWeightBold">7-day forecast</Box>
         </Typography>
       </Box>
-      <Grid container display="flex" justify="space-around">
+      <Grid container display="flex" justify="space-evenly">
         {intervals.map((interval) => (
           <Grid item key={interval.startTime}>
             <DailyForecastTile

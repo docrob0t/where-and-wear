@@ -28,7 +28,7 @@ export default function WeatherInfo({
   const classes = useStyles();
 
   return (
-    <div>
+    <Box>
       <Box className="location" paddingBottom={1}>
         <Typography variant="h5">
           <Box fontWeight="fontWeightBold">{city}</Box>
@@ -53,7 +53,7 @@ export default function WeatherInfo({
             </Typography>
           </Grid>
           <Typography
-            variant="subtitle1"
+            variant="subtitle2"
             component="div"
             color="textSecondary"
             align="center"
@@ -68,7 +68,7 @@ export default function WeatherInfo({
             alt={getWeatherIconFrom(weatherCode).text}
           />
           <Typography
-            variant="subtitle1"
+            variant="subtitle2"
             component="div"
             color="textSecondary"
             align="center"
@@ -77,6 +77,6 @@ export default function WeatherInfo({
           </Typography>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }

@@ -7,9 +7,6 @@ import {
   makeStyles
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-
-import ClothingSuggestionsTile from "./ClothingSuggestionsTile";
-import GetClothingSuggestions from "../ClothingSuggestions.js";
 import SevenDayForecast from "./SevenDayForecast";
 import WeatherInfo from "../common/WeatherInfo";
 import axios from "../../axios";
@@ -55,7 +52,6 @@ const cardStyles = makeStyles({
 // WeatherCard() function returns a weather card overlay
 function WeatherCard(props) {
   const styling = cardStyles();
-  const [currentWeather, setCurrentWeather] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentWeather, setCurrentWeather] = useState({
     city: "",
@@ -64,7 +60,6 @@ function WeatherCard(props) {
     weatherCode: 1000
   });
   const [weatherForecastData, setWeatherForecastData] = useState([]);
-  const [clothingSuggestions, setClothingSuggestions] = useState([]);
 
   // API call to fetch current weather at user's location
   useEffect(() => {
@@ -82,16 +77,7 @@ function WeatherCard(props) {
         console.log("Caught error: ", e);
       }
     }
-
-    async function fetchSuggestions() {
-      const response = await GetClothingSuggestions(currentWeather, currentWeather);
-      setClothingSuggestions(response);
-
-      return response;
-    }
-
     fetchWeather();
-    fetchSuggestions();
     // console.log('State is: ' + clothingSuggestions[0].text);
   }, [props.lat, props.long, currentWeather]);
 
@@ -104,24 +90,8 @@ function WeatherCard(props) {
       });
       setWeatherForecastData(response.data.timelines[0].intervals);
     };
-
     fetchWeatherForecast();
   }, [props.lat, props.long]);
-
-  // // API call to fetch clothing suggestions
-  // useEffect(() => {
-  //   const fetchClothingSuggestions = async () => {
-  //     try {
-  //       const response = await GetClothingSuggestions(currentWeather, currentWeather);
-  //       console.log('Test: ' + response);
-  //     } catch (e) {
-  //       // TODO: Handle error properly
-  //       console.log("Caught error: ", e);
-  //     }
-  //   }
-
-  //   fetchClothingSuggestions();
-  // }, [currentWeather]);
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
@@ -138,7 +108,12 @@ function WeatherCard(props) {
         <Grid container>
           <Grid item xs={isOpen ? 3 : 12} container direction="column">
             <Grid item>
-              <WeatherInfo {...currentWeather} city={props.city} />
+              <WeatherInfo
+                city={props.city}
+                temperature={currentWeather.temperature}
+                temperatureApparent={currentWeather.temperatureApparent}
+                weatherCode={currentWeather.weatherCode}
+              />
             </Grid>
             <Grid item>
               <ClothingSuggestions

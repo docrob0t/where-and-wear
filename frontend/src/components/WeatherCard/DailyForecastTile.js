@@ -3,6 +3,7 @@ import getWeatherIconFrom from "../common/WeatherIcon";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
 import precipitationIcon from "../../images/umbrella.svg";
+import dateFormat from "dateformat";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
@@ -31,7 +32,6 @@ export default function DailyForecastTile({
   precipitationProbability
 }) {
   const classes = useStyles();
-  const dateFormat = require("dateformat");
 
   return (
     <Box className="dailyForecast">
@@ -46,7 +46,7 @@ export default function DailyForecastTile({
           </Box>
         </Typography>
         <Typography variant="h6" component="div">
-          <Box display="flex" justifyContent="center" margin={1}>
+          <Box display="flex" justifyContent="center" paddingBottom={1}>
             {dateFormat(date, "d")}
             <sup>{dateFormat(date, "S")}</sup>&nbsp;
             {dateFormat(date, "mmm")}
