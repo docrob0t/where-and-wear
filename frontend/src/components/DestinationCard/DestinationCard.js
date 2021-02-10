@@ -88,8 +88,8 @@ function DestinationCard() {
   const styling = cardStyles();
   //const [currentTemp, setCurrentTemp] = React.useState([]);
   //const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
-  const [startingLocation, setStartingLocation] = React.useState({});
-  const [destinationLocation, setDestinationLocation] = React.useState({});
+  const [startingLocation, setStartingLocation] = React.useState([]);
+  const [destinationLocation, setDestinationLocation] = React.useState([]);
   const [travelTime, setTravelTime] = React.useState([]);
   //const [modeOfTransport, setModeOfTransport] = React.useState({});
   const [isOpen, setIsOpen] = React.useState(false);
@@ -125,7 +125,7 @@ function DestinationCard() {
   };
 
   // Gets the duration between the starting location and destination
-  function getTime() {
+  function getTime(mode) {
     //checkButton();
     console.log(startingLocation);
     console.log("Starting Location Coordinates are: " + startingLocation.startlong + "," + startingLocation.startlat);
@@ -134,7 +134,7 @@ function DestinationCard() {
     axios
     .get("/retrieveDuration/", {
       params: {
-        profile: "driving",
+        profile: mode,
         startlong: startingLocation.startlong,
         startlat: startingLocation.startlat,
         destinationlong: destinationLocation.destinationlong,
@@ -178,9 +178,9 @@ function DestinationCard() {
       <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
 
       <ButtonGroup className={styling.TransportButtons} variant="contained" color="secondary" aria-label="contained primary button group">
-        <Button size="small" value="driving" onClick={() => {getTime(); checkButton("driving");}} className={styling.TButton}>Car</Button>
-        <Button size="small" value="walking" onClick={() => {getTime(); checkButton("walking");}} className={styling.TButton}>Walking</Button>
-        <Button size="small" value="cycling" onClick={() => {getTime(); checkButton("cycling");}} className={styling.TButton}>Cycling</Button>
+        <Button size="small" onClick={() => {getTime("driving");}} className={styling.TButton}>Car</Button>
+        <Button size="small" onClick={() => {getTime("walking");}} className={styling.TButton}>Walking</Button>
+        <Button size="small" onClick={() => {getTime("cycling");}} className={styling.TButton}>Cycling</Button>
       </ButtonGroup>
 
       </CardActions>
@@ -191,7 +191,7 @@ function DestinationCard() {
           label="Starting Location"
           type="search"
           variant="outlined"
-          onChange={(e) => setStartingLocation(e.target.value)}
+          onInput={(e) => setStartingLocation(e.target.value)}
         />
 
         <TextField
@@ -200,7 +200,7 @@ function DestinationCard() {
           type="search"
           variant="outlined"
           label="Destination"
-          onChange={(e) => setDestinationLocation(e.target.value)}
+          onInput={(e) => setDestinationLocation(e.target.value)}
         />
       </CardContent>
     </Card>
