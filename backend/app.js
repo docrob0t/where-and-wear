@@ -92,35 +92,48 @@ app.post("/locationfromcoords", (req, res) => {
     });
 });
 
-app.post("/retrieveDuration", (req, res) => {
-  const url =
+app.get("/retrieveDuration", (req, res) => {
+  let requestURL =
     "https://api.mapbox.com/directions/v5/mapbox/" +
-    req.body.profile +
+    req.query.profile +
     "/" +
-    req.body.start.long +
+    req.query.startlong +
     "," +
-    req.body.start.lat +
+    req.query.startlat +
     ";" +
-    req.body.destination.long +
+    req.query.destinationlong +
     "," +
-    req.body.destination.lat;
-  const params = {
-    access_token: config.MAPBOX_API_KEY,
-  };
+    req.query.destinationlat +
+    "?access_token=" +
+    config.MAPBOX_API_KEY;
+
+    console.log("Requests:" 
+    + req.query.profile +
+    "," +
+    req.query.startlong +
+    "," +
+    req.query.startlat +
+    "," +
+    req.query.destinationlong +
+    "," +
+    req.query.destinationlat)
 
   axios
-    .get(url, { params })
+    .get(requestURL)
     .then((response) => {
       console.log(response.data);
+      console.log("Response from /retrieveDuration is " + response.data.routes[0].duration);
       res.json({ duration: response.data.routes[0].duration });
+      console.log("End")
     })
     .catch((error) => {
       // TODO: Handle error
       console.log("Cannot retrieve duration");
-      console.log(url);
+      console.log(error);
     });
 });
 
+// Gets the coordinates from a string 
 app.get("/retrieveCoordsFromLocation", (req, res) => {
   let requestURL = 
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +

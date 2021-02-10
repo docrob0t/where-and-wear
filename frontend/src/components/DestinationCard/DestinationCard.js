@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+//import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
@@ -84,39 +84,18 @@ function calculateTime() {
   //var result = date.toISOString().substr(11, 8);
 }
 
-function OutputCard(props) {
+function DestinationCard() {
   const styling = cardStyles();
-  const [currentTemp, setCurrentTemp] = React.useState([]);
-  const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
-  const [startingLocation, setStartingLocation] = React.useState({ input: "" });
-  const [destinationLocation, setDestinationLocation] = React.useState({
-    input: ""
-  });
+  //const [currentTemp, setCurrentTemp] = React.useState([]);
+  //const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
+  const [startingLocation, setStartingLocation] = React.useState({ place: ""});
+  const [destinationLocation, setDestinationLocation] = React.useState({});
+  const [travelTime, setTravelTime] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
 
-  React.useEffect(() => {
-    async function fetchWeather() {
-      try {
-        const response = await axios.post('/weatheratcoords/', {
-          lat: props.lat,
-          long: props.long
-        })
-        setCurrentTemp(response.data.timelines[0].intervals[0].values.temperature);
-        setCurrentWeatherCode(response.data.timelines[0].intervals[0].values.weatherCode);
-        return response;
-      }
-      catch (e) {
-        // TODO: Handle error properly
-        console.log('Caught error: ', e);
-      }
-    };
-
-    fetchWeather();
-  }, [props.lat, props.long]);
-
-//
+  // Gets the coordinates of the starting location
   function getStart() {
-    console.log('Start loc is: ' + startingLocation);
+    console.log('Start location is: ' + startingLocation);
 
     axios
     .get("/retrieveCoordsFromLocation/", {
@@ -125,12 +104,13 @@ function OutputCard(props) {
       }
     })
     .then((response) =>
-      setStartingLocation({ ...startingLocation, startcoords: response.data.coordinates})
+      setStartingLocation({ ...startingLocation, startlong: response.data.long, startlat: response.data.lat, })
     );
   };
 
+// Gets the coordinates of the destination
   function getDestination() {
-    console.log('Destination loc is: ' + destinationLocation);
+    console.log('Destination location is: ' + destinationLocation);
 
     axios
     .get("/retrieveCoordsFromLocation/", {
@@ -139,27 +119,63 @@ function OutputCard(props) {
       }
     })
     .then((response) =>
-      setDestinationLocation({ ...destinationLocation, destcoords: response.data.coordinates})
+      setDestinationLocation({ ...destinationLocation, destinationlong: response.data.long, destinationlat: response.data.lat, })
     );
   };
 
+  // Gets the duration between the starting location and destination
+  function getTime() {
+    //checkButton();
+    console.log(startingLocation);
+    console.log("Starting Location Coordinates are: " + startingLocation.startlong + "," + startingLocation.startlat);
+    console.log("Destination Coordinates are: " + destinationLocation.destinationlong + "," + destinationLocation.destinationlat);
+
+    axios
+    .get("/retrieveDuration/", {
+      params: {
+        profile: "driving",
+        startlong: startingLocation.startlong,
+        startlat: startingLocation.startlat,
+        destinationlong: destinationLocation.destinationlong,
+        destinationlat: destinationLocation.destinationlat,
+      }
+    })
+    .then((response) =>
+    setTravelTime({ ...travelTime, currentduration: response.data.duration, })
+    );
+  };
+
+  // Submits the text fields and sets the state
   function handleSubmit() {
-    var destination = document.getElementById('destination-search').value;
-    var startinglocation = document.getElementById('starting-search').value;
     setStartingLocation(startingLocation);
     setDestinationLocation(destinationLocation);
-    console.log( 'Starting Location :', startinglocation, 'Destination :' , destination);
+    getStart();
+    getDestination();
   }
+
+  function checkButton(theMode) {
+    switch (theMode) {
+      case "driving":
+        // Set the profile to be driving
+        break
+      case "walking":
+        // Set the profile to be walking
+        break
+      case "cycling":
+        // Set the profile to be cycling
+        break
+    }
+  };
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <CardActions>
-      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit(); getStart(); getDestination()}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
+      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
 
       <ButtonGroup className={styling.TransportButtons} variant="contained" color="secondary" aria-label="contained primary button group">
-        <Button size="small" className={styling.TButton}>Car</Button>
-        <Button size="small" className={styling.TButton}>Walking</Button>
-        <Button size="small" className={styling.TButton}>Cycling</Button>
+        <Button size="small" value="driving" onClick={() => {getTime();}} className={styling.TButton}>Car</Button>
+        <Button size="small" value="walking" onClick={() => {getTime();}} className={styling.TButton}>Walking</Button>
+        <Button size="small" value="cycling" onClick={() => {getTime();}} className={styling.TButton}>Cycling</Button>
       </ButtonGroup>
 
       </CardActions>
@@ -186,4 +202,4 @@ function OutputCard(props) {
   );
 }
 
-export default OutputCard;
+export default DestinationCard;
