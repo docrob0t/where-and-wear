@@ -88,9 +88,10 @@ function DestinationCard() {
   const styling = cardStyles();
   //const [currentTemp, setCurrentTemp] = React.useState([]);
   //const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
-  const [startingLocation, setStartingLocation] = React.useState({ place: ""});
+  const [startingLocation, setStartingLocation] = React.useState({});
   const [destinationLocation, setDestinationLocation] = React.useState({});
   const [travelTime, setTravelTime] = React.useState([]);
+  //const [modeOfTransport, setModeOfTransport] = React.useState({});
   const [isOpen, setIsOpen] = React.useState(false);
 
   // Gets the coordinates of the starting location
@@ -153,16 +154,20 @@ function DestinationCard() {
     getDestination();
   }
 
+  // Check which mode of transport button was pressed
   function checkButton(theMode) {
     switch (theMode) {
       case "driving":
         // Set the profile to be driving
+        //alert("Profile is Driving")
         break
       case "walking":
         // Set the profile to be walking
+        //alert("Profile is Walking")
         break
       case "cycling":
         // Set the profile to be cycling
+        //alert("Profile is Cycling")
         break
     }
   };
@@ -173,9 +178,9 @@ function DestinationCard() {
       <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
 
       <ButtonGroup className={styling.TransportButtons} variant="contained" color="secondary" aria-label="contained primary button group">
-        <Button size="small" value="driving" onClick={() => {getTime();}} className={styling.TButton}>Car</Button>
-        <Button size="small" value="walking" onClick={() => {getTime();}} className={styling.TButton}>Walking</Button>
-        <Button size="small" value="cycling" onClick={() => {getTime();}} className={styling.TButton}>Cycling</Button>
+        <Button size="small" value="driving" onClick={() => {getTime(); checkButton("driving");}} className={styling.TButton}>Car</Button>
+        <Button size="small" value="walking" onClick={() => {getTime(); checkButton("walking");}} className={styling.TButton}>Walking</Button>
+        <Button size="small" value="cycling" onClick={() => {getTime(); checkButton("cycling");}} className={styling.TButton}>Cycling</Button>
       </ButtonGroup>
 
       </CardActions>
@@ -186,7 +191,7 @@ function DestinationCard() {
           label="Starting Location"
           type="search"
           variant="outlined"
-          onInput={(e) => setStartingLocation(e.target.value)}
+          onChange={(e) => setStartingLocation(e.target.value)}
         />
 
         <TextField
@@ -195,7 +200,7 @@ function DestinationCard() {
           type="search"
           variant="outlined"
           label="Destination"
-          onInput={(e) => setDestinationLocation(e.target.value)}
+          onChange={(e) => setDestinationLocation(e.target.value)}
         />
       </CardContent>
     </Card>
