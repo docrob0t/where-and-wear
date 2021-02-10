@@ -119,11 +119,11 @@ app.post("/retrieveDuration", (req, res) => {
 
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getClothingSuggestions", (req, res) => {
-  var weatherCode = req.body.weatherCode;
-  var currentTemperature = req.body.currentTemperature;
-  // console.log(req.body);
-  // console.log('Weather code is: ' + weatherCode);
-  // console.log('Current temp is: ' + currentTemperature);
+  let weatherCode = req.body.weatherCode;
+  let currentTemperature = req.body.currentTemperature;
+  console.log(req.body);
+  console.log("Weather code is: " + weatherCode);
+  console.log("Current temp is: " + currentTemperature);
 
   switch (weatherCode) {
     // Rain weather codes
@@ -139,45 +139,41 @@ app.post("/getClothingSuggestions", (req, res) => {
     case 7000:
     case 7102:
     case 8000:
-      res.json({ suggestionOne: "umbrella", suggestionTwo: "coat", suggestionThree: "boots_rain" });
+      res.json({ clothingSuggestions: ["umbrella", "coat", "boots_rain"] });
       break;
     // Snow weather codes
     case 5101:
     case 5000:
     case 5100:
     case 5001:
-      res.json({ suggestionOne: "beanie", suggestionTwo: "gloves", suggestionThree: "boots_snow" });
+      res.json({ clothingSuggestions: ["beanie", "gloves", "boots_snow"] });
       break;
     // Fog weather codes
     case 2100:
     case 2000:
-      res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
+      res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
       break;
     // Cloudy weather codes
     case 1001:
     case 1102:
     case 1101:
-    case 1100:
-    case 1000:
       if (currentTemperature > 15) {
-        res.json({ suggestionOne: "cap", suggestionTwo: "shorts", suggestionThree: "short_sleeve_shirt" });
-        break;
+        res.json({ clothingSuggestions: ["cap", "shorts", "short_sleeve_shirt"] });
       } else {
-        res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
-        break;
+        res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
       }
+      break;
     // Sunny/Clear weather codes
     case 1100:
     case 1000:
       if (currentTemperature > 10) {
-        res.json({ suggestionOne: "sunglasses", suggestionTwo: "shorts", suggestionThree: "short_sleeve_shirt" });
-        break;
+        res.json({ clothingSuggestions: ["sunglasses", "shorts", "short_sleeve_shirt"] });
       } else {
-        res.json({ suggestionOne: "hoodie", suggestionTwo: "jeans", suggestionThree: "long_sleeve_shirt" });
-        break;
+        res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
       }
+      break;
     default:
-      res.json({ suggestionOne: "umbrella", suggestionTwo: "coat", suggestionThree: "boots_rain" });
+      res.json("some error");
   }
 });
 
