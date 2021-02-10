@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, TextField } from "@material-ui/core";
+import { Button, ButtonGroup, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -78,21 +78,14 @@ const cardStyles = makeStyles({
   }
 });
 
-function calculateTime() {
-  //var date = new Date(null);
-  //date.setSeconds(SECONDS);  ...specify value for SECONDS here to retrieve from the backend
-  //var result = date.toISOString().substr(11, 8);
-}
-
 function DestinationCard() {
   const styling = cardStyles();
-  //const [currentTemp, setCurrentTemp] = React.useState([]);
-  //const [currentWeatherCode, setCurrentWeatherCode] = React.useState([]);
-  const [startingLocation, setStartingLocation] = React.useState([]);
-  const [destinationLocation, setDestinationLocation] = React.useState([]);
-  const [travelTime, setTravelTime] = React.useState([]);
-  //const [modeOfTransport, setModeOfTransport] = React.useState({});
-  const [isOpen, setIsOpen] = React.useState(false);
+  //const [currentTemp, setCurrentTemp] = useState([]);
+  //const [currentWeatherCode, setCurrentWeatherCode] = useState([]);
+  const [startingLocation, setStartingLocation] = useState([]);
+  const [destinationLocation, setDestinationLocation] = useState([]);
+  const [travelTime, setTravelTime] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Gets the coordinates of the starting location
   function getStart() {
@@ -126,7 +119,6 @@ function DestinationCard() {
 
   // Gets the duration between the starting location and destination
   function getTime(mode) {
-    //checkButton();
     console.log(startingLocation);
     console.log("Starting Location Coordinates are: " + startingLocation.startlong + "," + startingLocation.startlat);
     console.log("Destination Coordinates are: " + destinationLocation.destinationlong + "," + destinationLocation.destinationlat);
@@ -144,6 +136,14 @@ function DestinationCard() {
     .then((response) =>
     setTravelTime({ ...travelTime, currentduration: response.data.duration, })
     );
+
+    //calculateTime(travelTime.currentduration);
+  };
+
+  function calculateTime() {
+  
+    // TODO: Format and display the time on the card
+
   };
 
   // Submits the text fields and sets the state
@@ -152,24 +152,6 @@ function DestinationCard() {
     setDestinationLocation(destinationLocation);
     getStart();
     getDestination();
-  }
-
-  // Check which mode of transport button was pressed
-  function checkButton(theMode) {
-    switch (theMode) {
-      case "driving":
-        // Set the profile to be driving
-        //alert("Profile is Driving")
-        break
-      case "walking":
-        // Set the profile to be walking
-        //alert("Profile is Walking")
-        break
-      case "cycling":
-        // Set the profile to be cycling
-        //alert("Profile is Cycling")
-        break
-    }
   };
 
   return (
@@ -191,7 +173,7 @@ function DestinationCard() {
           label="Starting Location"
           type="search"
           variant="outlined"
-          onInput={(e) => setStartingLocation(e.target.value)}
+          onChange={(e) => setStartingLocation(e.target.value)}
         />
 
         <TextField
@@ -200,8 +182,9 @@ function DestinationCard() {
           type="search"
           variant="outlined"
           label="Destination"
-          onInput={(e) => setDestinationLocation(e.target.value)}
+          onChange={(e) => setDestinationLocation(e.target.value)}
         />
+
       </CardContent>
     </Card>
   );
