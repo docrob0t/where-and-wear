@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@material-ui/core";
-import ClothingSuggestionsTile from "./ClothingSuggestionsTile";
+import ClothingTile from "./ClothingTile";
 import axios from "../../axios";
 
 function ClothingSuggestions({ weatherCode, currentTemperature }) {
@@ -31,7 +31,7 @@ function ClothingSuggestions({ weatherCode, currentTemperature }) {
       <Grid container display="flex" justify="space-evenly">
         {suggestions.map((clothing) => (
           <Grid item key={clothing} xs={3}>
-            <ClothingSuggestionsTile clothing={clothing} />
+            <ClothingTile clothing={clothing} />
           </Grid>
         ))}
       </Grid>

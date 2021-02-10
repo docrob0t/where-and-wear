@@ -1,5 +1,5 @@
 import React from "react";
-import getWeatherIconFrom from "../common/WeatherIcon";
+import getWeatherIconFrom from "../utils/WeatherIcon";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
 import precipitationIcon from "../../images/umbrella.svg";

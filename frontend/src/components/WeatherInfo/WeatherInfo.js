@@ -1,8 +1,6 @@
-import { Box, Grid, Typography } from "@material-ui/core";
-
+import { Box, Grid, Typography, makeStyles } from "@material-ui/core";
 import React from "react";
-import getWeatherIconFrom from "./WeatherIcon";
-import { makeStyles } from "@material-ui/core/styles";
+import getWeatherIconFrom from "../utils/WeatherIcon";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {

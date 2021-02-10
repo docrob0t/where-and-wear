@@ -7,10 +7,10 @@ import {
   makeStyles
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import SevenDayForecast from "./SevenDayForecast";
-import WeatherInfo from "../common/WeatherInfo";
+import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
+import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import axios from "../../axios";
-import ClothingSuggestions from "./ClothingSuggestions";
+import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 
 // Card styling constants
 const cardStyles = makeStyles({

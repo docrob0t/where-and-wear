@@ -1,5 +1,5 @@
 import React from "react";
-import getClothingIcon from "../common/ClothingIcon";
+import getClothingIcon from "../utils/ClothingIcon";
 import { Box, Typography, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ClothingSuggestionsTile({ clothing }) {
+function ClothingTile({ clothing }) {
   const classes = useStyles();
 
   return (
@@ -43,4 +43,4 @@ function ClothingSuggestionsTile({ clothing }) {
   );
 }
 
-export default ClothingSuggestionsTile;
+export default ClothingTile;
