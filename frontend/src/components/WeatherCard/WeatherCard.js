@@ -13,6 +13,7 @@ import GetClothingSuggestions from "../ClothingSuggestions.js";
 import SevenDayForecast from "./SevenDayForecast";
 import WeatherInfo from "../common/WeatherInfo";
 import axios from "../../axios";
+import ClothingSuggestions from "./ClothingSuggestions";
 
 // Card styling constants
 const cardStyles = makeStyles({
@@ -134,7 +135,10 @@ function WeatherCard(props) {
               <WeatherInfo {...currentWeather} city={props.city} />
             </Grid>
             <Grid item>
-              <ClothingSuggestionsTile clothingSuggestions={clothingSuggestions} />
+              <ClothingSuggestions
+                weatherCode={currentWeather.weatherCode}
+                currentTemperature={currentWeather.temperature}
+              />
             </Grid>
           </Grid>
           {isOpen && (

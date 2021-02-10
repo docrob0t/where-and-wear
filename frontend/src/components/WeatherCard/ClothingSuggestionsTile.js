@@ -1,10 +1,9 @@
-import { Box, Grid, Typography } from "@material-ui/core";
-
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import getClothingIcon from "../common/ClothingIcon";
+import { Box, Typography, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  clothingSuggestions: {
+  clothingIcon: {
     maxHeight: "2.375rem",
     [theme.breakpoints.up("sm")]: {
       maxHeight: "2.9rem"
@@ -18,42 +17,30 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-// async function callGetClothingSuggestions(weatherCode, currentTemperature) {
-//   var suggestions = await GetClothingSuggestions(weatherCode, currentTemperature);
-//   return suggestions;
-// }
-
-export default function ClothingSuggestionsTile({ clothingSuggestions }) {
+function ClothingSuggestionsTile({ clothing }) {
   const classes = useStyles();
-  console.log('We are here');
-  // console.log(clothingSuggestions);
 
   return (
-    <div>
-      <Box className="clothingSuggestions" paddingBottom={1}>
-        <Typography variant="subtitle1" component="div" color="textSecondary">
-          Clothing Suggestions
+    <Box>
+      <Box className="weatherIcon" display="flex" justifyContent="center">
+        <img
+          className={classes.clothingIcon}
+          src={getClothingIcon(clothing).icon}
+          alt={getClothingIcon(clothing).text}
+        />
+      </Box>
+      <Box paddingTop={1} display="flex" justifyContent="center">
+        <Typography
+          variant="subtitle2"
+          component="div"
+          color="textSecondary"
+          align="center"
+        >
+          {getClothingIcon(clothing).text}
         </Typography>
       </Box>
-      <Grid container justify="space-between" alignItems="flex-end">
-        {/* <img
-          className={classes.clothingSuggestions}
-          src={clothingSuggestions[0].icon}
-          alt={clothingSuggestions[0].text}
-        />
-
-        <img
-          className={classes.clothingSuggestions}
-          src={clothingSuggestions[1].icon}
-          alt={clothingSuggestions[1].text}
-        />
-
-        <img
-          className={classes.clothingSuggestions}
-          src={clothingSuggestions[2].icon}
-          alt={clothingSuggestions[2].text}
-        /> */}
-      </Grid>
-    </div>
+    </Box>
   );
 }
+
+export default ClothingSuggestionsTile;
