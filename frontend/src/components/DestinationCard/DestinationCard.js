@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, TextField, Grid, Typography } from "@material-ui/core";
+import { Button, ButtonGroup, TextField, Grid, Typography, Fab } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -6,7 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
-// Card styling constants
+// Card styling constants - will be using a grid in the near future
 const cardStyles = makeStyles({
   root: {
     minWidth: 375,
@@ -21,7 +21,7 @@ const cardStyles = makeStyles({
   },
   Title: {
     fontsize: 20,
-    top: '5%',
+    top: 260,
     postion: 'absolute',
   },
   searchButton: {
@@ -31,6 +31,13 @@ const cardStyles = makeStyles({
     fontFamily: 'Calibri',
     fontWeight: 600,
     width: 344,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 448,
+    right: 16,
+    fontFamily: 'Calibri',
+    fontWeight: 600,
   },
   FirstBox: {
     top: 15,
@@ -60,13 +67,18 @@ const cardStyles = makeStyles({
     top: 230,
     position: 'absolute',
   },
+  SubtitleTwo: {
+    fontSize: 17,
+    top: 250,
+    position: 'absolute',
+  },
   CurrentTemperature: {
     top: 270,
     position: 'absolute',
   },
   rootExpanded: {
     minWidth: 375,
-    minHeight: 450,
+    minHeight: 490,
     width: '15%',
     height: '20%',
     left: 35,
@@ -138,13 +150,11 @@ function DestinationCard() {
     .then((response) =>
     setTravelTime({ ...travelTime, currentduration: response.data.duration, })
     );
-
-    //calculateTime(travelTime.currentduration);
   };
 
-  // Formats the returned duration to make it readable
+  // Formats the duration and returns it to the card
   function calculateTime(d) {
-    console.log("The duration is " + travelTime.currentduration);
+    //console.log("The duration is " + travelTime.currentduration);
     d = Number(d);
     var h = Math.floor(d / 3600);
     var m = Math.floor(d % 3600 / 60);
@@ -154,7 +164,6 @@ function DestinationCard() {
     var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
     var hmsDisplay = hDisplay + mDisplay + sDisplay;
-    console.log(hmsDisplay)
     return hmsDisplay; 
   };
 
@@ -169,13 +178,51 @@ function DestinationCard() {
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <CardActions>
-      <Button size="small" onClick={() => {handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
+      <Button 
+       size="small" 
+       variant="contained" 
+       color="primary"
+       onClick={() => {handleSubmit();}} 
+       className={styling.searchButton}>
+        Search
+      </Button>
 
-      <ButtonGroup className={styling.TransportButtons} onClick={() => {setIsOpen(!isOpen)}} variant="contained" color="secondary" aria-label="contained primary button group">
-        <Button size="small" onClick={() => {setIsOpen(!isOpen); getTime("driving");}} className={styling.TButton}>Car</Button>
-        <Button size="small" onClick={() => {setIsOpen(!isOpen); getTime("walking");}} className={styling.TButton}>Walking</Button>
-        <Button size="small" onClick={() => {setIsOpen(!isOpen); getTime("cycling");}} className={styling.TButton}>Cycling</Button>
+      <ButtonGroup 
+        variant="contained" 
+        color="secondary" 
+        aria-label="contained primary button group"
+        className={styling.TransportButtons}>
+
+        <Button 
+         size="small" 
+         onClick={() => {setIsOpen(true); getTime("driving");}} 
+         className={styling.TButton}>
+           Car
+         </Button>
+
+        <Button 
+         size="small" 
+         onClick={() => {setIsOpen(true); getTime("walking");}} 
+         className={styling.TButton}>
+          Walking
+        </Button>
+
+        <Button 
+         size="small" 
+         onClick={() => {setIsOpen(true); getTime("cycling");}} 
+         className={styling.TButton}>
+           Cycling
+        </Button>
       </ButtonGroup>
+
+      <Button 
+      variant="outlined"
+      size="small" 
+      color="secondary"
+      onClick={() => {setIsOpen(false);}} 
+      className={styling.closeButton}>
+        ▲ Close
+      </Button>
 
       </CardActions>
       <CardContent>
@@ -197,10 +244,12 @@ function DestinationCard() {
           onChange={(e) => setDestinationLocation(e.target.value)}
         />
 
-        <Typography
-         className={styling.Subtitle}
-        >
-          ETA: {calculateTime(travelTime.currentduration)}
+        <Typography className={styling.Subtitle} ariant="subtitle1" align="center">
+          Estimated time of arrival:
+        </Typography>
+
+        <Typography className={styling.SubtitleTwo}>
+         {calculateTime(travelTime.currentduration)}
         </Typography>
 
       </CardContent>
