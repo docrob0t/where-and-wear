@@ -1,5 +1,5 @@
-import { Button, ButtonGroup, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import { Button, ButtonGroup, TextField, Grid, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,7 +11,7 @@ import axios from "axios";
 const cardStyles = makeStyles({
   root: {
     minWidth: 375,
-    minHeight: 190,
+    minHeight: 230,
     width: '15%',
     height: '20%',
     left: 35,
@@ -46,7 +46,7 @@ const cardStyles = makeStyles({
     width: 343,
   },
   TransportButtons: {
-    top: 190,
+    top: 185,
     position: 'absolute',
     width: 344,
     color: 'secondary',
@@ -67,7 +67,7 @@ const cardStyles = makeStyles({
   },
   rootExpanded: {
     minWidth: 375,
-    minHeight: 380,
+    minHeight: 230,
     width: '15%',
     height: '20%',
     left: 35,
@@ -80,7 +80,11 @@ const cardStyles = makeStyles({
 
 function DestinationCard() {
   const styling = cardStyles();
-  //const [currentTemp, setCurrentTemp] = useState([]);
+  const [currentWeather, setCurrentWeather] = useState({
+    temperature: 0,
+    temperatureApparent: 0,
+    weatherCode: 1000
+  });
   //const [currentWeatherCode, setCurrentWeatherCode] = useState([]);
   const [startingLocation, setStartingLocation] = useState([]);
   const [destinationLocation, setDestinationLocation] = useState([]);

@@ -16,7 +16,7 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 const cardStyles = makeStyles({
   root: {
     minWidth: 375,
-    minHeight: 300,
+    minHeight: 380,
     maxHeight: 400,
     maxWidth: 1100,
     width: "15%",
@@ -36,7 +36,7 @@ const cardStyles = makeStyles({
   },
   rootExpanded: {
     minWidth: 1175,
-    minHeight: 350,
+    minHeight: 380,
     maxHeight: 400,
     maxWidth: 1100,
     width: "60%",
