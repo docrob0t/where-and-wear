@@ -16,15 +16,11 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 const cardStyles = makeStyles((theme) => ({
   root: {
     minWidth: 375,
-<<<<<<< HEAD
-    minHeight: 380,
-=======
-    minHeight: 350,
->>>>>>> a77163a1c0b8dd2579dd35df394b535399192c93
-    maxHeight: 400,
+    minHeight: 190,
+    maxHeight: 190,
     maxWidth: 1100,
     width: "15%",
-    height: "40%",
+    height: "25%",
     margin: 35,
     position: "absolute",
     bottom: 5,

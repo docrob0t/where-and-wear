@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-//import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
@@ -67,7 +66,7 @@ const cardStyles = makeStyles({
   },
   rootExpanded: {
     minWidth: 375,
-    minHeight: 230,
+    minHeight: 450,
     width: '15%',
     height: '20%',
     left: 35,
@@ -85,7 +84,6 @@ function DestinationCard() {
     temperatureApparent: 0,
     weatherCode: 1000
   });
-  //const [currentWeatherCode, setCurrentWeatherCode] = useState([]);
   const [startingLocation, setStartingLocation] = useState([]);
   const [destinationLocation, setDestinationLocation] = useState([]);
   const [travelTime, setTravelTime] = useState([]);
@@ -106,7 +104,7 @@ function DestinationCard() {
     );
   };
 
-// Gets the coordinates of the destination
+ // Gets the coordinates of the destination
   function getDestination() {
     console.log('Destination location is: ' + destinationLocation);
 
@@ -144,10 +142,20 @@ function DestinationCard() {
     //calculateTime(travelTime.currentduration);
   };
 
-  function calculateTime() {
-  
-    // TODO: Format and display the time on the card
+  // Formats the returned duration to make it readable
+  function calculateTime(d) {
+    console.log("The duration is " + travelTime.currentduration);
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
 
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    var hmsDisplay = hDisplay + mDisplay + sDisplay;
+    console.log(hmsDisplay)
+    return hmsDisplay; 
   };
 
   // Submits the text fields and sets the state
@@ -161,12 +169,12 @@ function DestinationCard() {
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <CardActions>
-      <Button size="small" onClick={() => {setIsOpen(!isOpen); handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
+      <Button size="small" onClick={() => {handleSubmit();}} className={styling.searchButton} variant="contained" color="primary">Search</Button>
 
-      <ButtonGroup className={styling.TransportButtons} variant="contained" color="secondary" aria-label="contained primary button group">
-        <Button size="small" onClick={() => {getTime("driving");}} className={styling.TButton}>Car</Button>
-        <Button size="small" onClick={() => {getTime("walking");}} className={styling.TButton}>Walking</Button>
-        <Button size="small" onClick={() => {getTime("cycling");}} className={styling.TButton}>Cycling</Button>
+      <ButtonGroup className={styling.TransportButtons} onClick={() => {setIsOpen(!isOpen)}} variant="contained" color="secondary" aria-label="contained primary button group">
+        <Button size="small" onClick={() => {setIsOpen(!isOpen); getTime("driving");}} className={styling.TButton}>Car</Button>
+        <Button size="small" onClick={() => {setIsOpen(!isOpen); getTime("walking");}} className={styling.TButton}>Walking</Button>
+        <Button size="small" onClick={() => {setIsOpen(!isOpen); getTime("cycling");}} className={styling.TButton}>Cycling</Button>
       </ButtonGroup>
 
       </CardActions>
@@ -188,6 +196,12 @@ function DestinationCard() {
           label="Destination"
           onChange={(e) => setDestinationLocation(e.target.value)}
         />
+
+        <Typography
+         className={styling.Subtitle}
+        >
+          ETA: {calculateTime(travelTime.currentduration)}
+        </Typography>
 
       </CardContent>
     </Card>
