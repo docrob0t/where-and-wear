@@ -1,8 +1,8 @@
 import {
-  Button,
+  Box,
   Card,
-  CardActions,
   CardContent,
+  Fab,
   Grid,
   makeStyles
 } from "@material-ui/core";
@@ -13,10 +13,10 @@ import axios from "../../axios";
 import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 
 // Card styling constants
-const cardStyles = makeStyles({
+const cardStyles = makeStyles((theme) => ({
   root: {
     minWidth: 375,
-    minHeight: 300,
+    minHeight: 350,
     maxHeight: 400,
     maxWidth: 1100,
     width: "15%",
@@ -31,7 +31,6 @@ const cardStyles = makeStyles({
     position: "absolute",
     right: 15,
     top: 15,
-    fontFamily: "Calibri",
     fontWeight: 600
   },
   rootExpanded: {
@@ -46,8 +45,14 @@ const cardStyles = makeStyles({
     bottom: 5,
     borderRadius: 25,
     transition: "0.5s ease-in-out"
+  },
+  fab: {
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    textTransform: "none"
   }
-});
+}));
 
 // WeatherCard() function returns a weather card overlay
 function WeatherCard(props) {
@@ -76,6 +81,7 @@ function WeatherCard(props) {
         console.log("Caught error: ", e);
       }
     }
+
     fetchWeather();
     // console.log('State is: ' + clothingSuggestions[0].text);
   }, [props.lat, props.long, currentWeather]);
@@ -94,15 +100,15 @@ function WeatherCard(props) {
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
-      <CardActions>
-        <Button
-          size="small"
-          onClick={() => setIsOpen(!isOpen)}
-          className={styling.moreDetails}
-        >
-          {isOpen ? "Less Details" : "More Details"}
-        </Button>
-      </CardActions>
+      <Fab
+        className={styling.fab}
+        variant="extended"
+        size="medium"
+        color="primary"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? <Box>Show less</Box> : <Box>Show more</Box>}
+      </Fab>
       <CardContent>
         <Grid container>
           <Grid item xs={isOpen ? 3 : 12} container direction="column">
