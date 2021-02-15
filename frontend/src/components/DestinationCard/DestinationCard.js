@@ -6,6 +6,9 @@ import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
+import WeatherInfoAlt from "../WeatherInfo/WeatherInfoAlt";
+import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
+
 // Card styling constants - will be using a grid in the near future
 const cardStyles = makeStyles({
   root: {
@@ -96,8 +99,14 @@ function DestinationCard() {
     temperatureApparent: 0,
     weatherCode: 1000
   });
-  const [startingLocation, setStartingLocation] = useState([]);
-  const [destinationLocation, setDestinationLocation] = useState([]);
+  const [startingLocation, setStartingLocation] = useState({
+    long: 0,
+    lat: 0, 
+  });
+  const [destinationLocation, setDestinationLocation] = useState({
+    long: 0,
+    lat: 0,
+  });
   const [travelTime, setTravelTime] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -112,7 +121,7 @@ function DestinationCard() {
       }
     })
     .then((response) =>
-      setStartingLocation({ ...startingLocation, startlong: response.data.long, startlat: response.data.lat, })
+      setStartingLocation({ ...startingLocation, long: response.data.long, lat: response.data.lat, })
     );
   };
 
@@ -127,24 +136,24 @@ function DestinationCard() {
       }
     })
     .then((response) =>
-      setDestinationLocation({ ...destinationLocation, destinationlong: response.data.long, destinationlat: response.data.lat, })
+      setDestinationLocation({ ...destinationLocation, long: response.data.long, lat: response.data.lat, })
     );
   };
 
   // Gets the duration between the starting location and destination
   function getTime(mode) {
     console.log(startingLocation);
-    console.log("Starting Location Coordinates are: " + startingLocation.startlong + "," + startingLocation.startlat);
-    console.log("Destination Coordinates are: " + destinationLocation.destinationlong + "," + destinationLocation.destinationlat);
+    console.log("Starting Location Coordinates are: " + startingLocation.long + "," + startingLocation.lat);
+    console.log("Destination Coordinates are: " + destinationLocation.long + "," + destinationLocation.lat);
 
     axios
     .get("/retrieveDuration/", {
       params: {
         profile: mode,
-        startlong: startingLocation.startlong,
-        startlat: startingLocation.startlat,
-        destinationlong: destinationLocation.destinationlong,
-        destinationlat: destinationLocation.destinationlat,
+        startlong: startingLocation.long,
+        startlat: startingLocation.lat,
+        destinationlong: destinationLocation.long,
+        destinationlat: destinationLocation.lat,
       }
     })
     .then((response) =>
@@ -154,7 +163,7 @@ function DestinationCard() {
 
   // Formats the duration and returns it to the card
   function calculateTime(d) {
-    //console.log("The duration is " + travelTime.currentduration);
+    console.log("The duration is " + travelTime.currentduration);
     d = Number(d);
     var h = Math.floor(d / 3600);
     var m = Math.floor(d % 3600 / 60);
@@ -169,8 +178,8 @@ function DestinationCard() {
 
   // Submits the text fields and sets the state
   function handleSubmit() {
-    setStartingLocation(startingLocation);
-    setDestinationLocation(destinationLocation);
+    //setStartingLocation(startingLocation);
+    //setDestinationLocation(destinationLocation);
     getStart();
     getDestination();
   };
@@ -232,8 +241,8 @@ function DestinationCard() {
           label="Starting Location"
           type="search"
           variant="outlined"
-          onChange={(e) => setStartingLocation(e.target.value)}
-        />
+          onChange={(e) => setStartingLocation(e.target.value)}>
+        </TextField>
 
         <TextField
           className={styling.SecondBox}
@@ -241,8 +250,8 @@ function DestinationCard() {
           type="search"
           variant="outlined"
           label="Destination"
-          onChange={(e) => setDestinationLocation(e.target.value)}
-        />
+          onChange={(e) => setDestinationLocation(e.target.value)}>
+        </TextField>
 
         <Typography className={styling.Subtitle} ariant="subtitle1" align="center">
           Estimated time of arrival:
