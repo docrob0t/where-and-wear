@@ -13,14 +13,14 @@ import svgfile3 from '.././images/whereandwear-title.svg';
 const menuStyle = makeStyles({
   buttonStyle: {
     position: 'fixed',
-    width: '7%',
-    height: '7%',
-    right: 20,
-    top: 5,
-    minWidth: 75,
-    minHeight: 75,
-    maxWidth: 100,
-    maxHeight: 100,
+    width: 50,
+    height: 50,
+    right: 15,
+    top: 15,
+    minWidth: 50,
+    minHeight: 50,
+    maxWidth: 75,
+    maxHeight: 75,
   },
   popOverStyle: {
     opacity: 0.9,
@@ -66,7 +66,7 @@ function MenuButton() {
         <div>
           {/* Button for menu  */}
           <Button className={classes.buttonStyle} onClick={handleMenuClick}>
-            <img src={svgfile1} height='65%' width='65%' alt='Menu Button'/>
+            <img src={svgfile1} height='60' width='60' alt='Menu Button'/>
           </Button>
 
           {/* Menu and menu items */}
