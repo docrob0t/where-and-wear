@@ -8,7 +8,7 @@ import axios from "axios";
 import DestinationWeatherInfo from "./DestinationWeatherInfo";
 
 // Card styling constants - will be using a grid in the near future
-const cardStyles = makeStyles({
+const cardStyles = makeStyles((theme) => ({
   root: {
     minWidth: 375,
     minHeight: 230,
@@ -50,7 +50,6 @@ const cardStyles = makeStyles({
   TButton: {
     fontFamily: 'Calibri',
     fontWeight: 600,
-    width: '33.33333%',
   },
   rootExpanded: {
     minWidth: 375,
@@ -63,15 +62,10 @@ const cardStyles = makeStyles({
     borderRadius: 15,
     transition: '0.5s ease-in-out',
   }
-});
+}));
 
 function DestinationCard() {
   const styling = cardStyles();
-  const [currentWeather, setCurrentWeather] = useState({
-    temperature: 0,
-    temperatureApparent: 0,
-    weatherCode: 1000
-  });
   const [startingLocation, setStartingLocation] = useState({
     long: 0,
     lat: 0,
@@ -135,8 +129,6 @@ function DestinationCard() {
       .then((response) =>
         setTravelTime({ ...travelTime, currentduration: response.data.duration, })
       );
-
-    //calculateArrivalTime();
   };
 
   // Formats the duration and returns it to the card

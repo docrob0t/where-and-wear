@@ -218,7 +218,7 @@ app.get("/retrieveSearchList", (req, res) => {
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getClothingSuggestions", (req, res) => {
   let weatherCode = req.body.weatherCode;
-  let currentTemperature = req.body.currentTemperature;
+  let currentTemperature = req.body.temperature;
 
   switch (weatherCode) {
     // Rain weather codes

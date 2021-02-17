@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@material-ui/core";
 import ClothingTile from "./ClothingTile";
 import axios from "../../axios";
 
-function ClothingSuggestions({ weatherCode, currentTemperature }) {
+function ClothingSuggestions({ weatherCode, temperature }) {
   const [suggestions, setSuggestions] = useState([
     "umbrella",
     "beanie",
@@ -14,7 +14,7 @@ function ClothingSuggestions({ weatherCode, currentTemperature }) {
     const fetchSuggestions = async () => {
       const response = await axios.post("/getClothingSuggestions/", {
         weatherCode: weatherCode,
-        currentTemperature: currentTemperature
+        temperature: temperature
       });
       setSuggestions(response.data.clothingSuggestions);
     };
