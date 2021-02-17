@@ -5,9 +5,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-
-import WeatherInfoAlt from "../WeatherInfo/WeatherInfoAlt";
-import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
+import DestinationWeatherInfo from "./DestinationWeatherInfo";
 
 // Card styling constants - will be using a grid in the near future
 const cardStyles = makeStyles({
@@ -22,68 +20,43 @@ const cardStyles = makeStyles({
     borderRadius: 15,
     transition: '0.5s ease-in-out',
   },
-  Title: {
-    fontsize: 20,
-    top: 260,
-    postion: 'absolute',
-  },
   searchButton: {
-    position: 'absolute',
-    top: 145,
-    left: 16,
     fontFamily: 'Calibri',
     fontWeight: 600,
     width: 344,
   },
   closeButton: {
     position: 'absolute',
-    top: 448,
+    top: 560,
     right: 16,
     fontFamily: 'Calibri',
     fontWeight: 600,
   },
   FirstBox: {
-    top: 15,
-    position: 'absolute',
     margin: 'normal',
     width: 343,
+    padding: 2,
   },
   SecondBox: {
-    top: 80,
-    position: 'absolute',
     margin: 'normal',
     width: 343,
+    padding: 2,
   },
   TransportButtons: {
-    top: 185,
-    position: 'absolute',
     width: 344,
     color: 'secondary',
+    direction: 'row',
   },
   TButton: {
     fontFamily: 'Calibri',
     fontWeight: 600,
     width: '33.33333%',
   },
-  Subtitle: {
-    fontSize: 15,
-    top: 230,
-    position: 'absolute',
-  },
-  SubtitleTwo: {
-    fontSize: 17,
-    top: 250,
-    position: 'absolute',
-  },
-  CurrentTemperature: {
-    top: 270,
-    position: 'absolute',
-  },
   rootExpanded: {
     minWidth: 375,
-    minHeight: 490,
+    minHeight: 600,
     width: '15%',
-    height: '20%',
+    height: '40%',
     left: 35,
     position: 'absolute',
     top: 20,
@@ -101,13 +74,16 @@ function DestinationCard() {
   });
   const [startingLocation, setStartingLocation] = useState({
     long: 0,
-    lat: 0, 
+    lat: 0,
   });
   const [destinationLocation, setDestinationLocation] = useState({
     long: 0,
     lat: 0,
   });
-  const [travelTime, setTravelTime] = useState([]);
+  const [travelTime, setTravelTime] = useState({
+    currentduration: 0,
+  });
+  const [arrivalTime, setArrivalTime] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
 
   // Gets the coordinates of the starting location
@@ -115,55 +91,57 @@ function DestinationCard() {
     console.log('Start location is: ' + startingLocation);
 
     axios
-    .get("/retrieveCoordsFromLocation/", {
-      params: {
-        search: startingLocation,
-      }
-    })
-    .then((response) =>
-      setStartingLocation({ ...startingLocation, long: response.data.long, lat: response.data.lat, })
-    );
+      .get("/retrieveCoordsFromLocation/", {
+        params: {
+          search: startingLocation,
+        }
+      })
+      .then((response) =>
+        setStartingLocation({ ...startingLocation, long: response.data.long, lat: response.data.lat, })
+      );
   };
 
- // Gets the coordinates of the destination
+  // Gets the coordinates of the destination
   function getDestination() {
     console.log('Destination location is: ' + destinationLocation);
 
     axios
-    .get("/retrieveCoordsFromLocation/", {
-      params: {
-        search: destinationLocation,
-      }
-    })
-    .then((response) =>
-      setDestinationLocation({ ...destinationLocation, long: response.data.long, lat: response.data.lat, })
-    );
+      .get("/retrieveCoordsFromLocation/", {
+        params: {
+          search: destinationLocation,
+        }
+      })
+      .then((response) =>
+        setDestinationLocation({ ...destinationLocation, long: response.data.long, lat: response.data.lat, })
+      );
   };
 
   // Gets the duration between the starting location and destination
-  function getTime(mode) {
+  function getDuration(mode) {
     console.log(startingLocation);
     console.log("Starting Location Coordinates are: " + startingLocation.long + "," + startingLocation.lat);
     console.log("Destination Coordinates are: " + destinationLocation.long + "," + destinationLocation.lat);
 
     axios
-    .get("/retrieveDuration/", {
-      params: {
-        profile: mode,
-        startlong: startingLocation.long,
-        startlat: startingLocation.lat,
-        destinationlong: destinationLocation.long,
-        destinationlat: destinationLocation.lat,
-      }
-    })
-    .then((response) =>
-    setTravelTime({ ...travelTime, currentduration: response.data.duration, })
-    );
+      .get("/retrieveDuration/", {
+        params: {
+          profile: mode,
+          startlong: startingLocation.long,
+          startlat: startingLocation.lat,
+          destinationlong: destinationLocation.long,
+          destinationlat: destinationLocation.lat,
+        }
+      })
+      .then((response) =>
+        setTravelTime({ ...travelTime, currentduration: response.data.duration, })
+      );
+
+    //calculateArrivalTime();
   };
 
   // Formats the duration and returns it to the card
   function calculateTime(d) {
-    console.log("The duration is " + travelTime.currentduration);
+    //console.log("The duration is " + travelTime.currentduration);
     d = Number(d);
     var h = Math.floor(d / 3600);
     var m = Math.floor(d % 3600 / 60);
@@ -173,8 +151,24 @@ function DestinationCard() {
     var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
     var hmsDisplay = hDisplay + mDisplay + sDisplay;
-    return hmsDisplay; 
+    return hmsDisplay;
   };
+
+  useEffect(() => {
+    // Adds the journey duration to the current time
+    function calculateArrivalTime() {
+      let now = new Date();
+      let arrivalTime = new Date();
+      let nowInMS = now.getTime();
+      console.log("The duration is " + travelTime.currentduration);
+      nowInMS = nowInMS + travelTime.currentduration * 1000;
+      arrivalTime.setTime(nowInMS);
+      setArrivalTime(arrivalTime);
+      console.log("The Arrival Time is " + arrivalTime);
+    }
+
+    calculateArrivalTime();
+  }, [travelTime.currentduration]);
 
   // Submits the text fields and sets the state
   function handleSubmit() {
@@ -186,82 +180,86 @@ function DestinationCard() {
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
-      <CardActions>
-      <Button 
-       size="small" 
-       variant="contained" 
-       color="primary"
-       onClick={() => {handleSubmit();}} 
-       className={styling.searchButton}>
-        Search
+      <Grid Container>
+        <Button
+          variant="outlined"
+          size="small"
+          color="secondary"
+          onClick={() => { setIsOpen(false); }}
+          className={styling.closeButton}>
+          ▲ Close
       </Button>
 
-      <ButtonGroup 
-        variant="contained" 
-        color="secondary" 
-        aria-label="contained primary button group"
-        className={styling.TransportButtons}>
+        <CardContent>
+          <Grid Item>
+            <TextField
+              className={styling.FirstBox}
+              id="starting-search"
+              label="Starting Location"
+              type="search"
+              variant="outlined"
+              onChange={(e) => setStartingLocation(e.target.value)}>
+            </TextField>
+          </Grid>
 
-        <Button 
-         size="small" 
-         onClick={() => {setIsOpen(true); getTime("driving");}} 
-         className={styling.TButton}>
-           Car
-         </Button>
+          <Grid Item>
+            <TextField
+              className={styling.SecondBox}
+              id="destination-search"
+              type="search"
+              variant="outlined"
+              label="Destination"
+              onChange={(e) => setDestinationLocation(e.target.value)}>
+            </TextField>
+          </Grid>
+        </CardContent>
 
-        <Button 
-         size="small" 
-         onClick={() => {setIsOpen(true); getTime("walking");}} 
-         className={styling.TButton}>
-          Walking
-        </Button>
+        <CardActions>
+          <Grid Item>
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={() => { handleSubmit(); }}
+              className={styling.searchButton}>
+              Search
+            </Button>
+          </Grid>
 
-        <Button 
-         size="small" 
-         onClick={() => {setIsOpen(true); getTime("cycling");}} 
-         className={styling.TButton}>
-           Cycling
-        </Button>
-      </ButtonGroup>
+          <Grid Item>
+            <ButtonGroup
+              variant="contained"
+              color="secondary"
+              aria-label="contained primary button group"
+              className={styling.TransportButtons}>
 
-      <Button 
-      variant="outlined"
-      size="small" 
-      color="secondary"
-      onClick={() => {setIsOpen(false);}} 
-      className={styling.closeButton}>
-        ▲ Close
-      </Button>
+              <Button
+                size="small"
+                onClick={() => { setIsOpen(true); getDuration("driving"); }}
+                className={styling.TButton}>
+                Car
+              </Button>
 
-      </CardActions>
-      <CardContent>
-        <TextField
-          className={styling.FirstBox}
-          id="starting-search"
-          label="Starting Location"
-          type="search"
-          variant="outlined"
-          onChange={(e) => setStartingLocation(e.target.value)}>
-        </TextField>
+              <Button
+                size="small"
+                onClick={() => { setIsOpen(true); getDuration("walking"); }}
+                className={styling.TButton}>
+                Walking
+              </Button>
 
-        <TextField
-          className={styling.SecondBox}
-          id="destination-search"
-          type="search"
-          variant="outlined"
-          label="Destination"
-          onChange={(e) => setDestinationLocation(e.target.value)}>
-        </TextField>
-
-        <Typography className={styling.Subtitle} ariant="subtitle1" align="center">
-          Estimated time of arrival:
-        </Typography>
-
-        <Typography className={styling.SubtitleTwo}>
-         {calculateTime(travelTime.currentduration)}
-        </Typography>
-
-      </CardContent>
+              <Button
+                size="small"
+                onClick={() => { setIsOpen(true); getDuration("cycling"); }}
+                className={styling.TButton}>
+                Cycling
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </CardActions>
+        <CardContent>
+          <DestinationWeatherInfo lat={destinationLocation.lat} long={destinationLocation.long} arrivalTime={arrivalTime} />
+        </CardContent>
+      </Grid>
     </Card>
   );
 }

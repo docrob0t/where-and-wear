@@ -3,10 +3,11 @@ import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
 import DestinationCard from "./DestinationCard/DestinationCard";
 import WeatherCard from "./WeatherCard/WeatherCard";
+import DestinationWeatherInfo from "./DestinationCard/DestinationWeatherInfo";
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
+const MAPBOX_TOKEN = "pk.eyJ1Ijoiam4zMjMiLCJhIjoiY2trd2xmdzRnMDdodzJybzZzYmNyMmVkZyJ9.BHze212H3hUKnkr7k6ZdEg";
 
 function Map() {
   const [startingPoint, setStartingPoint] = useState({
@@ -71,7 +72,7 @@ function Map() {
   }
 
   return (
-    <ReactMapGL
+   <ReactMapGL
       ref={mapRef}
       {...viewport}
       width="100vw"
@@ -81,9 +82,9 @@ function Map() {
       mapboxApiAccessToken={MAPBOX_TOKEN}
     >
       <MenuButton />
-      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
+      {/*<WeatherCard lat={startingPoint.lat} long={startingPoint.long} />}*/}
       <DestinationCard />
-    </ReactMapGL>
+    </ReactMapGL> 
   );
 }
 

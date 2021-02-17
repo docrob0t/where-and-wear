@@ -43,6 +43,8 @@ app.post("/weatherAtDestination/", (req, res) => {
     apikey: config.CLIMACELL_API_KEY
   };
 
+  console.log("The starttime is " + req.body.journeyArrivalTime);
+
   axios
     .get(url, { params })
     .then((response) => {
