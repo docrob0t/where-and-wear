@@ -19,7 +19,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     fields: ["temperature", "temperatureApparent", "weatherCode"],
     timesteps: "current",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
@@ -28,7 +28,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
       res.json({ timelines: response.data.data.timelines });
     })
     .catch((error) => {});
-    // TODO: handle error
+  // TODO: handle error
 });
 
 // Return the current weather for a given set of lat/long coordinates in a timeframe
@@ -37,11 +37,10 @@ app.post("/weatherAtDestination/", (req, res) => {
   const params = {
     location: req.body.lat + "," + req.body.long,
     fields: ["temperature", "temperatureApparent", "weatherCode"],
-    startTime: req.body.start,
-    endTime: req.body.end,
-    timesteps: "15m",
+    startTime: req.body.journeyArrivalTime,
+    timesteps: "1h",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
@@ -50,8 +49,8 @@ app.post("/weatherAtDestination/", (req, res) => {
       res.json({ timelines: response.data.data.timelines });
     })
     .catch((error) => {});
-    // TODO: handle error
-})
+  // TODO: handle error
+});
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
 app.post("/weatherAtCoords/forecast/", (req, res) => {
@@ -67,12 +66,12 @@ app.post("/weatherAtCoords/forecast/", (req, res) => {
       "temperatureMax",
       "temperatureMin",
       "precipitationProbability",
-      "weatherCode",
+      "weatherCode"
     ],
     endTime: nextWeek.toISOString(),
     timesteps: "1d",
     units: "metric",
-    apikey: config.CLIMACELL_API_KEY,
+    apikey: config.CLIMACELL_API_KEY
   };
 
   axios
@@ -95,7 +94,7 @@ app.post("/locationfromcoords", (req, res) => {
     ".json";
   const params = {
     types: "place",
-    access_token: config.MAPBOX_API_KEY,
+    access_token: config.MAPBOX_API_KEY
   };
 
   axios
@@ -129,24 +128,28 @@ app.get("/retrieveDuration", (req, res) => {
     "?access_token=" +
     config.MAPBOX_API_KEY;
 
-    console.log("Requests:" 
-    + req.query.profile +
-    "," +
-    req.query.startlong +
-    "," +
-    req.query.startlat +
-    "," +
-    req.query.destinationlong +
-    "," +
-    req.query.destinationlat)
+  console.log(
+    "Requests:" +
+      req.query.profile +
+      "," +
+      req.query.startlong +
+      "," +
+      req.query.startlat +
+      "," +
+      req.query.destinationlong +
+      "," +
+      req.query.destinationlat
+  );
 
   axios
     .get(requestURL)
     .then((response) => {
       console.log(response.data);
-      console.log("Response from /retrieveDuration is " + response.data.routes[0].duration);
+      console.log(
+        "Response from /retrieveDuration is " + response.data.routes[0].duration
+      );
       res.json({ duration: response.data.routes[0].duration });
-      console.log("End")
+      console.log("End");
     })
     .catch((error) => {
       // TODO: Handle error
@@ -155,26 +158,32 @@ app.get("/retrieveDuration", (req, res) => {
     });
 });
 
-// Gets the coordinates from a string 
+// Gets the coordinates from a string
 app.get("/retrieveCoordsFromLocation", (req, res) => {
-  let requestURL = 
+  let requestURL =
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
     req.query.search +
-    ".json?country=GB&autocomplete=true&" + 
+    ".json?country=GB&autocomplete=true&" +
     "access_token=" +
     config.MAPBOX_API_KEY;
 
-    console.log('In /retrieveCoordsFromLocation');
-    console.log('Request is: '+ req.query.search);
-    console.log('Request URL is: ' + requestURL);
-  
+  console.log("In /retrieveCoordsFromLocation");
+  console.log("Request is: " + req.query.search);
+  console.log("Request URL is: " + requestURL);
+
   axios
     .get(requestURL)
     .then((response) => {
-      console.log('Response from /retrieveCoordsFromLocation:');
-      console.log(response.data.features[0].geometry.coordinates[1], response.data.features[0].geometry.coordinates[0]);
-      console.log('End');
-      res.json({ lat: response.data.features[0].geometry.coordinates[1], long: response.data.features[0].geometry.coordinates[0] });
+      console.log("Response from /retrieveCoordsFromLocation:");
+      console.log(
+        response.data.features[0].geometry.coordinates[1],
+        response.data.features[0].geometry.coordinates[0]
+      );
+      console.log("End");
+      res.json({
+        lat: response.data.features[0].geometry.coordinates[1],
+        long: response.data.features[0].geometry.coordinates[0]
+      });
     })
     .catch((error) => {
       // Handle error
@@ -186,22 +195,22 @@ app.get("/retrieveCoordsFromLocation", (req, res) => {
 // Get place names from a string
 app.get("/retrieveSearchList", (req, res) => {
   let requestURL =
-  "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-  req.query.search +
-  ".json?country=GB&autocomplete=true&" + 
-  "access_token=" +
-  config.MAPBOX_API_KEY;
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+    req.query.search +
+    ".json?country=GB&autocomplete=true&" +
+    "access_token=" +
+    config.MAPBOX_API_KEY;
 
   axios
-   .get(requestURL)
-   .then((response) => {
-    res.json({ placename: response.data.features[0].place_name.text });
-  })
-  .catch((error) => {
-    // Handle error
-    console.log("Cannot retrieve coordinates");
-    console.log(error);
-  });
+    .get(requestURL)
+    .then((response) => {
+      res.json({ placename: response.data.features[0].place_name.text });
+    })
+    .catch((error) => {
+      // Handle error
+      console.log("Cannot retrieve coordinates");
+      console.log(error);
+    });
 });
 
 // Returns a set of clothing suggestions from a given weather code & temperature
