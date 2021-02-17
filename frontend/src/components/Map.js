@@ -53,9 +53,7 @@ function Map() {
   function handleLocationError(error) {
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        console.log(
-          "User denied the request for Geolocation. Defaulting to London"
-        );
+        console.log("User denied the request for Geolocation. Defaulting to London");
         break;
       case error.POSITION_UNAVAILABLE:
         alert("Location information is unavailable.");
@@ -72,7 +70,7 @@ function Map() {
   }
 
   return (
-   <ReactMapGL
+    <ReactMapGL
       ref={mapRef}
       {...viewport}
       width="100vw"
@@ -82,9 +80,9 @@ function Map() {
       mapboxApiAccessToken={MAPBOX_TOKEN}
     >
       <MenuButton />
-      {/*<WeatherCard lat={startingPoint.lat} long={startingPoint.long} />}*/}
+      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
       <DestinationCard />
-    </ReactMapGL> 
+    </ReactMapGL>
   );
 }
 

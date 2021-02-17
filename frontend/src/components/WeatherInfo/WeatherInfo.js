@@ -5,15 +5,15 @@ import axios from "../../axios";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
-    maxHeight: "2.375rem",
+    maxHeight: "2rem",
     [theme.breakpoints.up("sm")]: {
-      maxHeight: "2.9rem"
+      maxHeight: "2.57rem"
     },
     [theme.breakpoints.up("md")]: {
-      maxHeight: "3.33rem"
+      maxHeight: "2.78rem"
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "3.75rem"
+      maxHeight: "2.99rem"
     }
   }
 }));
@@ -57,30 +57,20 @@ export default function WeatherInfo({
           <Box fontWeight="fontWeightBold">{city}</Box>
         </Typography>
         <Typography variant="subtitle1" component="div" color="textSecondary">
-          {subtitle}
+          <Box fontWeight="600">{subtitle}</Box>
         </Typography>
       </Box>
       <Grid container justify="center" alignItems="flex-end">
-        <Grid item xs={5} className="temperature">
-          <Grid
-            container
-            justify="center"
-            alignItems="flex-start"
-            wrap="nowrap"
-          >
-            <Typography variant="h2" component="div" color="textPrimary">
+        <Grid item xs={6} className="temperature">
+          <Grid container justify="center" alignItems="flex-start" wrap="nowrap">
+            <Typography variant="h3" component="div" color="textPrimary">
               {Math.round(temperature)}
             </Typography>
             <Typography variant="h6" component="div" color="textSecondary">
               °C
             </Typography>
           </Grid>
-          <Typography
-            variant="subtitle2"
-            component="div"
-            color="textSecondary"
-            align="center"
-          >
+          <Typography variant="subtitle2" component="div" color="textSecondary" align="center">
             Feels like {Math.round(temperatureApparent)} °C
           </Typography>
         </Grid>
@@ -90,12 +80,7 @@ export default function WeatherInfo({
             src={getWeatherIconFrom(weatherCode).icon}
             alt={getWeatherIconFrom(weatherCode).text}
           />
-          <Typography
-            variant="subtitle2"
-            component="div"
-            color="textSecondary"
-            align="center"
-          >
+          <Typography variant="subtitle2" component="div" color="textSecondary" align="center">
             {getWeatherIconFrom(weatherCode).text}
           </Typography>
         </Grid>

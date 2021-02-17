@@ -1,11 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Fab,
-  Grid,
-  makeStyles
-} from "@material-ui/core";
+import { Box, Card, CardContent, Fab, Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
@@ -16,30 +9,20 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 const cardStyles = makeStyles((theme) => ({
   root: {
     minWidth: 375,
-    minHeight: 190,
-    maxHeight: 190,
     maxWidth: 1100,
     width: "15%",
-    height: "25%",
+    height: "10.8rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
     borderRadius: 25,
     transition: "0.5s ease-in-out"
   },
-  moreDetails: {
-    position: "absolute",
-    right: 15,
-    top: 15,
-    fontWeight: 600
-  },
   rootExpanded: {
     minWidth: 1175,
-    minHeight: 380,
-    maxHeight: 400,
     maxWidth: 1100,
     width: "60%",
-    height: "40%",
+    height: "20.5rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -48,8 +31,8 @@ const cardStyles = makeStyles((theme) => ({
   },
   fab: {
     position: "absolute",
-    top: theme.spacing(2),
-    right: theme.spacing(2),
+    top: theme.spacing(1.5),
+    right: theme.spacing(1.5),
     textTransform: "none"
   }
 }));
@@ -74,15 +57,18 @@ function WeatherCard({ lat, long }) {
           long: long
         })
         .then((response) => {
+          let temperature, temperatureApparent, weatherCode;
+          ({
+            temperature,
+            temperatureApparent,
+            weatherCode
+          } = response.data.timelines[0].intervals[0].values);
+
           setCurrentWeather({
             ...currentWeather,
-            temperature:
-              response.data.timelines[0].intervals[0].values.temperature,
-            temperatureApparent:
-              response.data.timelines[0].intervals[0].values
-                .temperatureApparent,
-            weatherCode:
-              response.data.timelines[0].intervals[0].values.weatherCode
+            temperature: temperature,
+            temperatureApparent: temperatureApparent,
+            weatherCode: weatherCode
           });
         })
         // Sometimes the api would return an empty array in response, so added this catch block

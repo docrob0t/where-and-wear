@@ -4,15 +4,15 @@ import { Box, Typography, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   clothingIcon: {
-    maxHeight: "2.375rem",
+    maxHeight: "2rem",
     [theme.breakpoints.up("sm")]: {
-      maxHeight: "2.9rem"
+      maxHeight: "2.57rem"
     },
     [theme.breakpoints.up("md")]: {
-      maxHeight: "3.33rem"
+      maxHeight: "2.78rem"
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "3.75rem"
+      maxHeight: "2.99rem"
     }
   }
 }));
@@ -30,12 +30,7 @@ function ClothingTile({ clothing }) {
         />
       </Box>
       <Box paddingTop={1} display="flex" justifyContent="center">
-        <Typography
-          variant="subtitle2"
-          component="div"
-          color="textSecondary"
-          align="center"
-        >
+        <Typography variant="subtitle2" component="div" color="textSecondary" align="center">
           {getClothingIcon(clothing).text}
         </Typography>
       </Box>

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, TextField, Grid, Typography, Fab } from "@material-ui/core";
+import { Button, ButtonGroup, Grid, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,56 +11,53 @@ import DestinationWeatherInfo from "./DestinationWeatherInfo";
 const cardStyles = makeStyles((theme) => ({
   root: {
     minWidth: 375,
-    minHeight: 230,
-    width: '15%',
-    height: '20%',
+    minHeight: 210,
+    width: "15%",
+    height: "20%",
     left: 35,
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     borderRadius: 15,
-    transition: '0.5s ease-in-out',
+    transition: "0.5s ease-in-out"
   },
   searchButton: {
-    fontFamily: 'Calibri',
     fontWeight: 600,
-    width: 344,
+    width: 344
   },
   closeButton: {
-    position: 'absolute',
-    top: 560,
+    position: "absolute",
+    top: "14rem",
     right: 16,
-    fontFamily: 'Calibri',
-    fontWeight: 600,
+    fontWeight: 600
   },
   FirstBox: {
-    margin: 'normal',
+    margin: "normal",
     width: 343,
-    padding: 2,
+    padding: 2
   },
   SecondBox: {
-    margin: 'normal',
+    margin: "normal",
     width: 343,
-    padding: 2,
+    padding: 2
   },
   TransportButtons: {
     width: 344,
-    color: 'secondary',
-    direction: 'row',
+    color: "secondary",
+    direction: "row"
   },
   TButton: {
-    fontFamily: 'Calibri',
-    fontWeight: 600,
+    fontWeight: 600
   },
   rootExpanded: {
     minWidth: 375,
-    minHeight: 600,
-    width: '15%',
-    height: '40%',
+    minHeight: 520,
+    width: "15%",
+    height: "40%",
     left: 35,
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     borderRadius: 15,
-    transition: '0.5s ease-in-out',
+    transition: "0.5s ease-in-out"
   }
 }));
 
@@ -144,7 +141,7 @@ function DestinationCard() {
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
     var hmsDisplay = hDisplay + mDisplay + sDisplay;
     return hmsDisplay;
-  };
+  }
 
   useEffect(() => {
     // Adds the journey duration to the current time
@@ -168,7 +165,7 @@ function DestinationCard() {
     //setDestinationLocation(destinationLocation);
     getStart();
     getDestination();
-  };
+  }
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
@@ -177,10 +174,13 @@ function DestinationCard() {
           variant="outlined"
           size="small"
           color="secondary"
-          onClick={() => { setIsOpen(false); }}
-          className={styling.closeButton}>
+          onClick={() => {
+            setIsOpen(false);
+          }}
+          className={styling.closeButton}
+        >
           ▲ Close
-      </Button>
+        </Button>
 
         <CardContent>
           <Grid Item>
@@ -190,8 +190,8 @@ function DestinationCard() {
               label="Starting Location"
               type="search"
               variant="outlined"
-              onChange={(e) => setStartingLocation(e.target.value)}>
-            </TextField>
+              onChange={(e) => setStartingLocation(e.target.value)}
+            />
           </Grid>
 
           <Grid Item>
@@ -201,8 +201,8 @@ function DestinationCard() {
               type="search"
               variant="outlined"
               label="Destination"
-              onChange={(e) => setDestinationLocation(e.target.value)}>
-            </TextField>
+              onChange={(e) => setDestinationLocation(e.target.value)}
+            />
           </Grid>
         </CardContent>
 
@@ -212,8 +212,11 @@ function DestinationCard() {
               size="small"
               variant="contained"
               color="primary"
-              onClick={() => { handleSubmit(); }}
-              className={styling.searchButton}>
+              onClick={() => {
+                handleSubmit();
+              }}
+              className={styling.searchButton}
+            >
               Search
             </Button>
           </Grid>
@@ -223,8 +226,8 @@ function DestinationCard() {
               variant="contained"
               color="secondary"
               aria-label="contained primary button group"
-              className={styling.TransportButtons}>
-
+              className={styling.TransportButtons}
+            >
               <Button
                 size="small"
                 onClick={() => { setIsOpen(true); getDuration("driving"); }}
@@ -249,7 +252,11 @@ function DestinationCard() {
           </Grid>
         </CardActions>
         <CardContent>
-          <DestinationWeatherInfo lat={destinationLocation.lat} long={destinationLocation.long} arrivalTime={arrivalTime} />
+          <DestinationWeatherInfo
+            lat={destinationLocation.lat}
+            long={destinationLocation.long}
+            arrivalTime={arrivalTime}
+          />
         </CardContent>
       </Grid>
     </Card>

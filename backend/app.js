@@ -218,7 +218,7 @@ app.get("/retrieveSearchList", (req, res) => {
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getClothingSuggestions", (req, res) => {
   let weatherCode = req.body.weatherCode;
-  let currentTemperature = req.body.temperature;
+  let temperature = req.body.temperature;
 
   switch (weatherCode) {
     // Rain weather codes
@@ -252,7 +252,7 @@ app.post("/getClothingSuggestions", (req, res) => {
     case 1001:
     case 1102:
     case 1101:
-      if (currentTemperature > 15) {
+      if (temperature > 15) {
         res.json({ clothingSuggestions: ["cap", "shorts", "short_sleeve_shirt"] });
       } else {
         res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
@@ -261,7 +261,7 @@ app.post("/getClothingSuggestions", (req, res) => {
     // Sunny/Clear weather codes
     case 1100:
     case 1000:
-      if (currentTemperature > 10) {
+      if (temperature > 10) {
         res.json({ clothingSuggestions: ["sunglasses", "shorts", "short_sleeve_shirt"] });
       } else {
         res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
