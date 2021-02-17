@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
 import DestinationCard from "./DestinationCard/DestinationCard";
@@ -7,10 +6,13 @@ import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = "pk.eyJ1Ijoiam4zMjMiLCJhIjoiY2trd2xmdzRnMDdodzJybzZzYmNyMmVkZyJ9.BHze212H3hUKnkr7k6ZdEg";
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 function Map() {
-  const [startingPoint, setStartingPoint] = useState({});
+  const [startingPoint, setStartingPoint] = useState({
+    lat: 0,
+    long: 0
+  });
   // const [destination, setDestination] = useState({});
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
@@ -43,16 +45,7 @@ function Map() {
 
   function getCoordinates(position) {
     const { latitude, longitude } = position.coords;
-    setStartingPoint({ latitude, longitude });
-
-    axios
-      .post("/locationfromcoords/", {
-        lat: latitude,
-        long: longitude
-      })
-      .then((response) =>
-        setStartingPoint({ ...startingPoint, city: response.data.location })
-      );
+    setStartingPoint({ ...startingPoint, lat: latitude, long: longitude });
   }
 
   // TODO: decide how we want to handle these error cases
@@ -88,11 +81,7 @@ function Map() {
       mapboxApiAccessToken={MAPBOX_TOKEN}
     >
       <MenuButton />
-      <WeatherCard
-        city={startingPoint.city}
-        lat={startingPoint.latitude}
-        long={startingPoint.longitude}
-      />
+      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
       <DestinationCard />
     </ReactMapGL>
   );

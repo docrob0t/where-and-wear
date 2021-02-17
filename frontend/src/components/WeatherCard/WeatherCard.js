@@ -55,11 +55,10 @@ const cardStyles = makeStyles((theme) => ({
 }));
 
 // WeatherCard() function returns a weather card overlay
-function WeatherCard(props) {
+function WeatherCard({ lat, long }) {
   const styling = cardStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [currentWeather, setCurrentWeather] = useState({
-    city: "",
     temperature: 0,
     temperatureApparent: 0,
     weatherCode: 1000
@@ -68,35 +67,44 @@ function WeatherCard(props) {
 
   // API call to fetch current weather at user's location
   useEffect(() => {
-    async function fetchWeather() {
-      try {
-        const response = await axios.post("/weatherAtCoords/current/", {
-          lat: props.lat,
-          long: props.long
+    const fetchWeather = async () => {
+      await axios
+        .post("/weatherAtCoords/current/", {
+          lat: lat,
+          long: long
+        })
+        .then((response) => {
+          setCurrentWeather({
+            ...currentWeather,
+            temperature:
+              response.data.timelines[0].intervals[0].values.temperature,
+            temperatureApparent:
+              response.data.timelines[0].intervals[0].values
+                .temperatureApparent,
+            weatherCode:
+              response.data.timelines[0].intervals[0].values.weatherCode
+          });
+        })
+        // Sometimes the api would return an empty array in response, so added this catch block
+        .catch((error) => {
+          console.log(error);
         });
-        setCurrentWeather(response.data.timelines[0].intervals[0].values);
-        return response;
-      } catch (e) {
-        // TODO: Handle error properly
-        console.log("Caught error: ", e);
-      }
-    }
+    };
 
     fetchWeather();
-    // console.log('State is: ' + clothingSuggestions[0].text);
-  }, [props.lat, props.long, currentWeather]);
+  }, [lat, long]);
 
   // API call to fetch 7 day forecast at user's location
   useEffect(() => {
     const fetchWeatherForecast = async () => {
       const response = await axios.post("/weatherAtCoords/forecast/", {
-        lat: props.lat,
-        long: props.long
+        lat: lat,
+        long: long
       });
       setWeatherForecastData(response.data.timelines[0].intervals);
     };
     fetchWeatherForecast();
-  }, [props.lat, props.long]);
+  }, [lat, long]);
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
@@ -114,10 +122,12 @@ function WeatherCard(props) {
           <Grid item xs={isOpen ? 3 : 12} container direction="column">
             <Grid item>
               <WeatherInfo
-                city={props.city}
+                lat={lat}
+                long={long}
                 temperature={currentWeather.temperature}
                 temperatureApparent={currentWeather.temperatureApparent}
                 weatherCode={currentWeather.weatherCode}
+                time={"current"}
               />
             </Grid>
             <Grid item>

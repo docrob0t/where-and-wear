@@ -1,6 +1,7 @@
 import { Box, Grid, Typography, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import getWeatherIconFrom from "../utils/WeatherIcon";
+import axios from "../../axios";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
@@ -18,12 +19,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function WeatherInfo({
-  city,
+  lat,
+  long,
   temperature,
   temperatureApparent,
-  weatherCode
+  weatherCode,
+  time
 }) {
   const classes = useStyles();
+  const [city, setCity] = useState("");
+
+  let subtitle;
+  if (time === "current") {
+    subtitle = "Current weather";
+  } else {
+    subtitle = "ETA " + time;
+  }
+
+  // API call to resolve the name of the city of the location
+  useEffect(() => {
+    const getCityName = async () => {
+      const response = await axios.post("/locationfromcoords/", {
+        lat: lat,
+        long: long
+      });
+      setCity(response.data.location);
+      console.log(lat);
+      console.log(long);
+    };
+    getCityName();
+  }, [lat, long, city]);
 
   return (
     <Box>
@@ -31,12 +56,12 @@ export default function WeatherInfo({
         <Typography variant="h5">
           <Box fontWeight="fontWeightBold">{city}</Box>
         </Typography>
-        <Typography ariant="subtitle1" component="div" color="textSecondary">
-          Current weather
+        <Typography variant="subtitle1" component="div" color="textSecondary">
+          {subtitle}
         </Typography>
       </Box>
       <Grid container justify="center" alignItems="flex-end">
-        <Grid item xs={6} className="temperature">
+        <Grid item xs={5} className="temperature">
           <Grid
             container
             justify="center"
@@ -59,7 +84,7 @@ export default function WeatherInfo({
             Feels like {Math.round(temperatureApparent)} °C
           </Typography>
         </Grid>
-        <Grid item xs={6} className="weather">
+        <Grid item xs={5} className="weather">
           <img
             className={classes.cardWeatherIcon}
             src={getWeatherIconFrom(weatherCode).icon}
