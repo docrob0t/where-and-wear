@@ -17,11 +17,11 @@ const cardStyles = makeStyles((theme) => ({
     left: 35,
     position: "absolute",
     top: 20,
-    borderRadius: 15,
+    borderRadius: 20,
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)",
     transition: "0.5s ease-in-out"
   },
   searchButton: {
-    fontFamily: 'Calibri',
     fontWeight: 600,
     left: 9
   },
@@ -33,7 +33,7 @@ const cardStyles = makeStyles((theme) => ({
   },
   FirstBox: {
     margin: "normal",
-    width: 343,
+    width: 343
   },
   SecondBox: {
     margin: "normal",
@@ -41,7 +41,6 @@ const cardStyles = makeStyles((theme) => ({
     top: 10
   },
   TButton: {
-    fontFamily: 'Calibri',
     fontWeight: 600,
     left: 9
   },
@@ -54,6 +53,7 @@ const cardStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 20,
     borderRadius: 15,
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)",
     transition: "0.5s ease-in-out"
   }
 }));
@@ -63,53 +63,71 @@ function DestinationCard() {
   const [startingLocation, setStartingLocation] = useState({
     name: "",
     long: 0,
-    lat: 0,
+    lat: 0
   });
   const [destinationLocation, setDestinationLocation] = useState({
     name: "",
     long: 0,
-    lat: 0,
+    lat: 0
   });
   const [travelTime, setTravelTime] = useState({
-    currentduration: 0,
+    currentduration: 0
   });
   const [arrivalTime, setArrivalTime] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
 
   // Gets the coordinates of the starting location
   function getStartCoordinates() {
-    console.log('Start location is: ' + startingLocation.name);
+    console.log("Start location is: " + startingLocation.name);
 
     axios
       .get("/retrieveCoordsFromLocation/", {
         params: {
-          search: startingLocation.name,
+          search: startingLocation.name
         }
       })
       .then((response) =>
-        setStartingLocation({ ...startingLocation, long: response.data.long, lat: response.data.lat, })
+        setStartingLocation({
+          ...startingLocation,
+          long: response.data.long,
+          lat: response.data.lat
+        })
       );
-  };
+  }
 
   // Gets the coordinates of the destination
   function getDestinationCoordinates() {
-    console.log('Destination location is: ' + destinationLocation.name);
+    console.log("Destination location is: " + destinationLocation.name);
 
     axios
       .get("/retrieveCoordsFromLocation/", {
         params: {
-          search: destinationLocation.name,
+          search: destinationLocation.name
         }
       })
       .then((response) =>
-        setDestinationLocation({ ...destinationLocation, long: response.data.long, lat: response.data.lat, })
+        setDestinationLocation({
+          ...destinationLocation,
+          long: response.data.long,
+          lat: response.data.lat
+        })
       );
-  };
+  }
 
   // Gets the duration between the starting location and destination
   function getDuration(mode) {
-    console.log("Starting Location Coordinates are: " + startingLocation.long + "," + startingLocation.lat);
-    console.log("Destination Coordinates are: " + destinationLocation.long + "," + destinationLocation.lat);
+    console.log(
+      "Starting Location Coordinates are: " +
+        startingLocation.long +
+        "," +
+        startingLocation.lat
+    );
+    console.log(
+      "Destination Coordinates are: " +
+        destinationLocation.long +
+        "," +
+        destinationLocation.lat
+    );
 
     axios
       .get("/retrieveDuration/", {
@@ -118,15 +136,18 @@ function DestinationCard() {
           startlong: startingLocation.long,
           startlat: startingLocation.lat,
           destinationlong: destinationLocation.long,
-          destinationlat: destinationLocation.lat,
+          destinationlat: destinationLocation.lat
         }
       })
       .then((response) =>
-        setTravelTime({ ...travelTime, currentduration: response.data.duration, })
+        setTravelTime({
+          ...travelTime,
+          currentduration: response.data.duration
+        })
       );
-  };
+  }
 
- // Adds the journey duration to the current time
+  // Adds the journey duration to the current time
   useEffect(() => {
     function calculateArrivalTime() {
       let now = new Date();
@@ -211,8 +232,12 @@ function DestinationCard() {
               size="small"
               variant="contained"
               color="secondary"
-              onClick={() => { setIsOpen(true); getDuration("driving"); }}
-              className={styling.TButton}>
+              onClick={() => {
+                setIsOpen(true);
+                getDuration("driving");
+              }}
+              className={styling.TButton}
+            >
               Car
             </Button>
           </Grid>
@@ -223,20 +248,28 @@ function DestinationCard() {
               size="small"
               variant="contained"
               color="secondary"
-              onClick={() => { setIsOpen(true); getDuration("walking"); }}
-              className={styling.TButton}>
+              onClick={() => {
+                setIsOpen(true);
+                getDuration("walking");
+              }}
+              className={styling.TButton}
+            >
               Walking
             </Button>
           </Grid>
-          
+
           <Grid Item>
             <Button
               id="cycling"
               size="small"
               variant="contained"
               color="secondary"
-              onClick={() => { setIsOpen(true); getDuration("cycling"); }}
-              className={styling.TButton}>
+              onClick={() => {
+                setIsOpen(true);
+                getDuration("cycling");
+              }}
+              className={styling.TButton}
+            >
               Cycling
             </Button>
           </Grid>

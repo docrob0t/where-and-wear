@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, Fab, Grid, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardContent,
+  Fab,
+  Grid,
+  makeStyles
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
@@ -15,8 +22,9 @@ const cardStyles = makeStyles((theme) => ({
     margin: 35,
     position: "absolute",
     bottom: 5,
-    borderRadius: 25,
-    transition: "0.5s ease-in-out"
+    borderRadius: 20,
+    transition: "0.5s ease-in-out",
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
   },
   rootExpanded: {
     minWidth: 1175,
@@ -26,8 +34,9 @@ const cardStyles = makeStyles((theme) => ({
     margin: 35,
     position: "absolute",
     bottom: 5,
-    borderRadius: 25,
-    transition: "0.5s ease-in-out"
+    borderRadius: 20,
+    transition: "0.5s ease-in-out",
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
   },
   fab: {
     position: "absolute",

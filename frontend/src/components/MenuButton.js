@@ -23,6 +23,7 @@ const menuStyle = makeStyles({
     maxHeight: 75,
     backgroundColor: "#FCFCFC",
     boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)",
+    border: "2px solid #A0A3BD",
     borderRadius: "12px"
   },
   popOverStyle: {
