@@ -174,7 +174,7 @@ function DestinationCard() {
               label="Starting Location"
               type="search"
               variant="outlined"
-              onChange={(e) => setStartingLocation(e.target.value)}
+              /*onChange={(e) => setStartingLocation(e.target.value)}*/
             />
           </Grid>
 
