@@ -19,7 +19,7 @@ function ClothingSuggestions({ weatherCode, temperature }) {
       setSuggestions(response.data.clothingSuggestions);
     };
     fetchSuggestions();
-  }, []);
+  }, [weatherCode, temperature]);
 
   return (
     <Box>

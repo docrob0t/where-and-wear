@@ -21,8 +21,9 @@ const cardStyles = makeStyles((theme) => ({
     transition: "0.5s ease-in-out"
   },
   searchButton: {
+    fontFamily: 'Calibri',
     fontWeight: 600,
-    width: 344
+    left: 9
   },
   closeButton: {
     position: "absolute",
@@ -33,20 +34,16 @@ const cardStyles = makeStyles((theme) => ({
   FirstBox: {
     margin: "normal",
     width: 343,
-    padding: 2
   },
   SecondBox: {
     margin: "normal",
     width: 343,
-    padding: 2
-  },
-  TransportButtons: {
-    width: 344,
-    color: "secondary",
-    direction: "row"
+    top: 10
   },
   TButton: {
-    fontWeight: 600
+    fontFamily: 'Calibri',
+    fontWeight: 600,
+    left: 9
   },
   rootExpanded: {
     minWidth: 375,
@@ -64,10 +61,12 @@ const cardStyles = makeStyles((theme) => ({
 function DestinationCard() {
   const styling = cardStyles();
   const [startingLocation, setStartingLocation] = useState({
+    name: "",
     long: 0,
     lat: 0,
   });
   const [destinationLocation, setDestinationLocation] = useState({
+    name: "",
     long: 0,
     lat: 0,
   });
@@ -78,13 +77,13 @@ function DestinationCard() {
   const [isOpen, setIsOpen] = useState(false);
 
   // Gets the coordinates of the starting location
-  function getStart() {
-    console.log('Start location is: ' + startingLocation);
+  function getStartCoordinates() {
+    console.log('Start location is: ' + startingLocation.name);
 
     axios
       .get("/retrieveCoordsFromLocation/", {
         params: {
-          search: startingLocation,
+          search: startingLocation.name,
         }
       })
       .then((response) =>
@@ -93,13 +92,13 @@ function DestinationCard() {
   };
 
   // Gets the coordinates of the destination
-  function getDestination() {
-    console.log('Destination location is: ' + destinationLocation);
+  function getDestinationCoordinates() {
+    console.log('Destination location is: ' + destinationLocation.name);
 
     axios
       .get("/retrieveCoordsFromLocation/", {
         params: {
-          search: destinationLocation,
+          search: destinationLocation.name,
         }
       })
       .then((response) =>
@@ -109,7 +108,6 @@ function DestinationCard() {
 
   // Gets the duration between the starting location and destination
   function getDuration(mode) {
-    console.log(startingLocation);
     console.log("Starting Location Coordinates are: " + startingLocation.long + "," + startingLocation.lat);
     console.log("Destination Coordinates are: " + destinationLocation.long + "," + destinationLocation.lat);
 
@@ -128,23 +126,8 @@ function DestinationCard() {
       );
   };
 
-  // Formats the duration and returns it to the card
-  function calculateTime(d) {
-    //console.log("The duration is " + travelTime.currentduration);
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
-
-    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-    var hmsDisplay = hDisplay + mDisplay + sDisplay;
-    return hmsDisplay;
-  }
-
+ // Adds the journey duration to the current time
   useEffect(() => {
-    // Adds the journey duration to the current time
     function calculateArrivalTime() {
       let now = new Date();
       let arrivalTime = new Date();
@@ -159,21 +142,22 @@ function DestinationCard() {
     calculateArrivalTime();
   }, [travelTime.currentduration]);
 
-  // Submits the text fields and sets the state
+  // Submits the text fields and sets the values in the textfields as the names
   function handleSubmit() {
-    //setStartingLocation(startingLocation);
-    //setDestinationLocation(destinationLocation);
-    getStart();
-    getDestination();
+    let start = document.getElementById("starting-search").value;
+    startingLocation.name = start;
+    let destination = document.getElementById("destination-search").value;
+    destinationLocation.name = destination;
+    getStartCoordinates();
+    getDestinationCoordinates();
   }
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <Grid Container>
         <Button
-          variant="outlined"
+          variant="contained"
           size="small"
-          color="secondary"
           onClick={() => {
             setIsOpen(false);
           }}
@@ -201,7 +185,7 @@ function DestinationCard() {
               type="search"
               variant="outlined"
               label="Destination"
-              onChange={(e) => setDestinationLocation(e.target.value)}
+              /*onChange={(e) => setDestinationLocation(e.target.value)}*/
             />
           </Grid>
         </CardContent>
@@ -222,33 +206,39 @@ function DestinationCard() {
           </Grid>
 
           <Grid Item>
-            <ButtonGroup
+            <Button
+              id="driving"
+              size="small"
               variant="contained"
               color="secondary"
-              aria-label="contained primary button group"
-              className={styling.TransportButtons}
-            >
-              <Button
-                size="small"
-                onClick={() => { setIsOpen(true); getDuration("driving"); }}
-                className={styling.TButton}>
-                Car
-              </Button>
+              onClick={() => { setIsOpen(true); getDuration("driving"); }}
+              className={styling.TButton}>
+              Car
+            </Button>
+          </Grid>
 
-              <Button
-                size="small"
-                onClick={() => { setIsOpen(true); getDuration("walking"); }}
-                className={styling.TButton}>
-                Walking
-              </Button>
-
-              <Button
-                size="small"
-                onClick={() => { setIsOpen(true); getDuration("cycling"); }}
-                className={styling.TButton}>
-                Cycling
-              </Button>
-            </ButtonGroup>
+          <Grid Item>
+            <Button
+              id="walking"
+              size="small"
+              variant="contained"
+              color="secondary"
+              onClick={() => { setIsOpen(true); getDuration("walking"); }}
+              className={styling.TButton}>
+              Walking
+            </Button>
+          </Grid>
+          
+          <Grid Item>
+            <Button
+              id="cycling"
+              size="small"
+              variant="contained"
+              color="secondary"
+              onClick={() => { setIsOpen(true); getDuration("cycling"); }}
+              className={styling.TButton}>
+              Cycling
+            </Button>
           </Grid>
         </CardActions>
         <CardContent>

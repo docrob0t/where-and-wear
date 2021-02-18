@@ -53,7 +53,7 @@ function DestinationWeatherInfo( {lat, long, arrivalTime} ) {
     };
 
     fetchWeather();
-  }, [lat, long]);
+  }, [lat, long, arrivalTime]);
 
   return (
 
