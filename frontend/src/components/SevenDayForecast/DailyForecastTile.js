@@ -7,15 +7,15 @@ import dateFormat from "dateformat";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
-    maxHeight: "2.375rem",
+    maxHeight: "1.56rem",
     [theme.breakpoints.up("sm")]: {
-      maxHeight: "2.9rem"
+      maxHeight: "1.56rem"
     },
     [theme.breakpoints.up("md")]: {
-      maxHeight: "3.33rem"
+      maxHeight: "1.82rem"
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "3.75rem"
+      maxHeight: "2.02rem"
     }
   },
   precipitationIcon: {
@@ -36,17 +36,18 @@ export default function DailyForecastTile({
   return (
     <Box className="dailyForecast">
       <Box className="date">
-        <Typography variant="h6">
-          <Box
-            fontWeight="fontWeightBold"
-            display="flex"
-            justifyContent="center"
-          >
+        <Typography variant="subtitle1">
+          <Box fontWeight="600" display="flex" justifyContent="center">
             {dateFormat(date, "ddd")}
           </Box>
         </Typography>
-        <Typography variant="h6" component="div">
-          <Box display="flex" justifyContent="center" paddingBottom={1}>
+        <Typography variant="subtitle1" component="div">
+          <Box
+            display="flex"
+            fontWeight="500"
+            justifyContent="center"
+            paddingBottom={0}
+          >
             {dateFormat(date, "d")}
             <sup>{dateFormat(date, "S")}</sup>&nbsp;
             {dateFormat(date, "mmm")}
@@ -62,11 +63,10 @@ export default function DailyForecastTile({
         />
       </Box>
 
-      <Box className="temperatureMaxAndMin" margin={2}>
-        <Typography variant="h5" component="div">
+      <Box className="temperatureMaxAndMin" margin={0}>
+        <Typography variant="h6" component="div">
           <Box
             className="temperatureMax"
-            padding={0}
             display="flex"
             justifyContent="center"
           >
@@ -76,7 +76,6 @@ export default function DailyForecastTile({
         <Typography variant="h6" component="div" color="textSecondary">
           <Box
             className="temperatureMin"
-            padding={0}
             display="flex"
             justifyContent="center"
           >
@@ -89,7 +88,7 @@ export default function DailyForecastTile({
         className="precipitationPercentage"
         display="flex"
         justifyContent="center"
-        margin={2}
+        margin={1}
       >
         <img
           className={classes.precipitationIcon}

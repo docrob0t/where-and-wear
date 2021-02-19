@@ -28,6 +28,30 @@ app.post("/weatherAtCoords/current", (req, res) => {
       res.json({ timelines: response.data.data.timelines });
     })
     .catch((error) => {});
+  // TODO: handle error
+});
+
+// Return the current weather for a given set of lat/long coordinates in a timeframe
+app.post("/weatherAtDestination/", (req, res) => {
+  const url = "https://data.climacell.co/v4/timelines";
+  const params = {
+    location: req.body.lat + "," + req.body.long,
+    fields: ["temperature", "temperatureApparent", "weatherCode"],
+    startTime: req.body.journeyArrivalTime,
+    timesteps: "1h",
+    units: "metric",
+    apikey: config.CLIMACELL_API_KEY
+  };
+
+  console.log("The starttime is " + req.body.journeyArrivalTime);
+
+  axios
+    .get(url, { params })
+    .then((response) => {
+      res.json({ timelines: response.data.data.timelines });
+    })
+    .catch((error) => {});
+  // TODO: handle error
 });
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
@@ -80,6 +104,7 @@ app.post("/locationfromcoords", (req, res) => {
     .then(function (response) {
       // handle success
       // TODO: Remove logging when no longer required
+      console.log(response.data);
       res.json({ location: response.data.features[0].text });
     })
     .catch(function (error) {
@@ -89,38 +114,111 @@ app.post("/locationfromcoords", (req, res) => {
     });
 });
 
-app.post("/retrieveDuration", (req, res) => {
-  const url =
+// Gets the duration with a mode of transport and between two sets of coordinates
+app.get("/retrieveDuration", (req, res) => {
+  let requestURL =
     "https://api.mapbox.com/directions/v5/mapbox/" +
-    req.body.profile +
+    req.query.profile +
     "/" +
-    req.body.start.long +
+    req.query.startlong +
     "," +
-    req.body.start.lat +
+    req.query.startlat +
     ";" +
-    req.body.destination.long +
+    req.query.destinationlong +
     "," +
-    req.body.destination.lat;
-  const params = {
-    access_token: config.MAPBOX_API_KEY
-  };
+    req.query.destinationlat +
+    "?access_token=" +
+    config.MAPBOX_API_KEY;
+
+  console.log(
+    "Requests:" +
+      req.query.profile +
+      "," +
+      req.query.startlong +
+      "," +
+      req.query.startlat +
+      "," +
+      req.query.destinationlong +
+      "," +
+      req.query.destinationlat
+  );
 
   axios
-    .get(url, { params })
+    .get(requestURL)
     .then((response) => {
+      console.log(response.data);
+      console.log(
+        "Response from /retrieveDuration is " + response.data.routes[0].duration
+      );
       res.json({ duration: response.data.routes[0].duration });
+      console.log("End");
     })
     .catch((error) => {
       // TODO: Handle error
       console.log("Cannot retrieve duration");
-      console.log(url);
+      console.log(error);
+    });
+});
+
+// Gets the coordinates from a string
+app.get("/retrieveCoordsFromLocation", (req, res) => {
+  let requestURL =
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+    encodeURI(req.query.search) +
+    ".json?country=GB&autocomplete=true&" +
+    "access_token=" +
+    config.MAPBOX_API_KEY;
+
+  console.log("In /retrieveCoordsFromLocation");
+  console.log("Request is: " + req.query.search);
+  console.log("Request URL is: " + requestURL);
+
+  axios
+    .get(requestURL)
+    .then((response) => {
+      console.log("Response from /retrieveCoordsFromLocation:");
+      console.log(
+        response.data.features[0].geometry.coordinates[1],
+        response.data.features[0].geometry.coordinates[0]
+      );
+      console.log("End");
+      res.json({
+        lat: response.data.features[0].geometry.coordinates[1],
+        long: response.data.features[0].geometry.coordinates[0]
+      });
+    })
+    .catch((error) => {
+      // Handle error
+      console.log("Cannot retrieve coordinates");
+      console.log(error);
+    });
+});
+
+// Get place names from a string
+app.get("/retrieveSearchList", (req, res) => {
+  let requestURL =
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+    req.query.search +
+    ".json?country=GB&autocomplete=true&" +
+    "access_token=" +
+    config.MAPBOX_API_KEY;
+
+  axios
+    .get(requestURL)
+    .then((response) => {
+      res.json({ placename: response.data.features[0].place_name.text });
+    })
+    .catch((error) => {
+      // Handle error
+      console.log("Cannot retrieve coordinates");
+      console.log(error);
     });
 });
 
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getClothingSuggestions", (req, res) => {
   let weatherCode = req.body.weatherCode;
-  let currentTemperature = req.body.currentTemperature;
+  let temperature = req.body.temperature;
 
   switch (weatherCode) {
     // Rain weather codes
@@ -154,7 +252,7 @@ app.post("/getClothingSuggestions", (req, res) => {
     case 1001:
     case 1102:
     case 1101:
-      if (currentTemperature > 15) {
+      if (temperature > 15) {
         res.json({ clothingSuggestions: ["cap", "shorts", "short_sleeve_shirt"] });
       } else {
         res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
@@ -163,7 +261,7 @@ app.post("/getClothingSuggestions", (req, res) => {
     // Sunny/Clear weather codes
     case 1100:
     case 1000:
-      if (currentTemperature > 10) {
+      if (temperature > 10) {
         res.json({ clothingSuggestions: ["sunglasses", "shorts", "short_sleeve_shirt"] });
       } else {
         res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });

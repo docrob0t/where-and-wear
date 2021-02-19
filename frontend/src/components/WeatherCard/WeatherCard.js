@@ -15,51 +15,38 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 // Card styling constants
 const cardStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 375,
-    minHeight: 350,
-    maxHeight: 400,
-    maxWidth: 1100,
-    width: "15%",
-    height: "40%",
+    width: "46rem",
+    height: "10.8rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
-    borderRadius: 25,
-    transition: "0.5s ease-in-out"
-  },
-  moreDetails: {
-    position: "absolute",
-    right: 15,
-    top: 15,
-    fontWeight: 600
+    borderRadius: 20,
+    transition: "0.5s ease-in-out",
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
   },
   rootExpanded: {
-    minWidth: 1175,
-    minHeight: 350,
-    maxHeight: 400,
-    maxWidth: 1100,
-    width: "60%",
-    height: "40%",
+    width: "46rem",
+    height: "25rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
-    borderRadius: 25,
-    transition: "0.5s ease-in-out"
+    borderRadius: 20,
+    transition: "0.5s ease-in-out",
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
   },
   fab: {
     position: "absolute",
-    top: theme.spacing(2),
-    right: theme.spacing(2),
+    top: theme.spacing(1.5),
+    right: theme.spacing(1.5),
     textTransform: "none"
   }
 }));
 
 // WeatherCard() function returns a weather card overlay
-function WeatherCard(props) {
+function WeatherCard({ lat, long }) {
   const styling = cardStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [currentWeather, setCurrentWeather] = useState({
-    city: "",
     temperature: 0,
     temperatureApparent: 0,
     weatherCode: 1000
@@ -68,35 +55,47 @@ function WeatherCard(props) {
 
   // API call to fetch current weather at user's location
   useEffect(() => {
-    async function fetchWeather() {
-      try {
-        const response = await axios.post("/weatherAtCoords/current/", {
-          lat: props.lat,
-          long: props.long
+    const fetchWeather = async () => {
+      await axios
+        .post("/weatherAtCoords/current/", {
+          lat: lat,
+          long: long
+        })
+        .then((response) => {
+          let temperature, temperatureApparent, weatherCode;
+          ({
+            temperature,
+            temperatureApparent,
+            weatherCode
+          } = response.data.timelines[0].intervals[0].values);
+
+          setCurrentWeather({
+            ...currentWeather,
+            temperature: temperature,
+            temperatureApparent: temperatureApparent,
+            weatherCode: weatherCode
+          });
+        })
+        // Sometimes the api would return an empty array in response, so added this catch block
+        .catch((error) => {
+          console.log(error);
         });
-        setCurrentWeather(response.data.timelines[0].intervals[0].values);
-        return response;
-      } catch (e) {
-        // TODO: Handle error properly
-        console.log("Caught error: ", e);
-      }
-    }
+    };
 
     fetchWeather();
-    // console.log('State is: ' + clothingSuggestions[0].text);
-  }, [props.lat, props.long, currentWeather]);
+  }, [lat, long]);
 
   // API call to fetch 7 day forecast at user's location
   useEffect(() => {
     const fetchWeatherForecast = async () => {
       const response = await axios.post("/weatherAtCoords/forecast/", {
-        lat: props.lat,
-        long: props.long
+        lat: lat,
+        long: long
       });
       setWeatherForecastData(response.data.timelines[0].intervals);
     };
     fetchWeatherForecast();
-  }, [props.lat, props.long]);
+  }, [lat, long]);
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
@@ -110,17 +109,19 @@ function WeatherCard(props) {
         {isOpen ? <Box>Show less</Box> : <Box>Show more</Box>}
       </Fab>
       <CardContent>
-        <Grid container>
-          <Grid item xs={isOpen ? 3 : 12} container direction="column">
-            <Grid item>
+        <Grid container direction="column">
+          <Grid item xs={isOpen ? 12 : 12} container direction="row">
+            <Grid item xs={6}>
               <WeatherInfo
-                city={props.city}
+                lat={lat}
+                long={long}
                 temperature={currentWeather.temperature}
                 temperatureApparent={currentWeather.temperatureApparent}
                 weatherCode={currentWeather.weatherCode}
+                time={"current"}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={6}>
               <ClothingSuggestions
                 weatherCode={currentWeather.weatherCode}
                 currentTemperature={currentWeather.temperature}
@@ -128,7 +129,7 @@ function WeatherCard(props) {
             </Grid>
           </Grid>
           {isOpen && (
-            <Grid item xs={9}>
+            <Grid item xs={12}>
               <SevenDayForecast intervals={weatherForecastData} />
             </Grid>
           )}

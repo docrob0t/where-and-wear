@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-
-import Input from "./Input";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
+import DestinationCard from "./DestinationCard/DestinationCard";
 import WeatherCard from "./WeatherCard/WeatherCard";
+import DestinationWeatherInfo from "./DestinationCard/DestinationWeatherInfo";
 import axios from "axios";
+import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
+const MAPBOX_TOKEN = "pk.eyJ1Ijoiam4zMjMiLCJhIjoiY2trd2xmdzRnMDdodzJybzZzYmNyMmVkZyJ9.BHze212H3hUKnkr7k6ZdEg";
 
 function Map() {
-  const [startingPoint, setStartingPoint] = useState({});
+  const [startingPoint, setStartingPoint] = useState({
+    lat: 0,
+    long: 0
+  });
   // const [destination, setDestination] = useState({});
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
@@ -42,25 +46,14 @@ function Map() {
 
   function getCoordinates(position) {
     const { latitude, longitude } = position.coords;
-    setStartingPoint({ latitude, longitude });
-
-    axios
-      .post("/locationfromcoords/", {
-        lat: latitude,
-        long: longitude
-      })
-      .then((response) =>
-        setStartingPoint({ ...startingPoint, city: response.data.location })
-      );
+    setStartingPoint({ ...startingPoint, lat: latitude, long: longitude });
   }
 
   // TODO: decide how we want to handle these error cases
   function handleLocationError(error) {
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        console.log(
-          "User denied the request for Geolocation. Defaulting to London"
-        );
+        console.log("User denied the request for Geolocation. Defaulting to London");
         break;
       case error.POSITION_UNAVAILABLE:
         alert("Location information is unavailable.");
@@ -87,12 +80,8 @@ function Map() {
       mapboxApiAccessToken={MAPBOX_TOKEN}
     >
       <MenuButton />
-      <WeatherCard
-        city={startingPoint.city}
-        lat={startingPoint.latitude}
-        long={startingPoint.longitude}
-      />
-      <Input />
+      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
+      <DestinationCard />
     </ReactMapGL>
   );
 }
