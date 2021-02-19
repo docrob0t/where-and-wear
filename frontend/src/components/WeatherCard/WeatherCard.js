@@ -15,9 +15,7 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 // Card styling constants
 const cardStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 375,
-    maxWidth: 1100,
-    width: "15%",
+    width: "46rem",
     height: "10.8rem",
     margin: 35,
     position: "absolute",
@@ -27,10 +25,8 @@ const cardStyles = makeStyles((theme) => ({
     boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
   },
   rootExpanded: {
-    minWidth: 1175,
-    maxWidth: 1100,
-    width: "60%",
-    height: "20.5rem",
+    width: "46rem",
+    height: "25rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -113,9 +109,9 @@ function WeatherCard({ lat, long }) {
         {isOpen ? <Box>Show less</Box> : <Box>Show more</Box>}
       </Fab>
       <CardContent>
-        <Grid container>
-          <Grid item xs={isOpen ? 3 : 12} container direction="column">
-            <Grid item>
+        <Grid container direction="column">
+          <Grid item xs={isOpen ? 12 : 12} container direction="row">
+            <Grid item xs={6}>
               <WeatherInfo
                 lat={lat}
                 long={long}
@@ -125,7 +121,7 @@ function WeatherCard({ lat, long }) {
                 time={"current"}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={6}>
               <ClothingSuggestions
                 weatherCode={currentWeather.weatherCode}
                 currentTemperature={currentWeather.temperature}
@@ -133,7 +129,7 @@ function WeatherCard({ lat, long }) {
             </Grid>
           </Grid>
           {isOpen && (
-            <Grid item xs={9}>
+            <Grid item xs={12}>
               <SevenDayForecast intervals={weatherForecastData} />
             </Grid>
           )}

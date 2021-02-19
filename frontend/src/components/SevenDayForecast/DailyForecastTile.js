@@ -7,15 +7,15 @@ import dateFormat from "dateformat";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
-    maxHeight: "2rem",
+    maxHeight: "1.56rem",
     [theme.breakpoints.up("sm")]: {
-      maxHeight: "2.57rem"
+      maxHeight: "1.56rem"
     },
     [theme.breakpoints.up("md")]: {
-      maxHeight: "2.78rem"
+      maxHeight: "1.82rem"
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "2.99rem"
+      maxHeight: "2.02rem"
     }
   },
   precipitationIcon: {
@@ -36,13 +36,18 @@ export default function DailyForecastTile({
   return (
     <Box className="dailyForecast">
       <Box className="date">
-        <Typography variant="h6">
+        <Typography variant="subtitle1">
           <Box fontWeight="600" display="flex" justifyContent="center">
             {dateFormat(date, "ddd")}
           </Box>
         </Typography>
-        <Typography variant="h6" component="div">
-          <Box display="flex" fontWeight="500" justifyContent="center" paddingBottom={1.5}>
+        <Typography variant="subtitle1" component="div">
+          <Box
+            display="flex"
+            fontWeight="500"
+            justifyContent="center"
+            paddingBottom={0}
+          >
             {dateFormat(date, "d")}
             <sup>{dateFormat(date, "S")}</sup>&nbsp;
             {dateFormat(date, "mmm")}
@@ -58,27 +63,42 @@ export default function DailyForecastTile({
         />
       </Box>
 
-      <Box className="temperatureMaxAndMin" margin={2}>
-        <Typography variant="h5" component="div">
-          <Box className="temperatureMax" display="flex" justifyContent="center">
+      <Box className="temperatureMaxAndMin" margin={0}>
+        <Typography variant="h6" component="div">
+          <Box
+            className="temperatureMax"
+            display="flex"
+            justifyContent="center"
+          >
             {Math.round(tempMax)}°
           </Box>
         </Typography>
         <Typography variant="h6" component="div" color="textSecondary">
-          <Box className="temperatureMin" display="flex" justifyContent="center">
+          <Box
+            className="temperatureMin"
+            display="flex"
+            justifyContent="center"
+          >
             {Math.round(tempMin)}°
           </Box>
         </Typography>
       </Box>
 
-      <Box className="precipitationPercentage" display="flex" justifyContent="center" margin={2}>
+      <Box
+        className="precipitationPercentage"
+        display="flex"
+        justifyContent="center"
+        margin={1}
+      >
         <img
           className={classes.precipitationIcon}
           src={precipitationIcon}
           alt="Precipitation icon"
         />
         <Typography variant="subtitle1" component="div">
-          <Box className="temperatureMax">{Math.round(precipitationProbability)}%</Box>
+          <Box className="temperatureMax">
+            {Math.round(precipitationProbability)}%
+          </Box>
         </Typography>
       </Box>
     </Box>

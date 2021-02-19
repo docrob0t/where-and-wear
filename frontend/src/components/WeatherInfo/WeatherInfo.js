@@ -52,17 +52,22 @@ export default function WeatherInfo({
 
   return (
     <Box>
-      <Box className="location" paddingBottom={1}>
-        <Typography variant="h5">
+      <Box className="location" paddingBottom={0}>
+        <Typography variant="h6">
           <Box fontWeight="fontWeightBold">{city}</Box>
         </Typography>
-        <Typography variant="subtitle1" component="div" color="textSecondary">
+        <Typography variant="body1" component="div" color="textSecondary">
           <Box fontWeight="600">{subtitle}</Box>
         </Typography>
       </Box>
       <Grid container justify="center" alignItems="flex-end">
         <Grid item xs={6} className="temperature">
-          <Grid container justify="center" alignItems="flex-start" wrap="nowrap">
+          <Grid
+            container
+            justify="center"
+            alignItems="flex-start"
+            wrap="nowrap"
+          >
             <Typography variant="h3" component="div" color="textPrimary">
               {Math.round(temperature)}
             </Typography>
@@ -70,7 +75,12 @@ export default function WeatherInfo({
               °C
             </Typography>
           </Grid>
-          <Typography variant="subtitle2" component="div" color="textSecondary" align="center">
+          <Typography
+            variant="subtitle2"
+            component="div"
+            color="textSecondary"
+            align="center"
+          >
             Feels like {Math.round(temperatureApparent)} °C
           </Typography>
         </Grid>
@@ -80,7 +90,12 @@ export default function WeatherInfo({
             src={getWeatherIconFrom(weatherCode).icon}
             alt={getWeatherIconFrom(weatherCode).text}
           />
-          <Typography variant="subtitle2" component="div" color="textSecondary" align="center">
+          <Typography
+            variant="subtitle2"
+            component="div"
+            color="textSecondary"
+            align="center"
+          >
             {getWeatherIconFrom(weatherCode).text}
           </Typography>
         </Grid>

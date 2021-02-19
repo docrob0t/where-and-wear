@@ -23,8 +23,8 @@ function ClothingSuggestions({ weatherCode, temperature }) {
 
   return (
     <Box>
-      <Box className="title" paddingBottom={2}>
-        <Typography variant="h5">
+      <Box className="title" paddingBottom={3}>
+        <Typography variant="h6">
           <Box fontWeight="fontWeightBold">Clothing Suggestions</Box>
         </Typography>
       </Box>
