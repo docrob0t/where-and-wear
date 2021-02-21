@@ -27,7 +27,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => {});
+    .catch((error) => { });
   // TODO: handle error
 });
 
@@ -50,7 +50,7 @@ app.post("/weatherAtDestination/", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => {});
+    .catch((error) => { });
   // TODO: handle error
 });
 
@@ -123,19 +123,9 @@ app.get("/retrieveCoordsFromLocation", (req, res) => {
     "access_token=" +
     config.MAPBOX_API_KEY;
 
-  console.log("In /retrieveCoordsFromLocation");
-  console.log("Request is: " + req.query.search);
-  console.log("Request URL is: " + requestURL);
-
   axios
     .get(requestURL)
     .then((response) => {
-      console.log("Response from /retrieveCoordsFromLocation:");
-      console.log(
-        response.data.features[0].geometry.coordinates[1],
-        response.data.features[0].geometry.coordinates[0]
-      );
-      console.log("End");
       res.json({
         lat: response.data.features[0].geometry.coordinates[1],
         long: response.data.features[0].geometry.coordinates[0]
@@ -166,26 +156,21 @@ app.get("/retrieveDuration", (req, res) => {
 
   console.log(
     "Requests:" +
-      req.query.profile +
-      "," +
-      req.query.startlong +
-      "," +
-      req.query.startlat +
-      "," +
-      req.query.destinationlong +
-      "," +
-      req.query.destinationlat
+    req.query.profile +
+    "," +
+    req.query.startlong +
+    "," +
+    req.query.startlat +
+    "," +
+    req.query.destinationlong +
+    "," +
+    req.query.destinationlat
   );
 
   axios
     .get(requestURL)
     .then((response) => {
-      console.log(response.data);
-      console.log(
-        "Response from /retrieveDuration is " + response.data.routes[0].duration
-      );
       res.json({ duration: response.data.routes[0].duration });
-      console.log("End");
     })
     .catch((error) => {
       // TODO: Handle error
