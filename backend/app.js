@@ -114,6 +114,40 @@ app.post("/locationfromcoords", (req, res) => {
     });
 });
 
+// Gets the coordinates from a string
+app.get("/retrieveCoordsFromLocation", (req, res) => {
+  let requestURL =
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+    encodeURI(req.query.search) +
+    ".json?country=GB&autocomplete=true&" +
+    "access_token=" +
+    config.MAPBOX_API_KEY;
+
+  console.log("In /retrieveCoordsFromLocation");
+  console.log("Request is: " + req.query.search);
+  console.log("Request URL is: " + requestURL);
+
+  axios
+    .get(requestURL)
+    .then((response) => {
+      console.log("Response from /retrieveCoordsFromLocation:");
+      console.log(
+        response.data.features[0].geometry.coordinates[1],
+        response.data.features[0].geometry.coordinates[0]
+      );
+      console.log("End");
+      res.json({
+        lat: response.data.features[0].geometry.coordinates[1],
+        long: response.data.features[0].geometry.coordinates[0]
+      });
+    })
+    .catch((error) => {
+      // Handle error
+      console.log("Cannot retrieve coordinates");
+      console.log(error);
+    });
+});
+
 // Gets the duration with a mode of transport and between two sets of coordinates
 app.get("/retrieveDuration", (req, res) => {
   let requestURL =
@@ -156,40 +190,6 @@ app.get("/retrieveDuration", (req, res) => {
     .catch((error) => {
       // TODO: Handle error
       console.log("Cannot retrieve duration");
-      console.log(error);
-    });
-});
-
-// Gets the coordinates from a string
-app.get("/retrieveCoordsFromLocation", (req, res) => {
-  let requestURL =
-    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-    encodeURI(req.query.search) +
-    ".json?country=GB&autocomplete=true&" +
-    "access_token=" +
-    config.MAPBOX_API_KEY;
-
-  console.log("In /retrieveCoordsFromLocation");
-  console.log("Request is: " + req.query.search);
-  console.log("Request URL is: " + requestURL);
-
-  axios
-    .get(requestURL)
-    .then((response) => {
-      console.log("Response from /retrieveCoordsFromLocation:");
-      console.log(
-        response.data.features[0].geometry.coordinates[1],
-        response.data.features[0].geometry.coordinates[0]
-      );
-      console.log("End");
-      res.json({
-        lat: response.data.features[0].geometry.coordinates[1],
-        long: response.data.features[0].geometry.coordinates[0]
-      });
-    })
-    .catch((error) => {
-      // Handle error
-      console.log("Cannot retrieve coordinates");
       console.log(error);
     });
 });

@@ -1,20 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import MenuButton from "./MenuButton";
-import ReactMapGL from "react-map-gl";
-import DestinationCard from "./DestinationCard/DestinationCard";
-import WeatherCard from "./WeatherCard/WeatherCard";
-import DestinationWeatherInfo from "./DestinationCard/DestinationWeatherInfo";
-import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = "pk.eyJ1Ijoiam4zMjMiLCJhIjoiY2trd2xmdzRnMDdodzJybzZzYmNyMmVkZyJ9.BHze212H3hUKnkr7k6ZdEg";
+import React, { useEffect, useRef, useState } from "react";
+
+import DestinationCard from "./DestinationCard/DestinationCard";
+import DestinationWeatherInfo from "./DestinationCard/DestinationWeatherInfo";
+import MenuButton from "./MenuButton";
+import ReactMapGL from "react-map-gl";
+import WeatherCard from "./WeatherCard/WeatherCard";
+import axios from "axios";
+
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 function Map() {
   const [startingPoint, setStartingPoint] = useState({
     lat: 0,
     long: 0
   });
-  // const [destination, setDestination] = useState({});
+  
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
     latitude: 54.7603,
@@ -36,13 +38,41 @@ function Map() {
           );
         } else if (result.state === "denied") {
           // Use IP approximation
+          const getUsersIP = fetch('https://api.ipify.org/?format=json')
+            .then(response => response.json())
+            .then(data => {
+              return data.ip;
+            })
+
+          const getLocationFromIP = () => {
+            getUsersIP.then((ip) => {
+              fetch('http://ip-api.com/json/' + ip + '?fields=city')
+                .then(response => response.json())
+                .then((data) => {
+                  getCoordinatesFromCity(data.city)
+                })
+            })
+          }
+          getLocationFromIP();
         }
       });
     } else {
       alert("Geolocation is not supported by this browser.");
-      // Use IP approximation
+
     }
   }, []);
+
+  function getCoordinatesFromCity(city) {
+    axios
+      .get("/retrieveCoordsFromLocation/", {
+        params: {
+          search: city,
+        }
+      })
+      .then((response) =>
+        setStartingPoint({ city: city, lat: response.data.lat, long: response.data.long })
+      );
+  }
 
   function getCoordinates(position) {
     const { latitude, longitude } = position.coords;
