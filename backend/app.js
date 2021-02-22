@@ -52,7 +52,7 @@ app.post("/weatherAtDestination/", (req, res) => {
     })
     .catch((error) => {});
   // TODO: handle error
-};);
+});
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
 app.post("/weatherAtCoords/forecast/", (req, res) => {
