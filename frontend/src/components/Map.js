@@ -7,7 +7,7 @@ import DestinationWeatherInfo from "./DestinationCard/DestinationWeatherInfo";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
 import WeatherCard from "./WeatherCard/WeatherCard";
-import axios from "axios";
+import axios from "../axios";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
