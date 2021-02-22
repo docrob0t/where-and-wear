@@ -27,7 +27,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => { });
+    .catch((error) => {});
   // TODO: handle error
 });
 
@@ -50,7 +50,7 @@ app.post("/weatherAtDestination/", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => { });
+    .catch((error) => {});
   // TODO: handle error
 });
 

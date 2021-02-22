@@ -1,22 +1,19 @@
 import "mapbox-gl/dist/mapbox-gl.css";
-
 import React, { useEffect, useRef, useState } from "react";
-
 import DestinationCard from "./DestinationCard/DestinationCard";
-import DestinationWeatherInfo from "./DestinationCard/DestinationWeatherInfo";
 import MenuButton from "./MenuButton";
 import ReactMapGL from "react-map-gl";
 import WeatherCard from "./WeatherCard/WeatherCard";
-import axios from "axios";
+import axios from "../axios";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 function Map() {
   const [startingPoint, setStartingPoint] = useState({
-    lat: 0,
-    long: 0
+    lat: undefined,
+    long: undefined
   });
-  
+
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
     latitude: 54.7603,
@@ -26,6 +23,22 @@ function Map() {
     pitch: 0
   });
   const mapRef = useRef();
+
+  const getUsersIP = fetch("https://api.ipify.org/?format=json")
+    .then((response) => response.json())
+    .then((data) => {
+      return data.ip;
+    });
+
+  const getLocationFromIP = () => {
+    getUsersIP.then((ip) => {
+      fetch("http://ip-api.com/json/" + ip + "?fields=city")
+        .then((response) => response.json())
+        .then((data) => {
+          getCoordinatesFromCity(data.city);
+        });
+    });
+  };
 
   // On component initialisation, get the users location in co-ordinates and set the state accordingly
   useEffect(() => {
@@ -38,27 +51,12 @@ function Map() {
           );
         } else if (result.state === "denied") {
           // Use IP approximation
-          const getUsersIP = fetch('https://api.ipify.org/?format=json')
-            .then(response => response.json())
-            .then(data => {
-              return data.ip;
-            })
-
-          const getLocationFromIP = () => {
-            getUsersIP.then((ip) => {
-              fetch('http://ip-api.com/json/' + ip + '?fields=city')
-                .then(response => response.json())
-                .then((data) => {
-                  getCoordinatesFromCity(data.city)
-                })
-            })
-          }
           getLocationFromIP();
         }
       });
     } else {
-      alert("Geolocation is not supported by this browser.");
-
+      // If Geolocation is not supported by this browser then use IP approximation
+      getLocationFromIP();
     }
   }, []);
 
@@ -66,17 +64,24 @@ function Map() {
     axios
       .get("/retrieveCoordsFromLocation/", {
         params: {
-          search: city,
+          search: city
         }
       })
       .then((response) =>
-        setStartingPoint({ city: city, lat: response.data.lat, long: response.data.long })
+        setStartingPoint({
+          lat: response.data.lat,
+          long: response.data.long
+        })
       );
   }
 
   function getCoordinates(position) {
     const { latitude, longitude } = position.coords;
-    setStartingPoint({ ...startingPoint, lat: latitude, long: longitude });
+    setStartingPoint({
+      ...startingPoint,
+      lat: latitude,
+      long: longitude
+    });
   }
 
   // TODO: decide how we want to handle these error cases
@@ -90,9 +95,6 @@ function Map() {
         break;
       case error.TIMEOUT:
         alert("The request to get user location timed out.");
-        break;
-      case error.UNKNOWN_ERROR:
-        alert("An unknown error occurred.");
         break;
       default:
         alert("An unknown error occurred.");
