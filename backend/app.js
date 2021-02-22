@@ -27,7 +27,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => { });
+    .catch((error) => {});
   // TODO: handle error
 });
 
@@ -50,9 +50,9 @@ app.post("/weatherAtDestination/", (req, res) => {
     .then((response) => {
       res.json({ timelines: response.data.data.timelines });
     })
-    .catch((error) => { });
+    .catch((error) => {});
   // TODO: handle error
-});
+};);
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
 app.post("/weatherAtCoords/forecast/", (req, res) => {

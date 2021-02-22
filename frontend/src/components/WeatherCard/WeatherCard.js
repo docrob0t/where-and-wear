@@ -1,11 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Fab,
-  Grid,
-  makeStyles
-} from "@material-ui/core";
+import { Box, Card, CardContent, Fab, Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
