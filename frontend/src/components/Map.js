@@ -10,8 +10,8 @@ const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 function Map() {
   const [startingPoint, setStartingPoint] = useState({
-    lat: 0,
-    long: 0
+    lat: undefined,
+    long: undefined
   });
 
   const [viewport, setViewport] = useState({
