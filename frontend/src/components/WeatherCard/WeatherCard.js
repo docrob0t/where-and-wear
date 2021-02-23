@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Fab, Grid, makeStyles } from "@material-ui/core";
+import { Box, Card, CardContent, Fab, Grid, makeStyles, Paper, Tabs, Tab } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
@@ -9,7 +9,7 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 const cardStyles = makeStyles((theme) => ({
   root: {
     width: "46rem",
-    height: "10.8rem",
+    height: "13rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -19,7 +19,7 @@ const cardStyles = makeStyles((theme) => ({
   },
   rootExpanded: {
     width: "46rem",
-    height: "25rem",
+    height: "26.5rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -29,9 +29,12 @@ const cardStyles = makeStyles((theme) => ({
   },
   fab: {
     position: "absolute",
-    top: theme.spacing(1.5),
+    top: theme.spacing(0.5),
     right: theme.spacing(1.5),
     textTransform: "none"
+  },
+  weatherTabs: {
+    width: "35rem",
   }
 }));
 
@@ -45,6 +48,11 @@ function WeatherCard({ lat, long }) {
     weatherCode: 1000
   });
   const [weatherForecastData, setWeatherForecastData] = useState([]);
+
+  const [tab, setTab] = React.useState(0);
+
+  const switchTab = (event, newTab) => {
+    setTab(newTab);};
 
   // API call to fetch current weather at user's location
   useEffect(() => {
@@ -101,6 +109,17 @@ function WeatherCard({ lat, long }) {
       >
         {isOpen ? <Box>Show less</Box> : <Box>Show more</Box>}
       </Fab>
+      <Paper square>
+        <Tabs
+          className={styling.weatherTabs}
+          value={tab}
+          indicatorColor="primary"
+          onChange={switchTab}
+        >
+          <Tab label="Weather at Starting Location"/>
+          <Tab label="Weather at Destination"/>
+        </Tabs>
+      </Paper>
       <CardContent>
         <Grid container direction="column">
           <Grid item xs={isOpen ? 12 : 12} container direction="row">
