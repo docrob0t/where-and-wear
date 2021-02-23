@@ -159,6 +159,9 @@ function WeatherCard({ lat, long }) {
           </Grid>
         </CardContent>
       </TabPanel>
+      <TabPanel value={tab} index={1}>
+        {/* Content for destination weather */}
+      </TabPanel>
     </Card>
   );
 }
