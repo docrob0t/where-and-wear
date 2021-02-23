@@ -9,7 +9,7 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 const cardStyles = makeStyles((theme) => ({
   root: {
     width: "46rem",
-    height: "13rem",
+    height: "13.5rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -38,6 +38,15 @@ const cardStyles = makeStyles((theme) => ({
   }
 }));
 
+function TabPanel(props) {
+  const { children, value, index } = props;
+  return (
+    <div>
+      {value === index && <Box p={0}>{children}</Box>}
+    </div>
+  );
+} 
+
 // WeatherCard() function returns a weather card overlay
 function WeatherCard({ lat, long }) {
   const styling = cardStyles();
@@ -49,6 +58,7 @@ function WeatherCard({ lat, long }) {
   });
   const [weatherForecastData, setWeatherForecastData] = useState([]);
 
+  // Handling tabs in weather card
   const [tab, setTab] = React.useState(0);
 
   const switchTab = (event, newTab) => {
@@ -120,33 +130,35 @@ function WeatherCard({ lat, long }) {
           <Tab label="Weather at Destination"/>
         </Tabs>
       </Paper>
-      <CardContent>
-        <Grid container direction="column">
-          <Grid item xs={isOpen ? 12 : 12} container direction="row">
-            <Grid item xs={6}>
-              <WeatherInfo
-                lat={lat}
-                long={long}
-                temperature={currentWeather.temperature}
-                temperatureApparent={currentWeather.temperatureApparent}
-                weatherCode={currentWeather.weatherCode}
-                time={"current"}
-              />
+      <TabPanel value={tab} index={0}>
+        <CardContent>
+          <Grid container direction="column">
+            <Grid item xs={isOpen ? 12 : 12} container direction="row">
+              <Grid item xs={6}>
+                <WeatherInfo
+                  lat={lat}
+                  long={long}
+                  temperature={currentWeather.temperature}
+                  temperatureApparent={currentWeather.temperatureApparent}
+                  weatherCode={currentWeather.weatherCode}
+                  time={"current"}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <ClothingSuggestions
+                  weatherCode={currentWeather.weatherCode}
+                  currentTemperature={currentWeather.temperature}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <ClothingSuggestions
-                weatherCode={currentWeather.weatherCode}
-                currentTemperature={currentWeather.temperature}
-              />
-            </Grid>
+            {isOpen && (
+              <Grid item xs={12}>
+                <SevenDayForecast intervals={weatherForecastData} />
+              </Grid>
+            )}
           </Grid>
-          {isOpen && (
-            <Grid item xs={12}>
-              <SevenDayForecast intervals={weatherForecastData} />
-            </Grid>
-          )}
-        </Grid>
-      </CardContent>
+        </CardContent>
+      </TabPanel>
     </Card>
   );
 }
