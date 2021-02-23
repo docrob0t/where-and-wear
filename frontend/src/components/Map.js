@@ -1,8 +1,10 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useEffect, useRef, useState } from "react";
-import DestinationCard from "./DestinationCard/DestinationCard";
+import InputBox from "./InputBox/InputBox";
 import MenuButton from "./MenuButton";
-import ReactMapGL from "react-map-gl";
+import ReactMapGL, { FlyToInterpolator } from "react-map-gl";
+import { easeQuadInOut } from "d3-ease";
+
 import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "../axios";
 
@@ -13,7 +15,11 @@ function Map() {
     lat: undefined,
     long: undefined
   });
-
+  const [destination, setDestination] = useState({
+    lat: undefined,
+    long: undefined
+  });
+  const [arrivalTime, setArrivalTime] = useState(new Date());
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
     latitude: 54.7603,
@@ -60,6 +66,23 @@ function Map() {
     }
   }, []);
 
+  useEffect(() => {
+    // Run a different method to change viewport if start & destination is defined
+    if (startingPoint.lat !== undefined && destination.lat !== undefined) {
+      // change to a different viewport?
+    } else if (startingPoint.lat !== undefined) {
+      setViewport({
+        ...viewport,
+        longitude: startingPoint.long,
+        latitude: startingPoint.lat,
+        zoom: 12,
+        transitionDuration: 5000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeQuadInOut
+      });
+    }
+  }, [startingPoint]);
+
   function getCoordinatesFromCity(city) {
     axios
       .get("/retrieveCoordsFromLocation/", {
@@ -88,7 +111,9 @@ function Map() {
   function handleLocationError(error) {
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        console.log("User denied the request for Geolocation. Defaulting to London");
+        console.log(
+          "User denied the request for Geolocation. Defaulting to London"
+        );
         break;
       case error.POSITION_UNAVAILABLE:
         alert("Location information is unavailable.");
@@ -113,7 +138,7 @@ function Map() {
     >
       <MenuButton />
       <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
-      <DestinationCard />
+      <InputBox setViewport={setViewport} setStartingPoint={setStartingPoint} />
     </ReactMapGL>
   );
 }
