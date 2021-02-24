@@ -22,7 +22,7 @@ const menuStyle = makeStyles({
     maxWidth: 75,
     maxHeight: 75,
     backgroundColor: "#FCFCFC",
-    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)",
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.3)",
     border: "2px solid #A0A3BD",
     borderRadius: "12px"
   },
@@ -131,31 +131,18 @@ function MenuButton() {
         >
           {/* Popover content */}
           <div className={classes.imgStyle}>
-            <img
-              src={svgfile2}
-              height="40"
-              length="40"
-              alt="Where and Wear logo"
-            />
-            <img
-              src={svgfile3}
-              height="30"
-              length="30"
-              alt="Where and Wear title"
-            />
+            <img src={svgfile2} height="40" length="40" alt="Where and Wear logo" />
+            <img src={svgfile3} height="30" length="30" alt="Where and Wear title" />
           </div>
           <div className={classes.popOverTextStyle}>
             <h2 className={classes.aboutUsTitle}>About Us</h2>
-            Use our application to find the weather at a destination and see
-            clothing recommendations.
+            Use our application to find the weather at a destination and see clothing
+            recommendations.
             <h3 className={classes.attribTitle}>Attributions:</h3>
             <p className={classes.attrib1}>FlatIcon</p>
             <li>
               Icons made by{" "}
-              <a
-                href="https://www.flaticon.com/authors/freepik"
-                title="Freepik"
-              >
+              <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
                 Freepik
               </a>{" "}
               from{" "}
@@ -165,10 +152,7 @@ function MenuButton() {
             </li>
             <li>
               Icons made by{" "}
-              <a
-                href="https://www.flaticon.com/authors/good-ware"
-                title="Good Ware"
-              >
+              <a href="https://www.flaticon.com/authors/good-ware" title="Good Ware">
                 Good Ware
               </a>{" "}
               from{" "}
