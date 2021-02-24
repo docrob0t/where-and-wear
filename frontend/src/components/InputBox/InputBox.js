@@ -24,7 +24,7 @@ const cardStyles = makeStyles((theme) => ({
   }
 }));
 
-function InputBox({ setStartingPoint }) {
+function InputBox({ setStartingPoint, setDestination }) {
   const classes = cardStyles();
   const [startName, setStartName] = useState("");
   const [startCoords, setStartCoords] = useState({
@@ -96,9 +96,19 @@ function InputBox({ setStartingPoint }) {
     }
   }, [startCoords, destinationCoords, mode]);
 
+  // Get start location's coordinates on each keystroke
   useEffect(() => {
-    getStartCoordinates();
+    if (startName !== "") {
+      getStartCoordinates();
+    }
   }, [startName]);
+
+  // Get destination location's coordinates on each keystroke
+  useEffect(() => {
+    if (destinationName !== "") {
+      getDestinationCoordinates();
+    }
+  }, [destinationName]);
 
   // Adds the journey duration to the current time
   useEffect(() => {
@@ -136,6 +146,7 @@ function InputBox({ setStartingPoint }) {
     getStartCoordinates();
     getDestinationCoordinates();
     setStartingPoint(startCoords);
+    setDestination(destinationCoords);
   }
 
   return (

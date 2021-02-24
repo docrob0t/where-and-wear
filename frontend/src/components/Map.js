@@ -2,11 +2,12 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useEffect, useRef, useState } from "react";
 import InputBox from "./InputBox/InputBox";
 import MenuButton from "./MenuButton";
-import ReactMapGL, { FlyToInterpolator } from "react-map-gl";
+import ReactMapGL, { FlyToInterpolator, WebMercatorViewport } from "react-map-gl";
 import { easeQuadInOut } from "d3-ease";
-
 import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "../axios";
+import Pins from "./Pins";
+import { Box } from "@material-ui/core";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -66,22 +67,45 @@ function Map() {
     }
   }, []);
 
+  // Change viewport according to user's input
   useEffect(() => {
-    // Run a different method to change viewport if start & destination is defined
+    // Run a different method to change viewport if both start & destination is defined
     if (startingPoint.lat !== undefined && destination.lat !== undefined) {
-      // change to a different viewport?
+      // Calculate the viewport position
+      const { longitude, latitude, zoom } = new WebMercatorViewport(
+        viewport
+      ).fitBounds(
+        [
+          [startingPoint.long, startingPoint.lat],
+          [destination.long, destination.lat]
+        ],
+        {
+          padding: { top: 100, bottom: 250, left: 350, right: 0 },
+          offset: [200, 0]
+        }
+      );
+
+      setViewport({
+        ...viewport,
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 3000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeQuadInOut
+      });
     } else if (startingPoint.lat !== undefined) {
       setViewport({
         ...viewport,
         longitude: startingPoint.long,
         latitude: startingPoint.lat,
         zoom: 12,
-        transitionDuration: 5000,
+        transitionDuration: 3000,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: easeQuadInOut
       });
     }
-  }, [startingPoint]);
+  }, [startingPoint, destination]);
 
   function getCoordinatesFromCity(city) {
     axios
@@ -111,9 +135,7 @@ function Map() {
   function handleLocationError(error) {
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        console.log(
-          "User denied the request for Geolocation. Defaulting to London"
-        );
+        console.log("User denied the request for Geolocation. Defaulting to London");
         break;
       case error.POSITION_UNAVAILABLE:
         alert("Location information is unavailable.");
@@ -136,9 +158,24 @@ function Map() {
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
       mapboxApiAccessToken={MAPBOX_TOKEN}
     >
+      {(function () {
+        if (startingPoint.lat !== undefined && destination.lat !== undefined) {
+          return (
+            <Box>
+              <Pins lat={startingPoint.lat} long={startingPoint.long} />
+              <Pins lat={destination.lat} long={destination.long} />
+            </Box>
+          );
+        } else if (startingPoint.lat !== undefined) {
+          return <Pins lat={startingPoint.lat} long={startingPoint.long} />;
+        }
+      })()}
       <MenuButton />
       <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
-      <InputBox setViewport={setViewport} setStartingPoint={setStartingPoint} />
+      <InputBox
+        setStartingPoint={setStartingPoint}
+        setDestination={setDestination}
+      />
     </ReactMapGL>
   );
 }
