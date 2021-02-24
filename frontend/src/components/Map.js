@@ -30,24 +30,24 @@ function Map() {
   });
   const mapRef = useRef();
 
-  const getUsersIP = fetch("https://api.ipify.org/?format=json")
-    .then((response) => response.json())
-    .then((data) => {
-      return data.ip;
-    });
-
-  const getLocationFromIP = () => {
-    getUsersIP.then((ip) => {
-      fetch("http://ip-api.com/json/" + ip + "?fields=city")
-        .then((response) => response.json())
-        .then((data) => {
-          getCoordinatesFromCity(data.city);
-        });
-    });
-  };
-
   // On component initialisation, get the users location in co-ordinates and set the state accordingly
   useEffect(() => {
+    const getUsersIP = fetch("https://api.ipify.org/?format=json")
+      .then((response) => response.json())
+      .then((data) => {
+        return data.ip;
+      });
+
+    const getLocationFromIP = () => {
+      getUsersIP.then((ip) => {
+        fetch("http://ip-api.com/json/" + ip + "?fields=city")
+          .then((response) => response.json())
+          .then((data) => {
+            getCoordinatesFromCity(data.city);
+          });
+      });
+    };
+
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
         if (result.state === "granted" || result.state === "prompt") {
