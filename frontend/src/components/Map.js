@@ -7,6 +7,8 @@ import { easeQuadInOut } from "d3-ease";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "../axios";
 import Pins from "./Pins";
+import SPin from "./SPin";
+import DPin from "./DPin";
 import { Box } from "@material-ui/core";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
@@ -162,8 +164,8 @@ function Map() {
         if (startingPoint.lat !== undefined && destination.lat !== undefined) {
           return (
             <Box>
-              <Pins lat={startingPoint.lat} long={startingPoint.long} />
-              <Pins lat={destination.lat} long={destination.long} />
+              <SPin lat={startingPoint.lat} long={startingPoint.long} />
+              <DPin lat={destination.lat} long={destination.long} />
             </Box>
           );
         } else if (startingPoint.lat !== undefined) {

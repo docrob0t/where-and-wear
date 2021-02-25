@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "../../axios";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import DriveEtaRoundedIcon from "@material-ui/icons/DriveEtaRounded";
 import DirectionsWalkRoundedIcon from "@material-ui/icons/DirectionsWalkRounded";
 import DirectionsBikeRoundedIcon from "@material-ui/icons/DirectionsBikeRounded";
@@ -16,6 +18,11 @@ const cardStyles = makeStyles((theme) => ({
     top: 20,
     borderRadius: 20,
     boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.3)"
+  },
+  Subtitle: {
+    fontSize: 15,
+    top: 230,
+    position: 'absolute',
   },
   form: {
     margin: theme.spacing(2),
@@ -121,10 +128,26 @@ function InputBox({ setStartingPoint, setDestination }) {
       arrivalTime.setTime(nowInMS);
       setArrivalTime(arrivalTime);
       console.log("The Arrival Time is " + arrivalTime);
+    
+     
     }
 
     calculateArrivalTime();
   }, [travelTime]);
+
+  function calculateTime(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    var hmsDisplay = hDisplay + mDisplay + sDisplay;
+    return hmsDisplay; 
+  };
+
 
   // If user clicked enter, also treat as submit
   function handleKeyPress(event) {
@@ -195,9 +218,17 @@ function InputBox({ setStartingPoint, setDestination }) {
               <ToggleButton type="submit" value="cycling" aria-label="cycling">
                 <DirectionsBikeRoundedIcon />
               </ToggleButton>
+              <Typography align = 'center' variant = "subtitle2">
+              <Box fontWeight="fontWeightBold" lineHeight={1}>
+                  {"Duration: "}
+                </Box>
+                <Box m={0.5} lineHeight={1.1}>
+                {calculateTime(travelTime)}
+                </Box>
+              </Typography>                           
             </ToggleButtonGroup>
           </Grid>
-        </Grid>
+          </Grid>
       </form>
     </Card>
   );
