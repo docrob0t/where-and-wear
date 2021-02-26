@@ -1,13 +1,15 @@
 import "mapbox-gl/dist/mapbox-gl.css";
+
 import React, { useEffect, useRef, useState } from "react";
+import ReactMapGL, { FlyToInterpolator, WebMercatorViewport } from "react-map-gl";
+
+import { Box } from "@material-ui/core";
 import InputBox from "./InputBox/InputBox";
 import MenuButton from "./MenuButton";
-import ReactMapGL, { FlyToInterpolator, WebMercatorViewport } from "react-map-gl";
-import { easeQuadInOut } from "d3-ease";
+import Pins from "./Pins";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "../axios";
-import Pins from "./Pins";
-import { Box } from "@material-ui/core";
+import { easeQuadInOut } from "d3-ease";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -19,7 +21,7 @@ function Map() {
   const [destination, setDestination] = useState({
     lat: undefined,
     long: undefined
-  });
+  });  
   const [arrivalTime, setArrivalTime] = useState(new Date());
   const [viewport, setViewport] = useState({
     // Center of United Kingdom
@@ -171,10 +173,11 @@ function Map() {
         }
       })()}
       <MenuButton />
-      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
+      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} destinationLat={destination.lat} destinationLong={destination.long} />
       <InputBox
         setStartingPoint={setStartingPoint}
         setDestination={setDestination}
+        setArrivalTime={setArrivalTime}
       />
     </ReactMapGL>
   );

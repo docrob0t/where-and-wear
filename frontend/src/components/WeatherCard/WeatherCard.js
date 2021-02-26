@@ -1,9 +1,10 @@
-import { Box, Card, CardContent, Fab, Grid, makeStyles, Paper, Tabs, Tab } from "@material-ui/core";
+import { Box, Card, CardContent, Fab, Grid, Paper, Tab, Tabs, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+
+import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import axios from "../../axios";
-import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 
 // Card styling constants
 const cardStyles = makeStyles((theme) => ({
@@ -48,15 +49,24 @@ function TabPanel(props) {
 } 
 
 // WeatherCard() function returns a weather card overlay
-function WeatherCard({ lat, long }) {
+function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, destinationLong, arrivalTime }) {
   const styling = cardStyles();
   const [isOpen, setIsOpen] = useState(false);
+
   const [currentWeather, setCurrentWeather] = useState({
     temperature: 0,
     temperatureApparent: 0,
     weatherCode: 1000
   });
   const [weatherForecastData, setWeatherForecastData] = useState([]);
+
+  const [destinationWeather, setDestinationWeather] = useState({
+    temperature: 0,
+    temperatureApparent: 0,
+    weatherCode: 1000,
+    isTabEnabled: false
+  });
+  const [destinationWeatherForecastData, setDestinationWeatherForecastData] = useState([]);
 
   // Handling tabs in weather card
   const [tab, setTab] = React.useState(0);
@@ -69,8 +79,8 @@ function WeatherCard({ lat, long }) {
     const fetchWeather = async () => {
       await axios
         .post("/weatherAtCoords/current/", {
-          lat: lat,
-          long: long
+          lat: startingLat,
+          long: startingLong
         })
         .then((response) => {
           let temperature, temperatureApparent, weatherCode;
@@ -94,19 +104,19 @@ function WeatherCard({ lat, long }) {
     };
 
     fetchWeather();
-  }, [lat, long]);
+  }, [startingLat, startingLong]);
 
   // API call to fetch 7 day forecast at user's location
   useEffect(() => {
     const fetchWeatherForecast = async () => {
       const response = await axios.post("/weatherAtCoords/forecast/", {
-        lat: lat,
-        long: long
+        lat: startingLat,
+        long: startingLong
       });
       setWeatherForecastData(response.data.timelines[0].intervals);
     };
     fetchWeatherForecast();
-  }, [lat, long]);
+  }, [startingLat, startingLong]);
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
@@ -127,7 +137,7 @@ function WeatherCard({ lat, long }) {
           onChange={switchTab}
         >
           <Tab label="Weather at Starting Location"/>
-          <Tab label="Weather at Destination"/>
+          <Tab label="Weather at Destination" disabled={!destinationWeather.isTabEnabled} />
         </Tabs>
       </Paper>
       <TabPanel value={tab} index={0}>
@@ -136,8 +146,8 @@ function WeatherCard({ lat, long }) {
             <Grid item xs={isOpen ? 12 : 12} container direction="row">
               <Grid item xs={6}>
                 <WeatherInfo
-                  lat={lat}
-                  long={long}
+                  lat={startingLat}
+                  long={startingLong}
                   temperature={currentWeather.temperature}
                   temperatureApparent={currentWeather.temperatureApparent}
                   weatherCode={currentWeather.weatherCode}
