@@ -15,7 +15,7 @@ const cardStyles = makeStyles((theme) => ({
     bottom: 5,
     borderRadius: 20,
     transition: "0.5s ease-in-out",
-    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.3)"
   },
   rootExpanded: {
     width: "46rem",
@@ -25,7 +25,7 @@ const cardStyles = makeStyles((theme) => ({
     bottom: 5,
     borderRadius: 20,
     transition: "0.5s ease-in-out",
-    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.5)"
+    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.3)"
   },
   fab: {
     position: "absolute",
