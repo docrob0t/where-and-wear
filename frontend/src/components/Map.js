@@ -72,7 +72,7 @@ function Map() {
   // Change viewport according to user's input
   useEffect(() => {
     // Run a different method to change viewport if both start & destination is defined
-    if (startingPoint.lat !== undefined && destination.lat !== undefined) {
+    if (startingPoint.lat !== undefined && destination.lat !== undefined && startingPoint.long !== undefined && destination.long !== undefined) {
       // Calculate the viewport position
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
@@ -173,7 +173,7 @@ function Map() {
         }
       })()}
       <MenuButton />
-      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} destinationLat={destination.lat} destinationLong={destination.long} />
+      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} destinationLat={destination.lat} destinationLong={destination.long} arrivalTime={arrivalTime} />
       <InputBox
         setStartingPoint={setStartingPoint}
         setDestination={setDestination}

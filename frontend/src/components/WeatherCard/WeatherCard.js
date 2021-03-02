@@ -46,25 +46,27 @@ function TabPanel(props) {
       {value === index && <Box p={0}>{children}</Box>}
     </div>
   );
-} 
+}
 
 // WeatherCard() function returns a weather card overlay
 function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, destinationLong, arrivalTime }) {
   const styling = cardStyles();
   const [isOpen, setIsOpen] = useState(false);
 
-  const [currentWeather, setCurrentWeather] = useState({
+  // Starting location weather states
+  const [currentStartingWeather, setCurrentStartingWeather] = useState({
     temperature: 0,
     temperatureApparent: 0,
     weatherCode: 1000
   });
-  const [weatherForecastData, setWeatherForecastData] = useState([]);
+  const [startingWeatherForecastData, setStartingWeatherForecastData] = useState([]);
 
-  const [destinationWeather, setDestinationWeather] = useState({
+  // Destination location weather states
+  const [currentDestinationWeather, setCurrentDestinationWeather] = useState({
     temperature: 0,
     temperatureApparent: 0,
     weatherCode: 1000,
-    isTabEnabled: false
+    isTabEnabled: true
   });
   const [destinationWeatherForecastData, setDestinationWeatherForecastData] = useState([]);
 
@@ -72,15 +74,18 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
   const [tab, setTab] = React.useState(0);
 
   const switchTab = (event, newTab) => {
-    setTab(newTab);};
+    setTab(newTab);
+  };
 
   // API call to fetch current weather at user's location
+  // TODO: Factor in arrival time on destination weather call
+  // TODO: Grey out weather at destination on load, enable tab when state is set
   useEffect(() => {
-    const fetchWeather = async () => {
+    const fetchWeather = async (lat, long, isStarting) => {
       await axios
         .post("/weatherAtCoords/current/", {
-          lat: startingLat,
-          long: startingLong
+          lat: lat,
+          long: long
         })
         .then((response) => {
           let temperature, temperatureApparent, weatherCode;
@@ -90,12 +95,26 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
             weatherCode
           } = response.data.timelines[0].intervals[0].values);
 
-          setCurrentWeather({
-            ...currentWeather,
-            temperature: temperature,
-            temperatureApparent: temperatureApparent,
-            weatherCode: weatherCode
-          });
+          if (isStarting) {
+            setCurrentStartingWeather({
+              ...currentStartingWeather,
+              temperature: temperature,
+              temperatureApparent: temperatureApparent,
+              weatherCode: weatherCode
+            });
+          } else {
+            setCurrentDestinationWeather({
+              ...currentDestinationWeather,
+              temperature: temperature,
+              temperatureApparent: temperatureApparent,
+              weatherCode: weatherCode,
+              arrivalTime: arrivalTime
+            });
+            currentDestinationWeather.isTabEnabled = true;
+            console.log('Getting here');
+            console.log(currentDestinationWeather.isTabEnabled);
+
+          }
         })
         // Sometimes the api would return an empty array in response, so added this catch block
         .catch((error) => {
@@ -103,20 +122,28 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
         });
     };
 
-    fetchWeather();
-  }, [startingLat, startingLong]);
+    fetchWeather(startingLat, startingLong, true);
+    fetchWeather(destinationLat, destinationLong, false);
+  }, [startingLat, startingLong, destinationLat, destinationLong, currentDestinationWeather.isTabEnabled]);
 
   // API call to fetch 7 day forecast at user's location
   useEffect(() => {
-    const fetchWeatherForecast = async () => {
+    const fetchWeatherForecast = async (lat, long, isStarting) => {
       const response = await axios.post("/weatherAtCoords/forecast/", {
-        lat: startingLat,
-        long: startingLong
+        lat: lat,
+        long: long
       });
-      setWeatherForecastData(response.data.timelines[0].intervals);
+
+      if (isStarting) {
+        setStartingWeatherForecastData(response.data.timelines[0].intervals);
+      } else {
+        setDestinationWeatherForecastData(response.data.timelines[0].intervals);
+      }
+
     };
-    fetchWeatherForecast();
-  }, [startingLat, startingLong]);
+    fetchWeatherForecast(startingLat, startingLong, true);
+    fetchWeatherForecast(destinationLat, destinationLong, false);
+  }, [startingLat, startingLong, destinationLat, destinationLong]);
 
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
@@ -136,8 +163,8 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           indicatorColor="primary"
           onChange={switchTab}
         >
-          <Tab label="Weather at Starting Location"/>
-          <Tab label="Weather at Destination" disabled={!destinationWeather.isTabEnabled} />
+          <Tab label="Weather at Starting Location" />
+          <Tab label="Weather at Destination" disabled={!currentDestinationWeather.isTabEnabled} />
         </Tabs>
       </Paper>
       <TabPanel value={tab} index={0}>
@@ -148,30 +175,60 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
                 <WeatherInfo
                   lat={startingLat}
                   long={startingLong}
-                  temperature={currentWeather.temperature}
-                  temperatureApparent={currentWeather.temperatureApparent}
-                  weatherCode={currentWeather.weatherCode}
+                  temperature={currentStartingWeather.temperature}
+                  temperatureApparent={currentStartingWeather.temperatureApparent}
+                  weatherCode={currentStartingWeather.weatherCode}
                   time={"current"}
                 />
               </Grid>
               <Grid item xs={6}>
                 <ClothingSuggestions
-                  weatherCode={currentWeather.weatherCode}
-                  currentTemperature={currentWeather.temperature}
+                  weatherCode={currentStartingWeather.weatherCode}
+                  currentTemperature={currentStartingWeather.temperature}
                 />
               </Grid>
             </Grid>
             {isOpen && (
               <Grid item xs={12}>
-                <SevenDayForecast intervals={weatherForecastData} />
+                <SevenDayForecast intervals={startingWeatherForecastData} />
               </Grid>
             )}
           </Grid>
         </CardContent>
       </TabPanel>
+
+
       <TabPanel value={tab} index={1}>
-        {/* Content for destination weather */}
+        <CardContent>
+          <Grid container direction="column">
+            <Grid item xs={isOpen ? 12 : 12} container direction="row">
+              <Grid item xs={6}>
+                <WeatherInfo
+                  lat={destinationLat}
+                  long={destinationLong}
+                  temperature={currentDestinationWeather.temperature}
+                  temperatureApparent={currentDestinationWeather.temperatureApparent}
+                  weatherCode={currentDestinationWeather.weatherCode}
+                  time={arrivalTime.toTimeString().split(" ")[0].substring(0, 5)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <ClothingSuggestions
+                  weatherCode={currentDestinationWeather.weatherCode}
+                  currentTemperature={currentDestinationWeather.temperature}
+                />
+              </Grid>
+            </Grid>
+            {isOpen && (
+              <Grid item xs={12}>
+                <SevenDayForecast intervals={destinationWeatherForecastData} />
+              </Grid>
+            )}
+          </Grid>
+        </CardContent>
       </TabPanel>
+
+
     </Card>
   );
 }
