@@ -35,7 +35,7 @@ const cardStyles = makeStyles((theme) => ({
     textTransform: "none"
   },
   weatherTabs: {
-    width: "30rem",
+    width: "30rem"
   }
 }));
 
@@ -112,12 +112,11 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           long: destinationLong,
           journeyArrivalTime: arrivalTime
         })
-        .then((response) => {    
+        .then((response) => {
           setDestinationWeatherAtArrival({
             ...destinationWeatherAtArrival,
             temperature: response.data.timelines[0].intervals[0].values.temperature,
-            temperatureApparent:
-              response.data.timelines[0].intervals[0].values.temperatureApparent,
+            temperatureApparent: response.data.timelines[0].intervals[0].values.temperatureApparent,
             weatherCode: response.data.timelines[0].intervals[0].values.weatherCode,
             isTabEnabled: true
           });
@@ -159,23 +158,24 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
         color="primary"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <Box>Hide 7-Day Forecast</Box> : <Box>Show 7-Day Forecast</Box>}
+        {isOpen ? <Box>Hide forecast</Box> : <Box>Show forecast</Box>}
       </Fab>
       <Paper square>
         <Tabs
           className={styling.weatherTabs}
           value={tab}
           indicatorColor="primary"
+          textColor="primary"
           onChange={switchTab}
         >
-          <Tab label="Weather at Starting Location" />
-          <Tab label="Weather at Destination" disabled={!destinationWeatherAtArrival.isTabEnabled} />
+          <Tab label="Starting location weather" />
+          <Tab label="Destination weather" disabled={!destinationWeatherAtArrival.isTabEnabled} />
         </Tabs>
       </Paper>
       <TabPanel value={tab} index={0}>
         <CardContent>
           <Grid container direction="column">
-            <Grid item xs={isOpen ? 12 : 12} container direction="row">
+            <Grid item xs={12} container direction="row">
               <Grid item xs={6}>
                 <WeatherInfo
                   lat={startingLat}
