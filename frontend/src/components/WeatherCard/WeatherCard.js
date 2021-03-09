@@ -35,7 +35,7 @@ const cardStyles = makeStyles((theme) => ({
     textTransform: "none"
   },
   weatherTabs: {
-    width: "35rem",
+    width: "30rem",
   }
 }));
 
@@ -159,7 +159,7 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
         color="primary"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <Box>Show less</Box> : <Box>Show more</Box>}
+        {isOpen ? <Box>Hide 7-Day Forecast</Box> : <Box>Show 7-Day Forecast</Box>}
       </Fab>
       <Paper square>
         <Tabs
@@ -201,8 +201,6 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           </Grid>
         </CardContent>
       </TabPanel>
-
-
       <TabPanel value={tab} index={1}>
         <CardContent>
           <Grid container direction="column">
@@ -232,8 +230,6 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           </Grid>
         </CardContent>
       </TabPanel>
-
-
     </Card>
   );
 }
