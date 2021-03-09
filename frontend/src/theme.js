@@ -9,13 +9,6 @@ const theme = responsiveFontSizes(
       text: {
         primary: "rgba(61,61,74,1)"
       }
-    },
-    overrides: {
-      MuiTab: {
-        root: {
-          textTransform: "none"
-        }
-      }
     }
   })
 );

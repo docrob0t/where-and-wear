@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Fab, Grid, Paper, Tab, Tabs, makeStyles } from "@material-ui/core";
+import { Box, Card, CardContent, Fab, Grid, makeStyles, Tab, Tabs, withStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
 import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
@@ -6,11 +6,34 @@ import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import axios from "../../axios";
 
+const StyledTabs = withStyles({
+  indicator: {
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+    "& > span": {
+      width: "92%",
+      backgroundColor: "#635ee7"
+    }
+  }
+})((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
+
+const StyledTab = withStyles((theme) => ({
+  root: {
+    textTransform: "none",
+    fontSize: "1rem",
+    padding: "1.2rem 0.6rem 0.3rem 0.6rem",
+    "&:hover": {
+      color: "#635ee7",
+      opacity: 1
+    }
+  }
+}))((props) => <Tab disableRipple {...props} />);
 // Card styling constants
 const cardStyles = makeStyles((theme) => ({
   root: {
     width: "46rem",
-    height: "13.5rem",
+    height: "14rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -30,22 +53,19 @@ const cardStyles = makeStyles((theme) => ({
   },
   fab: {
     position: "absolute",
-    top: theme.spacing(0.5),
+    top: theme.spacing(1.5),
     right: theme.spacing(1.5),
     textTransform: "none"
   },
   weatherTabs: {
-    width: "30rem"
+    width: "30rem",
+    marginLeft: "0.4rem"
   }
 }));
 
 function TabPanel(props) {
   const { children, value, index } = props;
-  return (
-    <div>
-      {value === index && <Box p={0}>{children}</Box>}
-    </div>
-  );
+  return <div>{value === index && <Box p={0}>{children}</Box>}</div>;
 }
 
 // WeatherCard() function returns a weather card overlay
@@ -87,12 +107,12 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           long: startingLong
         })
         .then((response) => {
-            setCurrentStartingWeather({
-              ...currentStartingWeather,
-              temperature: response.data.timelines[0].intervals[0].values.temperature,
-              temperatureApparent: response.data.timelines[0].intervals[0].values.temperatureApparent,
-              weatherCode: response.data.timelines[0].intervals[0].values.weatherCode
-            });
+          setCurrentStartingWeather({
+            ...currentStartingWeather,
+            temperature: response.data.timelines[0].intervals[0].values.temperature,
+            temperatureApparent: response.data.timelines[0].intervals[0].values.temperatureApparent,
+            weatherCode: response.data.timelines[0].intervals[0].values.weatherCode
+          });
         })
         // Sometimes the api would return an empty array in response, so added this catch block
         .catch((error) => {
@@ -143,7 +163,6 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
       } else {
         setDestinationWeatherForecastData(response.data.timelines[0].intervals);
       }
-
     };
     fetchWeatherForecast(startingLat, startingLong, true);
     fetchWeatherForecast(destinationLat, destinationLong, false);
@@ -160,18 +179,19 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
       >
         {isOpen ? <Box>Hide forecast</Box> : <Box>Show forecast</Box>}
       </Fab>
-      <Paper square>
-        <Tabs
-          className={styling.weatherTabs}
-          value={tab}
-          indicatorColor="primary"
-          textColor="primary"
-          onChange={switchTab}
-        >
-          <Tab label="Starting location weather" />
-          <Tab label="Destination weather" disabled={!destinationWeatherAtArrival.isTabEnabled} />
-        </Tabs>
-      </Paper>
+
+      <StyledTabs
+        className={styling.weatherTabs}
+        value={tab}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={switchTab}
+        TabIndicatorProps={{ children: <span /> }}
+      >
+        <StyledTab label="Starting location weather" />
+        <StyledTab label="Destination weather" disabled={!destinationWeatherAtArrival.isTabEnabled} />
+      </StyledTabs>
+
       <TabPanel value={tab} index={0}>
         <CardContent>
           <Grid container direction="column">
@@ -204,7 +224,7 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
       <TabPanel value={tab} index={1}>
         <CardContent>
           <Grid container direction="column">
-            <Grid item xs={isOpen ? 12 : 12} container direction="row">
+            <Grid item xs={12} container direction="row">
               <Grid item xs={6}>
                 <WeatherInfo
                   lat={destinationLat}
