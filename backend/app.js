@@ -119,7 +119,7 @@ app.get("/retrieveCoordsFromLocation", (req, res) => {
   let requestURL =
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
     encodeURI(req.query.search) +
-    ".json?country=GB&autocomplete=true&" +
+    ".json?autocomplete=true&" +
     "access_token=" +
     config.MAPBOX_API_KEY;
 

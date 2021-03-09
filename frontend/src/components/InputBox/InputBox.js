@@ -1,11 +1,12 @@
 import { Card, Grid, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "../../axios";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-import DriveEtaRoundedIcon from "@material-ui/icons/DriveEtaRounded";
-import DirectionsWalkRoundedIcon from "@material-ui/icons/DirectionsWalkRounded";
+
 import DirectionsBikeRoundedIcon from "@material-ui/icons/DirectionsBikeRounded";
+import DirectionsWalkRoundedIcon from "@material-ui/icons/DirectionsWalkRounded";
+import DriveEtaRoundedIcon from "@material-ui/icons/DriveEtaRounded";
+import axios from "../../axios";
+import { makeStyles } from "@material-ui/core/styles";
 
 const cardStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +25,7 @@ const cardStyles = makeStyles((theme) => ({
   }
 }));
 
-function InputBox({ setStartingPoint, setDestination }) {
+function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
   const classes = cardStyles();
   const [startName, setStartName] = useState("");
   const [startCoords, setStartCoords] = useState({
@@ -38,8 +39,7 @@ function InputBox({ setStartingPoint, setDestination }) {
   });
   const [mode, setMode] = useState("driving");
   const [travelTime, setTravelTime] = useState();
-  const [arrivalTime, setArrivalTime] = useState(new Date());
-
+  
   // Gets the coordinates of the starting location
   function getStartCoordinates() {
     axios

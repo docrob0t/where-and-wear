@@ -1,8 +1,9 @@
-import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+
+import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
+import { Grid } from "@material-ui/core";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import axios from "../../axios";
-import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 import dateFormat from "dateformat";
 
 // WeatherCard() function returns a weather card overlay
