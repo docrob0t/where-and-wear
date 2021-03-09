@@ -218,11 +218,11 @@ function InputBox({ setStartingPoint, setDestination }) {
               <ToggleButton type="submit" value="cycling" aria-label="cycling">
                 <DirectionsBikeRoundedIcon />
               </ToggleButton>
-              <Typography align = 'center' variant = "subtitle2">
-              <Box fontWeight="fontWeightBold" lineHeight={1}>
+              <Typography textAlign = 'center' variant = "subtitle2">
+              <Box m={0.5} ml={2} fontWeight="fontWeightBold" lineHeight={1}>
                   {"Duration: "}
                 </Box>
-                <Box m={0.5} lineHeight={1.1}>
+                <Box m={0.5} ml={2} lineHeight={1.1}>
                 {calculateTime(travelTime)}
                 </Box>
               </Typography>                           
