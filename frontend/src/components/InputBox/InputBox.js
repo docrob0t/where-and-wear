@@ -1,13 +1,12 @@
 import { Card, Grid, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "../../axios";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import DriveEtaRoundedIcon from "@material-ui/icons/DriveEtaRounded";
-import DirectionsWalkRoundedIcon from "@material-ui/icons/DirectionsWalkRounded";
+
 import DirectionsBikeRoundedIcon from "@material-ui/icons/DirectionsBikeRounded";
+import DirectionsWalkRoundedIcon from "@material-ui/icons/DirectionsWalkRounded";
+import DriveEtaRoundedIcon from "@material-ui/icons/DriveEtaRounded";
+import axios from "../../axios";
+import { makeStyles } from "@material-ui/core/styles";
 
 const cardStyles = makeStyles((theme) => ({
   root: {
@@ -19,11 +18,6 @@ const cardStyles = makeStyles((theme) => ({
     borderRadius: 20,
     boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.3)"
   },
-  Subtitle: {
-    fontSize: 15,
-    top: 230,
-    position: 'absolute',
-  },
   form: {
     margin: theme.spacing(2),
     marginTop: theme.spacing(1),
@@ -31,7 +25,7 @@ const cardStyles = makeStyles((theme) => ({
   }
 }));
 
-function InputBox({ setStartingPoint, setDestination }) {
+function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
   const classes = cardStyles();
   const [startName, setStartName] = useState("");
   const [startCoords, setStartCoords] = useState({
@@ -45,7 +39,6 @@ function InputBox({ setStartingPoint, setDestination }) {
   });
   const [mode, setMode] = useState("driving");
   const [travelTime, setTravelTime] = useState();
-  const [arrivalTime, setArrivalTime] = useState(new Date());
 
   // Gets the coordinates of the starting location
   function getStartCoordinates() {
@@ -128,26 +121,10 @@ function InputBox({ setStartingPoint, setDestination }) {
       arrivalTime.setTime(nowInMS);
       setArrivalTime(arrivalTime);
       console.log("The Arrival Time is " + arrivalTime);
-    
-     
     }
 
     calculateArrivalTime();
   }, [travelTime]);
-
-  function calculateTime(d) {
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
-
-    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-    var hmsDisplay = hDisplay + mDisplay + sDisplay;
-    return hmsDisplay; 
-  };
-
 
   // If user clicked enter, also treat as submit
   function handleKeyPress(event) {
@@ -218,17 +195,9 @@ function InputBox({ setStartingPoint, setDestination }) {
               <ToggleButton type="submit" value="cycling" aria-label="cycling">
                 <DirectionsBikeRoundedIcon />
               </ToggleButton>
-              <Typography textAlign = 'center' variant = "subtitle2">
-              <Box m={0.5} ml={2} fontWeight="fontWeightBold" lineHeight={1}>
-                  {"Duration: "}
-                </Box>
-                <Box m={0.5} ml={2} lineHeight={1.1}>
-                {calculateTime(travelTime)}
-                </Box>
-              </Typography>                           
             </ToggleButtonGroup>
           </Grid>
-          </Grid>
+        </Grid>
       </form>
     </Card>
   );

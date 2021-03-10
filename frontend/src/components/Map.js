@@ -1,13 +1,15 @@
 import "mapbox-gl/dist/mapbox-gl.css";
+
 import React, { useEffect, useRef, useState } from "react";
+import ReactMapGL, { FlyToInterpolator, WebMercatorViewport } from "react-map-gl";
+
+import { Box } from "@material-ui/core";
 import InputBox from "./InputBox/InputBox";
 import MenuButton from "./MenuButton";
-import ReactMapGL, { FlyToInterpolator, WebMercatorViewport } from "react-map-gl";
-import { easeQuadInOut } from "d3-ease";
+import Pins from "./Pins";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "../axios";
-import Pins from "./Pins";
-import { Box } from "@material-ui/core";
+import { easeQuadInOut } from "d3-ease";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -52,7 +54,10 @@ function Map() {
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
         if (result.state === "granted" || result.state === "prompt") {
-          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
+          navigator.geolocation.getCurrentPosition(
+            getCoordinates,
+            handleLocationError
+          );
         } else if (result.state === "denied") {
           // Use IP approximation
           getLocationFromIP();
@@ -67,7 +72,7 @@ function Map() {
   // Change viewport according to user's input
   useEffect(() => {
     // Run a different method to change viewport if both start & destination is defined
-    if (startingPoint.lat !== undefined && destination.lat !== undefined) {
+    if (startingPoint.lat !== undefined && destination.lat !== undefined && startingPoint.long !== undefined && destination.long !== undefined) {
       // Calculate the viewport position
       const { longitude, latitude, zoom } = new WebMercatorViewport(viewport).fitBounds(
         [
@@ -166,8 +171,12 @@ function Map() {
         }
       })()}
       <MenuButton />
-      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
-      <InputBox setStartingPoint={setStartingPoint} setDestination={setDestination} />
+      <WeatherCard lat={startingPoint.lat} long={startingPoint.long} destinationLat={destination.lat} destinationLong={destination.long} arrivalTime={arrivalTime} />
+      <InputBox
+        setStartingPoint={setStartingPoint}
+        setDestination={setDestination}
+        setArrivalTime={setArrivalTime}
+      />
     </ReactMapGL>
   );
 }

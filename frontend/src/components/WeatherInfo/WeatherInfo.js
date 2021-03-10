@@ -1,7 +1,8 @@
 import { Box, Grid, Typography, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import getWeatherIconFrom from "../utils/WeatherIcon";
+
 import axios from "../../axios";
+import getWeatherIconFrom from "../utils/WeatherIcon";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
@@ -33,7 +34,7 @@ export default function WeatherInfo({
   if (time === "current") {
     subtitle = "Current weather";
   } else {
-    subtitle = "ETA " + time;
+    subtitle = "Arrival time: " + time;
   }
 
   // API call to resolve the name of the city of the location
