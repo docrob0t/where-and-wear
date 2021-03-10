@@ -1,4 +1,4 @@
-import { Card, Grid, TextField } from "@material-ui/core";
+import { Box, Card, Grid, TextField, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
@@ -7,6 +7,7 @@ import DirectionsWalkRoundedIcon from "@material-ui/icons/DirectionsWalkRounded"
 import DriveEtaRoundedIcon from "@material-ui/icons/DriveEtaRounded";
 import axios from "../../axios";
 import { makeStyles } from "@material-ui/core/styles";
+import prettyMilliseconds from "pretty-ms";
 
 const cardStyles = makeStyles((theme) => ({
   root: {
@@ -86,21 +87,15 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           destinationlat: destinationCoords.lat
         }
       })
-      .then((response) => setTravelTime(response.data.duration));
+      .then((response) => setTravelTime(response.data.duration * 1000));
   }
-
-  useEffect(() => {
-    // If origin or destination is empty don't get duration
-    if (startName && destinationName) {
-      getDuration();
-    }
-  }, [startCoords, destinationCoords, mode]);
 
   // Get start location's coordinates on each keystroke
   useEffect(() => {
     if (startName !== "") {
       getStartCoordinates();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startName]);
 
   // Get destination location's coordinates on each keystroke
@@ -108,6 +103,7 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
     if (destinationName !== "") {
       getDestinationCoordinates();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [destinationName]);
 
   // Adds the journey duration to the current time
@@ -116,14 +112,13 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
       let now = new Date();
       let arrivalTime = new Date();
       let nowInMS = now.getTime();
-      console.log("The duration is " + travelTime);
-      nowInMS = nowInMS + travelTime * 1000;
+      nowInMS = nowInMS + travelTime;
       arrivalTime.setTime(nowInMS);
       setArrivalTime(arrivalTime);
-      console.log("The Arrival Time is " + arrivalTime);
     }
 
     calculateArrivalTime();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [travelTime]);
 
   // If user clicked enter, also treat as submit
@@ -140,13 +135,19 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
     }
   }
 
-  // When user clicked mode of transport button the page will not refresh
   function handleSubmit(event) {
+    // When user clicked mode of transport button the page will not refresh
     event.preventDefault();
-    getStartCoordinates();
-    getDestinationCoordinates();
-    setStartingPoint(startCoords);
-    setDestination(destinationCoords);
+    if (startName) {
+      setStartingPoint(startCoords);
+    }
+    if (destinationName) {
+      setDestination(destinationCoords);
+    }
+    // If origin or destination is empty don't get duration
+    if (startName && destinationName) {
+      getDuration();
+    }
   }
 
   return (
@@ -179,23 +180,43 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
               onInput={(event) => setDestinationName(event.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
-            <ToggleButtonGroup
-              value={mode}
-              exclusive
-              onChange={handleModeOfTransport}
-              aria-label="Mode of transport"
-            >
-              <ToggleButton type="submit" value="driving" aria-label="driving">
-                <DriveEtaRoundedIcon />
-              </ToggleButton>
-              <ToggleButton type="submit" value="walking" aria-label="walking">
-                <DirectionsWalkRoundedIcon />
-              </ToggleButton>
-              <ToggleButton type="submit" value="cycling" aria-label="cycling">
-                <DirectionsBikeRoundedIcon />
-              </ToggleButton>
-            </ToggleButtonGroup>
+          <Grid container item xs={12}>
+            <Grid item xs={5}>
+              <ToggleButtonGroup
+                value={mode}
+                exclusive
+                onChange={handleModeOfTransport}
+                aria-label="Mode of transport"
+              >
+                <ToggleButton type="submit" value="driving" aria-label="driving">
+                  <DriveEtaRoundedIcon />
+                </ToggleButton>
+                <ToggleButton type="submit" value="walking" aria-label="walking">
+                  <DirectionsWalkRoundedIcon />
+                </ToggleButton>
+                <ToggleButton type="submit" value="cycling" aria-label="cycling">
+                  <DirectionsBikeRoundedIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={7}>
+              {travelTime && (
+                <Box paddingLeft={1}>
+                  <Box fontWeight="fontWeightBold">Duration</Box>
+                  <Typography
+                    align="center"
+                    variant="h5"
+                    component="div"
+                    color="textPrimary"
+                  >
+                    {prettyMilliseconds(travelTime, {
+                      unitCount: 2,
+                      secondsDecimalDigits: 0
+                    })}
+                  </Typography>
+                </Box>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </form>
