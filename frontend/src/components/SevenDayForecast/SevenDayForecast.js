@@ -5,7 +5,7 @@ import DailyForecastTile from "./DailyForecastTile";
 export default function SevenDayForecast({ intervals }) {
   return (
     <Box>
-      <Box className="title" paddingBottom={0}>
+      <Box className="title" paddingTop={1.5} paddingBottom={0.5}>
         <Typography variant="h6">
           <Box fontWeight="fontWeightBold">7-day forecast</Box>
         </Typography>
@@ -18,9 +18,7 @@ export default function SevenDayForecast({ intervals }) {
               tempMax={interval.values.temperatureMax}
               tempMin={interval.values.temperatureMin}
               weatherCode={interval.values.weatherCode}
-              precipitationProbability={
-                interval.values.precipitationProbability
-              }
+              precipitationProbability={interval.values.precipitationProbability}
             />
           </Grid>
         ))}

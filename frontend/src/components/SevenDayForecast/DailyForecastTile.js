@@ -7,20 +7,20 @@ import dateFormat from "dateformat";
 
 const useStyles = makeStyles((theme) => ({
   cardWeatherIcon: {
-    maxHeight: "1.56rem",
+    maxHeight: "2rem",
     [theme.breakpoints.up("sm")]: {
-      maxHeight: "1.56rem"
+      maxHeight: "2.57rem"
     },
     [theme.breakpoints.up("md")]: {
-      maxHeight: "1.82rem"
+      maxHeight: "2.78rem"
     },
     [theme.breakpoints.up("lg")]: {
-      maxHeight: "2.02rem"
+      maxHeight: "3.00rem"
     }
   },
   precipitationIcon: {
-    height: "1.5rem",
-    marginRight: "0.5rem"
+    height: "1.2rem",
+    marginRight: "0.4rem"
   }
 }));
 
@@ -36,11 +36,6 @@ export default function DailyForecastTile({
   return (
     <Box className="dailyForecast">
       <Box className="date">
-        <Typography variant="subtitle1">
-          <Box fontWeight="600" display="flex" justifyContent="center">
-            {dateFormat(date, "ddd")}
-          </Box>
-        </Typography>
         <Typography variant="subtitle1" component="div">
           <Box
             display="flex"
@@ -48,9 +43,9 @@ export default function DailyForecastTile({
             justifyContent="center"
             paddingBottom={0}
           >
+            {dateFormat(date, "ddd")}&nbsp;
             {dateFormat(date, "d")}
-            <sup>{dateFormat(date, "S")}</sup>&nbsp;
-            {dateFormat(date, "mmm")}
+            {dateFormat(date, "S")}
           </Box>
         </Typography>
       </Box>
@@ -69,16 +64,13 @@ export default function DailyForecastTile({
             className="temperatureMax"
             display="flex"
             justifyContent="center"
+            fontWeight="600"
           >
             {Math.round(tempMax)}°
           </Box>
         </Typography>
         <Typography variant="h6" component="div" color="textSecondary">
-          <Box
-            className="temperatureMin"
-            display="flex"
-            justifyContent="center"
-          >
+          <Box className="temperatureMin" display="flex" justifyContent="center">
             {Math.round(tempMin)}°
           </Box>
         </Typography>
@@ -88,7 +80,8 @@ export default function DailyForecastTile({
         className="precipitationPercentage"
         display="flex"
         justifyContent="center"
-        margin={1}
+        alignItems="center"
+        margin={0}
       >
         <img
           className={classes.precipitationIcon}

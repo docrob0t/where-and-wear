@@ -5,6 +5,7 @@ import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
 import SevenDayForecast from "../SevenDayForecast/SevenDayForecast";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import axios from "../../axios";
+import dateFormat from "dateformat";
 
 const StyledTabs = withStyles({
   indicator: {
@@ -22,7 +23,7 @@ const StyledTab = withStyles((theme) => ({
   root: {
     textTransform: "none",
     fontSize: "1rem",
-    padding: "1.2rem 0.6rem 0.3rem 0.6rem",
+    padding: "1rem 0.6rem 0.2rem 0.6rem",
     "&:hover": {
       color: "#635ee7",
       opacity: 1
@@ -33,7 +34,7 @@ const StyledTab = withStyles((theme) => ({
 const cardStyles = makeStyles((theme) => ({
   root: {
     width: "46rem",
-    height: "14rem",
+    height: "13rem",
     margin: 35,
     position: "absolute",
     bottom: 5,
@@ -60,6 +61,9 @@ const cardStyles = makeStyles((theme) => ({
   weatherTabs: {
     width: "30rem",
     marginLeft: "0.4rem"
+  },
+  cardContent: {
+    paddingTop: "0.5rem"
   }
 }));
 
@@ -69,7 +73,13 @@ function TabPanel(props) {
 }
 
 // WeatherCard() function returns a weather card overlay
-function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, destinationLong, arrivalTime }) {
+function WeatherCard({
+  lat: startingLat,
+  long: startingLong,
+  destinationLat,
+  destinationLong,
+  arrivalTime
+}) {
   const styling = cardStyles();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -88,7 +98,10 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
     weatherCode: 1000,
     isTabEnabled: false
   });
-  const [destinationWeatherForecastData, setDestinationWeatherForecastData] = useState([]);
+  const [
+    destinationWeatherForecastData,
+    setDestinationWeatherForecastData
+  ] = useState([]);
 
   // Handling tabs in weather card
   const [tab, setTab] = React.useState(0);
@@ -110,7 +123,8 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           setCurrentStartingWeather({
             ...currentStartingWeather,
             temperature: response.data.timelines[0].intervals[0].values.temperature,
-            temperatureApparent: response.data.timelines[0].intervals[0].values.temperatureApparent,
+            temperatureApparent:
+              response.data.timelines[0].intervals[0].values.temperatureApparent,
             weatherCode: response.data.timelines[0].intervals[0].values.weatherCode
           });
         })
@@ -136,7 +150,8 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
           setDestinationWeatherAtArrival({
             ...destinationWeatherAtArrival,
             temperature: response.data.timelines[0].intervals[0].values.temperature,
-            temperatureApparent: response.data.timelines[0].intervals[0].values.temperatureApparent,
+            temperatureApparent:
+              response.data.timelines[0].intervals[0].values.temperatureApparent,
             weatherCode: response.data.timelines[0].intervals[0].values.weatherCode,
             isTabEnabled: true
           });
@@ -186,14 +201,16 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
         indicatorColor="primary"
         textColor="primary"
         onChange={switchTab}
-        TabIndicatorProps={{ children: <span /> }}
       >
         <StyledTab label="Starting location weather" />
-        <StyledTab label="Destination weather" disabled={!destinationWeatherAtArrival.isTabEnabled} />
+        <StyledTab
+          label="Destination weather"
+          disabled={!destinationWeatherAtArrival.isTabEnabled}
+        />
       </StyledTabs>
 
       <TabPanel value={tab} index={0}>
-        <CardContent>
+        <CardContent className={styling.cardContent}>
           <Grid container direction="column">
             <Grid item xs={12} container direction="row">
               <Grid item xs={6}>
@@ -222,7 +239,7 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
         </CardContent>
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        <CardContent>
+        <CardContent className={styling.cardContent}>
           <Grid container direction="column">
             <Grid item xs={12} container direction="row">
               <Grid item xs={6}>
@@ -230,9 +247,15 @@ function WeatherCard({ lat: startingLat, long: startingLong, destinationLat, des
                   lat={destinationLat}
                   long={destinationLong}
                   temperature={destinationWeatherAtArrival.temperature}
-                  temperatureApparent={destinationWeatherAtArrival.temperatureApparent}
+                  temperatureApparent={
+                    destinationWeatherAtArrival.temperatureApparent
+                  }
                   weatherCode={destinationWeatherAtArrival.weatherCode}
-                  time={arrivalTime.toTimeString().split(" ")[0].substring(0, 5)}
+                  time={
+                    arrivalTime instanceof Date && !isNaN(arrivalTime)
+                      ? dateFormat(arrivalTime, "h:MM TT")
+                      : ""
+                  }
                 />
               </Grid>
               <Grid item xs={6}>
