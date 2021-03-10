@@ -202,7 +202,9 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
             <Grid item xs={7}>
               {travelTime && (
                 <Box paddingLeft={1}>
-                  <Box fontWeight="fontWeightBold">Duration</Box>
+                  <Box align="center" fontWeight="fontWeightBold">
+                    Duration
+                  </Box>
                   <Typography
                     align="center"
                     variant="h5"

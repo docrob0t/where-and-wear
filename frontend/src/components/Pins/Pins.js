@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Marker } from "react-map-gl";
-import startIcon from "../images/Start-logo.svg";
-import destinationIcon from "../images/Destination-logo.svg";
+import startIcon from "../../images/Start-logo.svg";
+import destinationIcon from "../../images/Destination-logo.svg";
 
 const SIZE = 50;
 
