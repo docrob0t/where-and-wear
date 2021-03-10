@@ -7,8 +7,6 @@ import { easeQuadInOut } from "d3-ease";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import axios from "../axios";
 import Pins from "./Pins";
-import SPin from "./SPin";
-import DPin from "./DPin";
 import { Box } from "@material-ui/core";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
@@ -54,10 +52,7 @@ function Map() {
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
         if (result.state === "granted" || result.state === "prompt") {
-          navigator.geolocation.getCurrentPosition(
-            getCoordinates,
-            handleLocationError
-          );
+          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
         } else if (result.state === "denied") {
           // Use IP approximation
           getLocationFromIP();
@@ -74,9 +69,7 @@ function Map() {
     // Run a different method to change viewport if both start & destination is defined
     if (startingPoint.lat !== undefined && destination.lat !== undefined) {
       // Calculate the viewport position
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport
-      ).fitBounds(
+      const { longitude, latitude, zoom } = new WebMercatorViewport(viewport).fitBounds(
         [
           [startingPoint.long, startingPoint.lat],
           [destination.long, destination.lat]
@@ -164,20 +157,17 @@ function Map() {
         if (startingPoint.lat !== undefined && destination.lat !== undefined) {
           return (
             <Box>
-              <SPin lat={startingPoint.lat} long={startingPoint.long} />
-              <DPin lat={destination.lat} long={destination.long} />
+              <Pins isStart={true} lat={startingPoint.lat} long={startingPoint.long} />
+              <Pins isStart={false} lat={destination.lat} long={destination.long} />
             </Box>
           );
         } else if (startingPoint.lat !== undefined) {
-          return <Pins lat={startingPoint.lat} long={startingPoint.long} />;
+          return <Pins isStart={true} lat={startingPoint.lat} long={startingPoint.long} />;
         }
       })()}
       <MenuButton />
       <WeatherCard lat={startingPoint.lat} long={startingPoint.long} />
-      <InputBox
-        setStartingPoint={setStartingPoint}
-        setDestination={setDestination}
-      />
+      <InputBox setStartingPoint={setStartingPoint} setDestination={setDestination} />
     </ReactMapGL>
   );
 }
