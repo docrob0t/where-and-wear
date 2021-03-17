@@ -1,7 +1,5 @@
-import { Box, Grid, Typography, makeStyles } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-
-import axios from "../../axios";
+import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import React from "react";
 import getWeatherIconFrom from "../utils/WeatherIcon";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,16 +17,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function WeatherInfo({
-  lat,
-  long,
-  temperature,
-  temperatureApparent,
-  weatherCode,
-  time
-}) {
+export default function WeatherInfo({ city, temperature, temperatureApparent, weatherCode, time }) {
   const classes = useStyles();
-  const [city, setCity] = useState("");
 
   let subtitle;
   if (time === "current") {
@@ -36,20 +26,6 @@ export default function WeatherInfo({
   } else {
     subtitle = "Arrival time: " + time;
   }
-
-  // API call to resolve the name of the city of the location
-  useEffect(() => {
-    const getCityName = async () => {
-      const response = await axios.post("/locationfromcoords/", {
-        lat: lat,
-        long: long
-      });
-      setCity(response.data.location);
-      console.log(lat);
-      console.log(long);
-    };
-    getCityName();
-  }, [lat, long, city]);
 
   return (
     <Box>
@@ -63,12 +39,7 @@ export default function WeatherInfo({
       </Box>
       <Grid container justify="center" alignItems="flex-end">
         <Grid item xs={6} className="temperature">
-          <Grid
-            container
-            justify="center"
-            alignItems="flex-start"
-            wrap="nowrap"
-          >
+          <Grid container justify="center" alignItems="flex-start" wrap="nowrap">
             <Typography variant="h3" component="div" color="textPrimary">
               {Math.round(temperature)}
             </Typography>
