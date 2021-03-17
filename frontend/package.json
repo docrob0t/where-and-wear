@@ -48,7 +48,7 @@
     "prettier": "2.2.1"
   },
   "prettier": {
-    "printWidth": 85,
+    "printWidth": 100,
     "trailingComma": "none"
   }
 }
