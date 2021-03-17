@@ -131,12 +131,12 @@ function Map() {
       })
       .then((response) => {
         setUserLocation({
-          lat: response.data.lat,
-          long: response.data.long
+          lat: response.data.features[0].geometry.coordinates[1],
+          long: response.data.features[0].geometry.coordinates[0]
         });
         setStartingPoint({
-          lat: response.data.lat,
-          long: response.data.long
+          lat: response.data.features[0].geometry.coordinates[1],
+          long: response.data.features[0].geometry.coordinates[0]
         });
       });
   }
