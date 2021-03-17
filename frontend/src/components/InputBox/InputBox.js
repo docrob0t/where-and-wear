@@ -142,7 +142,10 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
             <Autocomplete
               freeSolo
               // Once the user clicked on an option it will treat as submit as well
-              onChange={handleSubmit}
+              onChange={(event, value) => {
+                setStartName(value);
+                handleSubmit(event);
+              }}
               options={startOptions}
               renderInput={(params) => (
                 <TextField
@@ -161,7 +164,10 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           <Grid item xs={12}>
             <Autocomplete
               freeSolo
-              onChange={handleSubmit}
+              onChange={(event, value) => {
+                setDestinationName(value);
+                handleSubmit(event);
+              }}
               options={destinationOptions}
               renderInput={(params) => (
                 <TextField
@@ -179,12 +185,7 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={5}>
-              <ToggleButtonGroup
-                value={mode}
-                exclusive
-                onChange={handleModeOfTransport}
-                aria-label="Mode of transport"
-              >
+              <ToggleButtonGroup value={mode} exclusive onChange={handleModeOfTransport} aria-label="Mode of transport">
                 <ToggleButton type="submit" value="driving" aria-label="driving">
                   <DriveEtaRoundedIcon />
                 </ToggleButton>
