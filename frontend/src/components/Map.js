@@ -1,11 +1,7 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import React, { useEffect, useRef, useState } from "react";
-import ReactMapGL, {
-  FlyToInterpolator,
-  GeolocateControl,
-  WebMercatorViewport
-} from "react-map-gl";
+import React, { useEffect, useState } from "react";
+import ReactMapGL, { FlyToInterpolator, GeolocateControl, WebMercatorViewport } from "react-map-gl";
 
 import { Box } from "@material-ui/core";
 import InputBox from "./InputBox/InputBox";
@@ -39,7 +35,6 @@ function Map() {
     bearing: 0,
     pitch: 0
   });
-  const mapRef = useRef();
 
   // On component initialisation, get the users location in co-ordinates and set the state accordingly
   useEffect(() => {
@@ -109,16 +104,6 @@ function Map() {
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: easeQuadInOut
       });
-    } else if (startingPoint.lat !== undefined) {
-      setViewport({
-        ...viewport,
-        longitude: startingPoint.long,
-        latitude: startingPoint.lat,
-        zoom: 12,
-        transitionDuration: 3000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: easeQuadInOut
-      });
     }
   }, [startingPoint, destination]);
 
@@ -173,7 +158,6 @@ function Map() {
 
   return (
     <ReactMapGL
-      ref={mapRef}
       {...viewport}
       width="100vw"
       height="100vh"
@@ -193,7 +177,7 @@ function Map() {
             transitionEasing: easeQuadInOut
           })
         }
-        style={{ position: "absolute", bottom: 30, right: 15 }}
+        style={{ position: "absolute", bottom: 30, right: 30 }}
         positionOptions={{ enableHighAccuracy: true }}
         showUserLocation={true}
         auto
@@ -202,11 +186,7 @@ function Map() {
         if (startingPoint.lat !== undefined && destination.lat !== undefined) {
           return (
             <Box>
-              <Pins
-                isStart={true}
-                lat={startingPoint.lat}
-                long={startingPoint.long}
-              />
+              <Pins isStart={true} lat={startingPoint.lat} long={startingPoint.long} />
               <Pins isStart={false} lat={destination.lat} long={destination.long} />
             </Box>
           );
