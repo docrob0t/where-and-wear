@@ -56,8 +56,12 @@ const useCoordsAndOptionsFrom = (name) => {
         });
     }
 
-    if (name !== "") {
+    if (name) {
       getCoordinatesAndOptions();
+    } else {
+      // If name is null then clear options
+      setCoords({});
+      setOptions([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
@@ -141,12 +145,13 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           <Grid item xs={12}>
             <Autocomplete
               freeSolo
+              value={startName}
               // Once the user clicked on an option it will treat as submit as well
               onChange={(event, value) => {
                 setStartName(value);
-                handleSubmit(event);
               }}
               options={startOptions}
+              getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -155,7 +160,6 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
                   name="start"
                   variant="outlined"
                   fullWidth
-                  value={startName}
                   onInput={(event) => setStartName(event.target.value)}
                 />
               )}
@@ -164,11 +168,12 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           <Grid item xs={12}>
             <Autocomplete
               freeSolo
+              value={destinationName}
               onChange={(event, value) => {
                 setDestinationName(value);
-                handleSubmit(event);
               }}
               options={destinationOptions}
+              getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -177,7 +182,6 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
                   name="destination"
                   label="Destination"
                   fullWidth
-                  value={destinationName}
                   onInput={(event) => setDestinationName(event.target.value)}
                 />
               )}

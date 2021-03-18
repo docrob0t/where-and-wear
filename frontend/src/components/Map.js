@@ -57,10 +57,7 @@ function Map() {
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
         if (result.state === "granted" || result.state === "prompt") {
-          navigator.geolocation.getCurrentPosition(
-            getCoordinates,
-            handleLocationError
-          );
+          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
         } else if (result.state === "denied") {
           // Use IP approximation
           getLocationFromIP();
@@ -82,9 +79,7 @@ function Map() {
       destination.long !== undefined
     ) {
       // Calculate the viewport position
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport
-      ).fitBounds(
+      const { longitude, latitude, zoom } = new WebMercatorViewport(viewport).fitBounds(
         [
           [startingPoint.long, startingPoint.lat],
           [destination.long, destination.lat]
@@ -104,6 +99,17 @@ function Map() {
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: easeQuadInOut
       });
+      // Change viewport to user location when app starts
+    } else if (userLocation.lat !== undefined) {
+      setViewport({
+        ...viewport,
+        longitude: userLocation.long,
+        latitude: userLocation.lat,
+        zoom: 12,
+        transitionDuration: 3000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeQuadInOut
+      });
     }
   }, [startingPoint, destination]);
 
@@ -116,12 +122,12 @@ function Map() {
       })
       .then((response) => {
         setUserLocation({
-          lat: response.data.features[0].geometry.coordinates[1],
-          long: response.data.features[0].geometry.coordinates[0]
+          lat: response.data.features[0].center[1],
+          long: response.data.features[0].center[0]
         });
         setStartingPoint({
-          lat: response.data.features[0].geometry.coordinates[1],
-          long: response.data.features[0].geometry.coordinates[0]
+          lat: response.data.features[0].center[1],
+          long: response.data.features[0].center[0]
         });
       });
   }
@@ -200,11 +206,7 @@ function Map() {
         destinationLong={destination.long}
         arrivalTime={arrivalTime}
       />
-      <InputBox
-        setStartingPoint={setStartingPoint}
-        setDestination={setDestination}
-        setArrivalTime={setArrivalTime}
-      />
+      <InputBox setStartingPoint={setStartingPoint} setDestination={setDestination} setArrivalTime={setArrivalTime} />
     </ReactMapGL>
   );
 }
