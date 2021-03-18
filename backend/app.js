@@ -95,6 +95,7 @@ app.post("/locationfromcoords", (req, res) => {
     req.body.lat +
     ".json";
   const params = {
+    language: "en-GB",
     types: "place",
     access_token: config.MAPBOX_API_KEY
   };
@@ -114,22 +115,23 @@ app.post("/locationfromcoords", (req, res) => {
     });
 });
 
-// Gets the coordinates from a string
+// Gets the coordinates and autocomplete suggestions from a string
 app.get("/retrieveCoordsFromLocation", (req, res) => {
   let requestURL =
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
     encodeURI(req.query.search) +
-    ".json?autocomplete=true&" +
-    "access_token=" +
-    config.MAPBOX_API_KEY;
+    ".json?";
+
+  const params = {
+    language: "en-GB",
+    autocomplete: true,
+    access_token: config.MAPBOX_API_KEY
+  };
 
   axios
-    .get(requestURL)
+    .get(requestURL, { params })
     .then((response) => {
-      res.json({
-        lat: response.data.features[0].geometry.coordinates[1],
-        long: response.data.features[0].geometry.coordinates[0]
-      });
+      res.json({ features: response.data.features });
     })
     .catch((error) => {
       // Handle error
@@ -156,15 +158,15 @@ app.get("/retrieveDuration", (req, res) => {
 
   console.log(
     "Requests:" +
-    req.query.profile +
-    "," +
-    req.query.startlong +
-    "," +
-    req.query.startlat +
-    "," +
-    req.query.destinationlong +
-    "," +
-    req.query.destinationlat
+      req.query.profile +
+      "," +
+      req.query.startlong +
+      "," +
+      req.query.startlat +
+      "," +
+      req.query.destinationlong +
+      "," +
+      req.query.destinationlat
   );
 
   axios
@@ -175,27 +177,6 @@ app.get("/retrieveDuration", (req, res) => {
     .catch((error) => {
       // TODO: Handle error
       console.log("Cannot retrieve duration");
-      console.log(error);
-    });
-});
-
-// Get place names from a string
-app.get("/retrieveSearchList", (req, res) => {
-  let requestURL =
-    "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-    req.query.search +
-    ".json?country=GB&autocomplete=true&" +
-    "access_token=" +
-    config.MAPBOX_API_KEY;
-
-  axios
-    .get(requestURL)
-    .then((response) => {
-      res.json({ placename: response.data.features[0].place_name.text });
-    })
-    .catch((error) => {
-      // Handle error
-      console.log("Cannot retrieve coordinates");
       console.log(error);
     });
 });

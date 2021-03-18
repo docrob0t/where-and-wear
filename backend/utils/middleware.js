@@ -3,8 +3,6 @@ const requestLogger = (request, response, next) => {
   console.log("Path:  ", request.path);
   console.log("Body:  ", request.body);
   console.log("---");
-  console.log("Response body:", response.data);
-  console.log("---");
   next();
 };
 

@@ -1,4 +1,14 @@
-import { Box, Card, CardContent, Fab, Grid, makeStyles, Tab, Tabs, withStyles } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardContent,
+  Fab,
+  Grid,
+  makeStyles,
+  Tab,
+  Tabs,
+  withStyles
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
 import ClothingSuggestions from "../ClothingSuggestions/ClothingSuggestions";
@@ -72,6 +82,54 @@ function TabPanel(props) {
   return <div>{value === index && <Box p={0}>{children}</Box>}</div>;
 }
 
+function useCityName(lat, long) {
+  const [city, setCity] = useState("");
+
+  useEffect(() => {
+    const getCityName = async () => {
+      await axios
+        .post("/locationfromcoords/", {
+          lat: lat,
+          long: long
+        })
+        .then((response) => {
+          setCity(response.data.location);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    getCityName();
+  }, [lat, long]);
+
+  return city;
+}
+
+function useForecastData(lat, long) {
+  const [weatherForecastData, setWeatherForecastData] = useState([]);
+
+  useEffect(() => {
+    const fetchWeatherForecast = async (lat, long) => {
+      await axios
+        .post("/weatherAtCoords/forecast/", {
+          lat: lat,
+          long: long
+        })
+        .then((response) => {
+          setWeatherForecastData(response.data.timelines[0].intervals);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    fetchWeatherForecast(lat, long);
+  }, [lat, long]);
+
+  return weatherForecastData;
+}
+
 // WeatherCard() function returns a weather card overlay
 function WeatherCard({
   lat: startingLat,
@@ -89,7 +147,8 @@ function WeatherCard({
     temperatureApparent: 0,
     weatherCode: 1000
   });
-  const [startingWeatherForecastData, setStartingWeatherForecastData] = useState([]);
+  const startingWeatherForecastData = useForecastData(startingLat, startingLong);
+  const startingCity = useCityName(startingLat, startingLong);
 
   // Destination location weather states
   const [destinationWeatherAtArrival, setDestinationWeatherAtArrival] = useState({
@@ -98,10 +157,11 @@ function WeatherCard({
     weatherCode: 1000,
     isTabEnabled: false
   });
-  const [
-    destinationWeatherForecastData,
-    setDestinationWeatherForecastData
-  ] = useState([]);
+  const destinationWeatherForecastData = useForecastData(
+    destinationLat,
+    destinationLong
+  );
+  const destinationCity = useCityName(destinationLat, destinationLong);
 
   // Handling tabs in weather card
   const [tab, setTab] = React.useState(0);
@@ -165,24 +225,6 @@ function WeatherCard({
     fetchDestinationWeather();
   }, [destinationLat, destinationLong, destinationWeatherAtArrival.isTabEnabled]);
 
-  // API call to fetch 7 day forecast at user's location
-  useEffect(() => {
-    const fetchWeatherForecast = async (lat, long, isStarting) => {
-      const response = await axios.post("/weatherAtCoords/forecast/", {
-        lat: lat,
-        long: long
-      });
-
-      if (isStarting) {
-        setStartingWeatherForecastData(response.data.timelines[0].intervals);
-      } else {
-        setDestinationWeatherForecastData(response.data.timelines[0].intervals);
-      }
-    };
-    fetchWeatherForecast(startingLat, startingLong, true);
-    fetchWeatherForecast(destinationLat, destinationLong, false);
-  }, [startingLat, startingLong, destinationLat, destinationLong]);
-
   return (
     <Card className={isOpen ? styling.rootExpanded : styling.root}>
       <Fab
@@ -215,8 +257,7 @@ function WeatherCard({
             <Grid item xs={12} container direction="row">
               <Grid item xs={6}>
                 <WeatherInfo
-                  lat={startingLat}
-                  long={startingLong}
+                  city={startingCity}
                   temperature={currentStartingWeather.temperature}
                   temperatureApparent={currentStartingWeather.temperatureApparent}
                   weatherCode={currentStartingWeather.weatherCode}
@@ -244,8 +285,7 @@ function WeatherCard({
             <Grid item xs={12} container direction="row">
               <Grid item xs={6}>
                 <WeatherInfo
-                  lat={destinationLat}
-                  long={destinationLong}
+                  city={destinationCity}
                   temperature={destinationWeatherAtArrival.temperature}
                   temperatureApparent={
                     destinationWeatherAtArrival.temperatureApparent

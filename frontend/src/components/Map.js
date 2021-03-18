@@ -1,11 +1,7 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import React, { useEffect, useRef, useState } from "react";
-import ReactMapGL, {
-  FlyToInterpolator,
-  GeolocateControl,
-  WebMercatorViewport
-} from "react-map-gl";
+import React, { useEffect, useState } from "react";
+import ReactMapGL, { FlyToInterpolator, GeolocateControl, WebMercatorViewport } from "react-map-gl";
 
 import { Box } from "@material-ui/core";
 import InputBox from "./InputBox/InputBox";
@@ -39,7 +35,6 @@ function Map() {
     bearing: 0,
     pitch: 0
   });
-  const mapRef = useRef();
 
   // On component initialisation, get the users location in co-ordinates and set the state accordingly
   useEffect(() => {
@@ -62,10 +57,7 @@ function Map() {
     if (navigator.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
         if (result.state === "granted" || result.state === "prompt") {
-          navigator.geolocation.getCurrentPosition(
-            getCoordinates,
-            handleLocationError
-          );
+          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
         } else if (result.state === "denied") {
           // Use IP approximation
           getLocationFromIP();
@@ -87,9 +79,7 @@ function Map() {
       destination.long !== undefined
     ) {
       // Calculate the viewport position
-      const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport
-      ).fitBounds(
+      const { longitude, latitude, zoom } = new WebMercatorViewport(viewport).fitBounds(
         [
           [startingPoint.long, startingPoint.lat],
           [destination.long, destination.lat]
@@ -109,11 +99,12 @@ function Map() {
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: easeQuadInOut
       });
-    } else if (startingPoint.lat !== undefined) {
+      // Change viewport to user location when app starts
+    } else if (userLocation.lat !== undefined) {
       setViewport({
         ...viewport,
-        longitude: startingPoint.long,
-        latitude: startingPoint.lat,
+        longitude: userLocation.long,
+        latitude: userLocation.lat,
         zoom: 12,
         transitionDuration: 3000,
         transitionInterpolator: new FlyToInterpolator(),
@@ -131,12 +122,12 @@ function Map() {
       })
       .then((response) => {
         setUserLocation({
-          lat: response.data.lat,
-          long: response.data.long
+          lat: response.data.features[0].center[1],
+          long: response.data.features[0].center[0]
         });
         setStartingPoint({
-          lat: response.data.lat,
-          long: response.data.long
+          lat: response.data.features[0].center[1],
+          long: response.data.features[0].center[0]
         });
       });
   }
@@ -173,7 +164,6 @@ function Map() {
 
   return (
     <ReactMapGL
-      ref={mapRef}
       {...viewport}
       width="100vw"
       height="100vh"
@@ -193,7 +183,7 @@ function Map() {
             transitionEasing: easeQuadInOut
           })
         }
-        style={{ position: "absolute", bottom: 30, right: 15 }}
+        style={{ position: "absolute", bottom: 30, right: 30 }}
         positionOptions={{ enableHighAccuracy: true }}
         showUserLocation={true}
         auto
@@ -202,11 +192,7 @@ function Map() {
         if (startingPoint.lat !== undefined && destination.lat !== undefined) {
           return (
             <Box>
-              <Pins
-                isStart={true}
-                lat={startingPoint.lat}
-                long={startingPoint.long}
-              />
+              <Pins isStart={true} lat={startingPoint.lat} long={startingPoint.long} />
               <Pins isStart={false} lat={destination.lat} long={destination.long} />
             </Box>
           );
@@ -220,11 +206,7 @@ function Map() {
         destinationLong={destination.long}
         arrivalTime={arrivalTime}
       />
-      <InputBox
-        setStartingPoint={setStartingPoint}
-        setDestination={setDestination}
-        setArrivalTime={setArrivalTime}
-      />
+      <InputBox setStartingPoint={setStartingPoint} setDestination={setDestination} setArrivalTime={setArrivalTime} />
     </ReactMapGL>
   );
 }
