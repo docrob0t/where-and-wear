@@ -3,6 +3,7 @@ import config from "./utils/config.js";
 import cors from "cors";
 import express from "express";
 import requestLogger from "./utils/middleware.js";
+import clothingService from "./services/ClothingService.js";
 
 const app = express();
 
@@ -183,59 +184,12 @@ app.get("/retrieveDuration", (req, res) => {
 
 // Returns a set of clothing suggestions from a given weather code & temperature
 app.post("/getClothingSuggestions", (req, res) => {
-  let weatherCode = req.body.weatherCode;
-  let temperature = req.body.temperature;
-
-  switch (weatherCode) {
-    // Rain weather codes
-    case 4201:
-    case 4001:
-    case 4200:
-    case 6201:
-    case 6001:
-    case 6200:
-    case 6000:
-    case 4000:
-    case 7101:
-    case 7000:
-    case 7102:
-    case 8000:
-      res.json({ clothingSuggestions: ["umbrella", "coat", "boots_rain"] });
-      break;
-    // Snow weather codes
-    case 5101:
-    case 5000:
-    case 5100:
-    case 5001:
-      res.json({ clothingSuggestions: ["beanie", "gloves", "boots_snow"] });
-      break;
-    // Fog weather codes
-    case 2100:
-    case 2000:
-      res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
-      break;
-    // Cloudy weather codes
-    case 1001:
-    case 1102:
-    case 1101:
-      if (temperature > 15) {
-        res.json({ clothingSuggestions: ["cap", "shorts", "short_sleeve_shirt"] });
-      } else {
-        res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
-      }
-      break;
-    // Sunny/Clear weather codes
-    case 1100:
-    case 1000:
-      if (temperature > 10) {
-        res.json({ clothingSuggestions: ["sunglasses", "shorts", "short_sleeve_shirt"] });
-      } else {
-        res.json({ clothingSuggestions: ["hoodie", "jeans", "long_sleeve_shirt"] });
-      }
-      break;
-    default:
-      res.json("some error");
-  }
+  res.json({
+    clothingSuggestions: clothingService(
+      req.body.weatherCode,
+      req.body.temperature
+    )
+  });
 });
 
 export default app;
