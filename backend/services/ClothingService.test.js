@@ -63,39 +63,6 @@ describe("Clothing suggestions when raining", () => {
       "boots_rain"
     ]);
   });
-
-  test("Should not return other stuff when raining", () => {
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["cap"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["shorts"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["short_sleeve_shirt"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["beanie"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["gloves"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["boots_snow"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["hoodie"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["jeans"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["long_sleeve_shirt"])
-    );
-    expect(clothingService(4201, 0)).toEqual(
-      expect.not.arrayContaining(["sunglasses"])
-    );
-  });
 });
 
 describe("Clothing suggestions when snowing", () => {
@@ -121,29 +88,6 @@ describe("Clothing suggestions when snowing", () => {
       "boots_snow"
     ]);
   });
-  test("Should not return other stuff", () => {
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["umbrella"])
-    );
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["coat"])
-    );
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["boots_rain"])
-    );
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["hoodie"])
-    );
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["jeans"])
-    );
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["long_sleeve_shirt"])
-    );
-    expect(clothingService(5101, 0)).toEqual(
-      expect.not.arrayContaining(["sunglasses"])
-    );
-  });
 });
 
 describe("Clothing suggestions when foggy", () => {
@@ -158,38 +102,6 @@ describe("Clothing suggestions when foggy", () => {
       "jeans",
       "long_sleeve_shirt"
     ]);
-  });
-  test("Should not return other stuff", () => {
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["umbrella"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["coat"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["boots_rain"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["beanie"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["gloves"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["boots_snow"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["sunglasses"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["cap"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["shorts"])
-    );
-    expect(clothingService(2100, 0)).toEqual(
-      expect.not.arrayContaining(["short_sleeve_shirt"])
-    );
   });
 });
 
@@ -211,38 +123,7 @@ describe("Clothing suggestions when cloudy", () => {
       "short_sleeve_shirt"
     ]);
   });
-  test("Should not return other stuff when over 15C", () => {
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["umbrella"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["coat"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["boots_rain"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["beanie"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["gloves"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["boots_snow"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["sunglasses"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["hoodie"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["jeans"])
-    );
-    expect(clothingService(1001, 16)).toEqual(
-      expect.not.arrayContaining(["long_sleeve_shirt"])
-    );
-  });
+
   test("Should return cap, shorts, and short sleeve shirt when under 15C", () => {
     expect(clothingService(1001, 15)).toStrictEqual([
       "hoodie",
@@ -260,39 +141,6 @@ describe("Clothing suggestions when cloudy", () => {
       "long_sleeve_shirt"
     ]);
   });
-
-  test("Should not return other stuff when under 15C", () => {
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["umbrella"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["coat"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["boots_rain"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["beanie"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["gloves"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["boots_snow"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["sunglasses"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["cap"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["shorts"])
-    );
-    expect(clothingService(1001, 15)).toEqual(
-      expect.not.arrayContaining(["short_sleeve_shirt"])
-    );
-  });
 });
 
 describe("Clothing suggestions when sunny", () => {
@@ -308,38 +156,7 @@ describe("Clothing suggestions when sunny", () => {
       "short_sleeve_shirt"
     ]);
   });
-  test("Should not return other stuff when over 10C", () => {
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["beanie"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["boots_rain"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["boots_snow"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["cap"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["coat"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["gloves"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["hoodie"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["jeans"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["long_sleeve_shirt"])
-    );
-    expect(clothingService(1100, 11)).toEqual(
-      expect.not.arrayContaining(["umbrella"])
-    );
-  });
+
   test("Should return hoodie, jeans, and long sleeve shirt when under 10C", () => {
     expect(clothingService(1100, 10)).toStrictEqual([
       "hoodie",
@@ -351,37 +168,5 @@ describe("Clothing suggestions when sunny", () => {
       "jeans",
       "long_sleeve_shirt"
     ]);
-  });
-  test("Should not return other stuff when under 10C", () => {
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["beanie"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["boots_rain"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["boots_snow"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["cap"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["coat"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["gloves"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["short_sleeve_shirt"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["shorts"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["sunglasses"])
-    );
-    expect(clothingService(1100, 10)).toEqual(
-      expect.not.arrayContaining(["umbrella"])
-    );
   });
 });
