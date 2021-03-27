@@ -26,21 +26,25 @@ const cardStyles = makeStyles((theme) => ({
   }
 }));
 
-const useCoordsAndOptionsFrom = (name) => {
+const useInputField = () => {
+  const [value, setValue] = useState("");
   const [coords, setCoords] = useState({
     lat: undefined,
     long: undefined
   });
   const [options, setOptions] = useState([]);
 
-  // Get start location's coordinates on each keystroke
+  const handleInput = (value) => {
+    setValue(value);
+  };
+
+  // Get input field coordinates and suggestions on each keystroke
   useEffect(() => {
-    // Gets the coordinates of the starting location
     function getCoordinatesAndOptions() {
       axios
         .get("/retrieveCoordsFromLocation/", {
           params: {
-            search: name
+            search: value
           }
         })
         .then((response) => {
@@ -56,26 +60,24 @@ const useCoordsAndOptionsFrom = (name) => {
         });
     }
 
-    if (name) {
+    if (value) {
       getCoordinatesAndOptions();
     } else {
-      // If name is null then clear options
+      // If value is null then clear options
       setCoords({});
       setOptions([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name]);
+  }, [value]);
 
-  return [coords, options];
+  return { value, handleInput, coords, options };
 };
 
 function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
   const classes = cardStyles();
 
-  const [startName, setStartName] = useState("");
-  const [startCoords, startOptions] = useCoordsAndOptionsFrom(startName);
-  const [destinationName, setDestinationName] = useState("");
-  const [destinationCoords, destinationOptions] = useCoordsAndOptionsFrom(destinationName);
+  const startField = useInputField();
+  const destinationField = useInputField();
   const [mode, setMode] = useState("driving");
   const [travelTime, setTravelTime] = useState();
 
@@ -85,10 +87,10 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
       .get("/retrieveDuration/", {
         params: {
           profile: mode,
-          startlong: startCoords.long,
-          startlat: startCoords.lat,
-          destinationlong: destinationCoords.long,
-          destinationlat: destinationCoords.lat
+          startlong: startField.coords.long,
+          startlat: startField.coords.lat,
+          destinationlong: destinationField.coords.long,
+          destinationlat: destinationField.coords.lat
         }
       })
       .then((response) => setTravelTime(response.data.duration * 1000));
@@ -126,14 +128,14 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
   function handleSubmit(event) {
     // When user clicked mode of transport button the page will not refresh
     event.preventDefault();
-    if (startName) {
-      setStartingPoint(startCoords);
+    if (startField.value) {
+      setStartingPoint(startField.coords);
     }
-    if (destinationName) {
-      setDestination(destinationCoords);
+    if (destinationField.value) {
+      setDestination(destinationField.coords);
     }
     // If origin or destination is empty don't get duration
-    if (startName && destinationName) {
+    if (startField.value && destinationField.value) {
       getDuration();
     }
   }
@@ -145,12 +147,11 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           <Grid item xs={12}>
             <Autocomplete
               freeSolo
-              value={startName}
-              // Once the user clicked on an option it will treat as submit as well
+              value={startField.value}
               onChange={(event, value) => {
-                setStartName(value);
+                startField.handleInput(value);
               }}
-              options={startOptions}
+              options={startField.options}
               getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <TextField
@@ -160,7 +161,7 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
                   name="start"
                   variant="outlined"
                   fullWidth
-                  onInput={(event) => setStartName(event.target.value)}
+                  onInput={(event) => startField.handleInput(event.target.value)}
                 />
               )}
             />
@@ -168,11 +169,11 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
           <Grid item xs={12}>
             <Autocomplete
               freeSolo
-              value={destinationName}
+              value={destinationField.value}
               onChange={(event, value) => {
-                setDestinationName(value);
+                destinationField.handleInput(value);
               }}
-              options={destinationOptions}
+              options={destinationField.options}
               getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <TextField
@@ -182,14 +183,19 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
                   name="destination"
                   label="Destination"
                   fullWidth
-                  onInput={(event) => setDestinationName(event.target.value)}
+                  onInput={(event) => destinationField.handleInput(event.target.value)}
                 />
               )}
             />
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={5}>
-              <ToggleButtonGroup value={mode} exclusive onChange={handleModeOfTransport} aria-label="Mode of transport">
+              <ToggleButtonGroup
+                value={mode}
+                exclusive
+                onChange={handleModeOfTransport}
+                aria-label="Mode of transport"
+              >
                 <ToggleButton type="submit" value="driving" aria-label="driving">
                   <DriveEtaRoundedIcon />
                 </ToggleButton>
