@@ -10,9 +10,9 @@ The application allows users to enter a start and destination location, and then
 ![img_1.png](images/img_1.png)
 
 ## Design choices
-For the front-end, React is suitable for creating user interfaces as it allows us to break down the interface into separate, reusable parts and I can focus on the isolated building blocks known as “components” (Facebook, 2021).
+For the front-end, React is suitable for creating user interfaces as it breaks down the interface into separate, reusable parts and I can focus on the isolated building blocks known as “components” (Facebook, 2021).
 
-For the back-end choice of technology, I chose Express specifically as it is a very popular web framework which is fast and easy to set up, requires minimal boilerplate code and provides many libraries for working with inbound requests.
+For the back-end choice of technology, I chose Express JS specifically as it is a very popular web framework which is fast and easy to set up and provides many libraries for working with inbound requests.
 
 The front end is completely independent of the backend which provides multiple benefits. This modular approach allows flexibility and extensibility. If I were to develop a native mobile application, I could reuse the same Express backend. If I need to add a database to store and retrieve information, I could simply connect it to the Express app as it supports integration with a variety of database, such as including MongoDB, PostgreSQL, MySQL, and SQLite.
 
