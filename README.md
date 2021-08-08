@@ -10,7 +10,7 @@ The application allows users to enter a start and destination location, and then
 - React
 - Express JS
 - Material-UI
-- Third party API for retrieving climate and map data
+- Third-party APIs for retrieving weather and map data
   - Mapbox (react-map-gl)
   - Tomorrow.io (formerly Climacell)
 
