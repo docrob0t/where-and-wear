@@ -8,8 +8,8 @@ The application allows users to enter a start and destination location, and then
 
 ## Technologies used
 - React
+  -  Material-UI
 - Express JS
-- Material-UI
 - Third-party APIs for retrieving weather and map data
   - Mapbox (react-map-gl)
   - Tomorrow.io (formerly Climacell)
