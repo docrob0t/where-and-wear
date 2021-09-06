@@ -114,7 +114,7 @@ function Map() {
 
   function getCoordinatesFromCity(city) {
     axios
-      .get("/retrieveCoordsFromLocation/", {
+      .get("/mapbox/forwardGeocoding/", {
         params: {
           search: city
         }

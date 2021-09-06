@@ -42,7 +42,7 @@ const useInputField = () => {
   useEffect(() => {
     function getCoordinatesAndOptions() {
       axios
-        .get("/retrieveCoordsFromLocation/", {
+        .get("/mapbox/forwardGeocoding/", {
           params: {
             search: value
           }
@@ -84,7 +84,7 @@ function InputBox({ setStartingPoint, setDestination, setArrivalTime }) {
   // Gets the duration between the starting location and destination
   function getDuration() {
     axios
-      .get("/retrieveDuration/", {
+      .get("/mapbox/duration/", {
         params: {
           profile: mode,
           startlong: startField.coords.long,

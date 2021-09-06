@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 // Return the current weather for a given set of lat/long co-ordinates
-app.post("/weatherAtCoords/current", (req, res) => {
+app.post("/weather/current", (req, res) => {
   const url = "https://data.climacell.co/v4/timelines";
   const params = {
     location: req.body.lat + "," + req.body.long,
@@ -33,7 +33,7 @@ app.post("/weatherAtCoords/current", (req, res) => {
 });
 
 // Return the current weather for a given set of lat/long coordinates in a timeframe
-app.post("/weatherAtDestination/", (req, res) => {
+app.post("/weather/destination", (req, res) => {
   const url = "https://data.climacell.co/v4/timelines";
   const params = {
     location: req.body.lat + "," + req.body.long,
@@ -56,7 +56,7 @@ app.post("/weatherAtDestination/", (req, res) => {
 });
 
 // Return the 7 day forecast for a given set of lat/long co-ordinates
-app.post("/weatherAtCoords/forecast/", (req, res) => {
+app.post("/weather/7DayForecast", (req, res) => {
   const nextWeek = new Date();
   // add 7 days to the current date
   nextWeek.setHours(0);
@@ -88,7 +88,7 @@ app.post("/weatherAtCoords/forecast/", (req, res) => {
 });
 
 // Gets the city name from a given set of lat/long co-ordinates
-app.post("/locationfromcoords", (req, res) => {
+app.post("/mapbox/reverseGeocoding", (req, res) => {
   const requestURL =
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
     req.body.long +
@@ -105,8 +105,6 @@ app.post("/locationfromcoords", (req, res) => {
     .get(requestURL, { params })
     .then(function (response) {
       // handle success
-      // TODO: Remove logging when no longer required
-      console.log(response.data);
       res.json({ location: response.data.features[0].text });
     })
     .catch(function (error) {
@@ -117,7 +115,7 @@ app.post("/locationfromcoords", (req, res) => {
 });
 
 // Gets the coordinates and autocomplete suggestions from a string
-app.get("/retrieveCoordsFromLocation", (req, res) => {
+app.get("/mapbox/forwardGeocoding", (req, res) => {
   let requestURL =
     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
     encodeURI(req.query.search) +
@@ -142,7 +140,7 @@ app.get("/retrieveCoordsFromLocation", (req, res) => {
 });
 
 // Gets the duration with a mode of transport and between two sets of coordinates
-app.get("/retrieveDuration", (req, res) => {
+app.get("/mapbox/duration", (req, res) => {
   let requestURL =
     "https://api.mapbox.com/directions/v5/mapbox/" +
     req.query.profile +

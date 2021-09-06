@@ -8,7 +8,7 @@ The application allows users to enter a start and destination location, and then
 
 ## Technologies used
 - React
-  -  Material-UI
+  -  [Material-UI](https://material-ui.com/)
 - Express JS
 - Third-party APIs for retrieving weather and map data
   - Mapbox (react-map-gl)
@@ -18,14 +18,17 @@ The application allows users to enter a start and destination location, and then
 ![img_2.png](images/img_2.png)
 
 ## Design choices
-For the front-end, React is suitable for creating user interfaces as it breaks down the interface into separate, reusable parts and I can focus on the isolated building blocks known as “components” (Facebook, 2021).
+The front-end uses React which is suitable for creating user interfaces as it breaks down the interface into separate, reusable parts, so that I can focus on developing isolated building blocks known as “components”. To speed up development, we chose to use [Material-UI](https://material-ui.com/) react component library.
 
 For the back-end choice of technology, I chose Express JS specifically as it is a very popular web framework which is fast and easy to set up and provides many libraries for working with inbound requests.
 
-The front end is completely independent of the backend which provides multiple benefits. This modular approach allows flexibility and extensibility. If I were to develop a native mobile application, I could reuse the same Express backend. If I need to add a database to store and retrieve information, I could simply connect it to the Express app as it supports integration with a variety of database, such as including MongoDB, PostgreSQL, MySQL, and SQLite.
+The front-end is completely independent of the backend which provides multiple benefits. This modular approach allows flexibility and extensibility. If I were to develop a native mobile application, I could reuse the same Express backend. If I need to add a database to store and retrieve information, I could simply connect it to the Express app as it supports integration with a variety of database, such as including MongoDB, PostgreSQL, MySQL, and SQLite.
 
 ## Features
 ![img_1.png](images/img_1.png)
+
+## Video demo
+[![Where & Wear Video Demo](https://yt-embed.herokuapp.com/embed?v=kdh7-PoUPWM)](https://www.youtube.com/watch?v=kdh7-PoUPWM "Where & Wear Video Demo")
 
 ## Configuring
 Before getting started on development, you'll need an API key from Mapbox and Climacell.

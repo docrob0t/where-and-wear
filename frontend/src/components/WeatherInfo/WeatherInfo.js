@@ -37,9 +37,9 @@ export default function WeatherInfo({ city, temperature, temperatureApparent, we
           <Box fontWeight="600">{subtitle}</Box>
         </Typography>
       </Box>
-      <Grid container justify="center" alignItems="flex-end">
+      <Grid container justifyContent="center" alignItems="flex-end">
         <Grid item xs={6} className="temperature">
-          <Grid container justify="center" alignItems="flex-start" wrap="nowrap">
+          <Grid container justifyContent="center" alignItems="flex-start" wrap="nowrap">
             <Typography variant="h3" component="div" color="textPrimary">
               {Math.round(temperature)}
             </Typography>
@@ -56,7 +56,7 @@ export default function WeatherInfo({ city, temperature, temperatureApparent, we
             Feels like {Math.round(temperatureApparent)} °C
           </Typography>
         </Grid>
-        <Grid item xs={5} className="weather">
+        <Grid align="center" item xs={5} className="weather">
           <img
             className={classes.cardWeatherIcon}
             src={getWeatherIconFrom(weatherCode).icon}

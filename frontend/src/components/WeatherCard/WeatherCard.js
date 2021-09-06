@@ -88,7 +88,7 @@ function useCityName(lat, long) {
   useEffect(() => {
     const getCityName = async () => {
       await axios
-        .post("/locationfromcoords/", {
+        .post("/mapbox/reverseGeocoding", {
           lat: lat,
           long: long
         })
@@ -112,7 +112,7 @@ function useForecastData(lat, long) {
   useEffect(() => {
     const fetchWeatherForecast = async (lat, long) => {
       await axios
-        .post("/weatherAtCoords/forecast/", {
+        .post("/weather/7DayForecast", {
           lat: lat,
           long: long
         })
@@ -168,11 +168,10 @@ function WeatherCard({
   };
 
   // API call to fetch current weather at user's location
-  // TODO: Grey out weather at destination on load, enable tab when state is set
   useEffect(() => {
     const fetchStartingLocationWeather = async () => {
       await axios
-        .post("/weatherAtCoords/current/", {
+        .post("/weather/current", {
           lat: startingLat,
           long: startingLong
         })
@@ -197,7 +196,7 @@ function WeatherCard({
   useEffect(() => {
     const fetchDestinationWeather = async () => {
       await axios
-        .post("/weatherAtDestination/", {
+        .post("/weather/destination", {
           lat: destinationLat,
           long: destinationLong,
           journeyArrivalTime: arrivalTime
