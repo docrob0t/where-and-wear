@@ -1,6 +1,9 @@
 # Where & Wear
 A fullstack JavaScript web app to help you decide what to wear on your journey.
 
+## Video demo
+[![Where & Wear Video Demo](https://yt-embed.herokuapp.com/embed?v=kdh7-PoUPWM)](https://www.youtube.com/watch?v=kdh7-PoUPWM "Where & Wear Video Demo")
+
 ## Background
 Weather apps often show us the current weather but not the weather at a planned destination. As a University final year project, the aim is to create a web application that can schedule journeys and generate clothing suggestions based on the forecast weather conditions upon arrival at the desired destination.
 
@@ -26,9 +29,6 @@ The front-end is completely independent of the backend which provides multiple b
 
 ## Features
 ![img_1.png](images/img_1.png)
-
-## Video demo
-[![Where & Wear Video Demo](https://yt-embed.herokuapp.com/embed?v=kdh7-PoUPWM)](https://www.youtube.com/watch?v=kdh7-PoUPWM "Where & Wear Video Demo")
 
 ## Configuring
 Before getting started on development, you'll need an API key from Mapbox and Climacell.
