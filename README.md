@@ -9,6 +9,9 @@ Weather apps often show us the current weather but not the weather at a planned 
 
 The application allows users to enter a start and destination location, and then choose from several modes of transport. It then uses this input to determine the duration of the journey and the time of arrival. The application will also display the current weather at the starting location and destination, a 7-day forecast and images of the clothing suggestions to inform the user before they travel.
 
+## Features
+![img_1.png](images/img_1.png)
+
 ## Technologies used
 - React
   -  [Material-UI](https://material-ui.com/)
@@ -26,9 +29,6 @@ The front-end uses React which is suitable for creating user interfaces as it br
 For the back-end choice of technology, I chose Express JS specifically as it is a very popular web framework which is fast and easy to set up and provides many libraries for working with inbound requests.
 
 The front-end is completely independent of the backend which provides multiple benefits. This modular approach allows flexibility and extensibility. If I were to develop a native mobile application, I could reuse the same Express backend. If I need to add a database to store and retrieve information, I could simply connect it to the Express app as it supports integration with a variety of database, such as including MongoDB, PostgreSQL, MySQL, and SQLite.
-
-## Features
-![img_1.png](images/img_1.png)
 
 ## Configuring
 Before getting started on development, you'll need an API key from Mapbox and Climacell.
