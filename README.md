@@ -10,7 +10,9 @@ The application allows users to enter a start and destination location, and then
 ![img_1.png](images/img_1.png)
 
 ## Video demo
-[![Where & Wear Video Demo](https://yt-embed.herokuapp.com/embed?v=kdh7-PoUPWM)](https://www.youtube.com/watch?v=kdh7-PoUPWM "Where & Wear Video Demo")
+<div align="center">
+  <a href="https://www.youtube.com/embed/kdh7-PoUPWM"><img src="https://i.ytimg.com/vi/kdh7-PoUPWM/sddefault.jpg?sqp=-oaymwEmCIAFEOAD8quKqQMa8AEB-AH-DoACuAiKAgwIABABGGUgZShlMA8=&rs=AOn4CLBmNx8RynNWhaxGyDGYmeJ5JFLC_g" alt="Where & wear video demo"></a>
+</div>
 
 ## Technologies used
 - React
